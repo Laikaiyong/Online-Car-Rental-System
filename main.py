@@ -1108,9 +1108,8 @@ def rent_car_details():
     for car in car_holder:
         if status == car_holder[index]['status']:
             print("{:<4}{:<9}{:<10}{:<12}{:<9}{:<8}{:<7}{:<5}"
-                  .format(line_num, car_holder[index]['car_id'], car_holder[index]['car_brand'],
-                          car_holder[index]['car_name'], car_holder[index]['car_plate'], car_holder[index]['year'],
-                          car_holder[index]['status'], car_holder[index]['price']))
+                  .format(line_num, car['car_id'], car['car_brand'], car['car_name'], car['car_plate'], car['year'],
+                          car['status'], car['price']))
             index += 1
             line_num += 1
         else:
@@ -1231,16 +1230,12 @@ def rental_hist():
     emp_spotter = []
     cus_statement_header()
     for customer in customers:
-        if username == customers[index]['username']:
+        if username == customer['username']:
             emp_spotter.append(index)
-            print("   {:<11}{:<8}{:<7}{:<8}RM{:<9}{:<9}{:<13}{:<8}".format(customers[index]['username'],
-                                                                           customers[index]['car id'],
-                                                                           customers[index]['price'],
-                                                                           customers[index]['days'],
-                                                                           int(customers[index]['price']) * int(customers[index]['days']),
-                                                                           customers[index]['status'],
-                                                                           customers[index]['reservation'],
-                                                                           customers[index]['payment method']))
+            print("   {:<11}{:<8}{:<7}{:<8}RM{:<9}{:<9}{:<13}{:<8}"
+                  .format(customer['username'], customer['car id'], customer['price'], customer['days'],
+                          int(customer['price']) * int(customer['days']), customer['status'], customer['reservation'],
+                          customer['payment method']))
         index += 1
 
     # if the data is empty or no data to display
@@ -1337,25 +1332,17 @@ def pay_car():
         if username == customers[index]['username'] and customers[index]['status'] == 'Pending' \
                 and customers[index]['payment method'] == 'N/A':
             new_index.append(index)
-            print("{:<4}{:<10}{:<8}{:<7}{:<8}RM{:<8}{:<9}{:<13}{:<8}".format(line_num, customers[index]['username'],
-                                                                             customers[index]['car id'],
-                                                                             customers[index]['price'],
-                                                                             customers[index]['days'],
-                                                                             int(customers[index]['price']) * int(customers[index]['days']),
-                                                                             customers[index]['status'],
-                                                                             customers[index]['reservation'],
-                                                                             customers[index]['payment method']))
+            print("{:<4}{:<10}{:<8}{:<7}{:<8}RM{:<8}{:<9}{:<13}{:<8}"
+                  .format(line_num, customer['username'], customer['car id'], customer['price'], customer['days'],
+                          int(customer['price']) * int(customer['days']), customer['status'], customer['reservation'],
+                          customer['payment method']))
             line_num += 1
         elif username == customers[index]['username'] and customers[index]['status'] == 'Pending' \
                 and customers[index]['payment method'] == 'balance':
-            print("    {:<10}{:<8}{:<7}{:<8}RM{:<9}{:<9}{:<13}{:<8}".format(customers[index]['username'],
-                                                                            customers[index]['car id'],
-                                                                            customers[index]['price'],
-                                                                            customers[index]['days'],
-                                                                            int(customers[index]['price']) * int(customers[index]['days']),
-                                                                            customers[index]['status'],
-                                                                            customers[index]['reservation'],
-                                                                            customers[index]['payment method']))
+            print("    {:<10}{:<8}{:<7}{:<8}RM{:<9}{:<9}{:<13}{:<8}"
+                  .format(customer['username'], customer['car id'], customer['price'], customer['days'],
+                          int(customer['price']) * int(customer['days']), customer['status'], customer['reservation'],
+                          customer['payment method']))
             pay_balance()
         else:
             index += 1
@@ -1404,6 +1391,8 @@ def pay_car():
     if payment_method == 'credit card':
         print("\nNote that your private information in this area will not be stored in our cookies.\n")
         credit_card_num = input("Enter your credit card number: ")
+
+        # not storing these in variables as we are not accessing it once again.
         cvv = input("Enter your credit card's CVV: ")
         expiry_date = input("Enter your credit card's expiry date: ")
 
@@ -1418,11 +1407,9 @@ Credit card: {credit_card_num}
         customers[pay_index]['status'] = 'Paid'
         customers[pay_index]['reservation'] = 'In Queue'
 
-        index1 = 0
         for car in car_holder:
-            if car_holder[index1]["car_id"] == car_id:
-                car_holder[index1]["status"] = 'Rented'
-            index1 += 1
+            if car["car_id"] == car_id:
+                car["status"] = 'Rented'
 
         count1 = 1
         with open("customerBookingPayment.txt", 'w') as paid_statement:
@@ -1459,7 +1446,7 @@ Credit card: {credit_card_num}
 
 # Pay with balance
 def pay_balance():
-    username= input("\nYou are accessing your online balance, enter your username to make sure that is you: ")
+    username = input("\nYou are accessing your online balance, enter your username to make sure that is you: ")
     customer_details = {}
     customers = []
     index1 = 0
@@ -1478,9 +1465,9 @@ def pay_balance():
                 else:
                     continue
         for customer in customers:
-            if customers[index1]['username'] == username:
+            if customer['username'] == username:
                 new_index1 = index1
-                balance = int(customers[index1]["balance"])
+                balance = int(customer["balance"])
                 break
             index1 += 1
 
@@ -1502,12 +1489,12 @@ def pay_balance():
                     continue
 
         for statement in statements:
-            if username == statements[index2]['username'] and statements[index2]['payment method'] == 'balance' \
-                    and statements[index2]['status'] == 'Pending':
+            if username == statement['username'] and statement['payment method'] == 'balance' \
+                    and statement['status'] == 'Pending':
                 new_index2 = index2
-                total = int(statements[index2]['price']) * int(statements[index2]['days'])
-                car_id = statements[index2]['car id']
-                print("You have to pay: RM", total, "\nCar ID: ", statements[index2]['car id'])
+                total = int(statement['price']) * int(statement['days'])
+                car_id = statement['car id']
+                print("You have to pay: RM", total, "\nCar ID: ", statement['car id'])
             index2 += 1
 
     car_details = {}
@@ -1527,14 +1514,15 @@ def pay_balance():
                     car_details = {}
                     continue
         for car in car_holder:
-            if car_holder[index3]['car_id'] == car_id:
-                car_holder[index3]['status'] = 'Rented'
+            if car['car_id'] == car_id:
+                car['status'] = 'Rented'
                 break
             index3 += 1
 
     if balance >= total:
         balance -= total
-        print("\nCurrent balance: ",balance,"\nYou had paid the booking confirmation.\nTransaction completed. Your current balance is", balance)
+        print("\nCurrent balance: ", balance, "\nYou had paid the booking confirmation."
+                                              "\nTransaction completed. Your current balance is", balance)
         customers[new_index1]["balance"] = str(balance)
         statements[new_index2]['status'] = 'Paid'
         statements[new_index2]['reservation'] = 'In Queue'
@@ -1612,9 +1600,9 @@ def top_up():
                 else:
                     continue
         for customer in customers:
-            if customers[index]['username'] == username:
+            if customer['username'] == username:
                 cust_index = index
-                balance = int(customers[index]['balance'])
+                balance = int(customer['balance'])
                 print("Your current balance: ", str(balance))
                 break
             else:
@@ -1635,8 +1623,9 @@ Option =>\t"""))
         credit_card_num = input("Enter your credit/debit card number: ")
         cvv = input("Enter your credit/debit card's CVV: ")
         expiry_date = input("Enter your credit/debit card's expiry date: ")
+        print("\nTop up completed with ", credit_card_num)
     elif payment_method == 2:
-        print("\n", decoration() * 3, "\nTop up with: FPX online banking","\n", decoration() * 3)
+        print("\n", decoration() * 3, "\nTop up with: FPX online banking\n", decoration() * 3)
 
         def bank_options():
             bank_choice = int(input(f"""Select your merchant:
@@ -1649,8 +1638,9 @@ Option =>\t"""))
 
 =>\t"""))
             if bank_choice <= 5:
-                account_no = input("Enter your account number: ")
-                account_password = input("Enter your account password: ")
+                account_no = input("Enter your bank account number: ")
+                account_password = input("Enter your bank account password: ")
+                print("\nTop up with", account_no)
             else:
                 print("Invalid input, please try again.")
                 return bank_options()
