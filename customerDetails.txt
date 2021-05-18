@@ -1,0 +1,45 @@
+username: Sweet
+password: pink
+address: Kuala Lumpur, Malaysia
+contact number: 0119892384
+balance: 900
+username: Cheryl
+password: lim
+address: Milan, Europe
+contact number: 0132248212
+balance: 40
+username: Vandyck
+password: lai
+address: Nagoya, Japan
+contact number: 0129989852
+balance: 10073
+username: Love
+password: lylong
+address: NingGuang, China
+contact number: 0192342345
+balance: 9000
+username: Lancelot
+password: arthur
+address: English,England
+contact number: 0123456789
+balance: 123
+username: Hairy
+password: portal
+address: Dumbledore, Hoghwarts
+contact number: 0199999919
+balance: 0
+username: Linux
+password: python
+address: Java, Cpp
+contact number: 0198898787
+balance: 0
+username: Kali
+password: pup
+address: Ryazan, Russia
+contact number: 0198989273
+balance: 0
+username: Kari
+password: pop
+address: Terengganu, Malaysia
+contact number: 0198767652
+balance: 100

@@ -1,0 +1,77 @@
+username: Sweet
+car id: R001
+price: 50
+days: 7
+status: Paid
+reservation: Completed
+payment method: credit card
+username: Love
+car id: R002
+price: 100
+days: 5
+status: Pending
+reservation: N/A
+payment method: N/A
+username: Cheryl
+car id: R003
+price: 10
+days: 3
+status: Paid
+reservation: Ready
+payment method: credit card
+username: Vandyck
+car id: R004
+price: 60
+days: 10
+status: Paid
+reservation: Completed
+payment method: balance
+username: Vandyck
+car id: R006
+price: 200
+days: 5
+status: Paid
+reservation: Completed
+payment method: balance
+username: Love
+car id: R001
+price: 50
+days: 3
+status: Paid
+reservation: Ready
+payment method: balance
+username: Cheryl
+car id: R005
+price: 100
+days: 4
+status: Paid
+reservation: Ready
+payment method: credit card
+username: Vandyck
+car id: R005
+price: 100
+days: 7
+status: Pending
+reservation: N/A
+payment method: balance
+username: Hairy
+car id: R010
+price: 5
+days: 2
+status: Pending
+reservation: N/A
+payment method: N/A
+username: Kari
+car id: R011
+price: 300
+days: 8
+status: Paid
+reservation: In Queue
+payment method: credit card
+username: Kari
+car id: R006
+price: 200
+days: 1
+status: Paid
+reservation: In Queue
+payment method: balance
