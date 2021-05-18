@@ -55,7 +55,8 @@ def index_converter(a):
 
 # Welcome page
 def welcome():
-    print(decoration(), "Welcome to the Online Car Rental System(OCRS) by Super Car Rental Services(SCRS)", decoration())
+    print(decoration(), "Welcome to the Online Car Rental System(OCRS) by Super Car Rental Services(SCRS)",
+          decoration())
     print("""\nEnter the number that best describe you.
     Admin : 1
     Customer : 2
@@ -65,7 +66,8 @@ def welcome():
 
 # Exit
 def exit_system():
-    confirmation = input("Are you sure you want to exit the Online Car Rental System?\n\n\t[YES] or [NO]\n\nOption =>\t").upper()
+    confirmation = input("Are you sure you want to exit the Online Car Rental System?\n\n\t[YES] or [NO]"
+                         "\n\nOption =>\t").upper()
     if confirmation == "YES":
         print(decoration(), "Exit", decoration())
         exit()
@@ -102,14 +104,11 @@ def view_cars():
                     car_details = {}
                     continue
     header()
-    index = 0
     line_num = 1
     for car in car_holder:
         print("{:<4}{:<9}{:<10}{:<11}{:<10}{:<6}{:<8}{:<5}"
-              .format(line_num, car_holder[index]['car_id'], car_holder[index]['car_brand'], car_holder[index]['car_name'],
-                      car_holder[index]['car_plate'], car_holder[index]['year'], car_holder[index]['status'],
-                      car_holder[index]['price']))
-        index += 1
+              .format(line_num, car['car_id'], car['car_brand'], car['car_name'], car['car_plate'], car['year'],
+                      car['status'], car['price']))
         line_num += 1
 
 
@@ -189,11 +188,10 @@ Option =>\t""").upper()
                     car_holder.append(copy_data)
                     car_details = {}
                     continue
-    car_index = 0
+
     for car in car_holder:
-        last_car_id = car_holder[car_index]['car_id'].split("R")
+        last_car_id = car['car_id'].split("R")
         new_car_id_num = int(last_car_id[1]) + 1
-        car_index += 1
 
     if add_or_not == "YES":
         new_car_id = 'R' + f'{new_car_id_num:03d}'
@@ -216,6 +214,9 @@ Option =>\t""").upper()
         view_cars()
         print("\n", decoration(), " Back to administrator main screen. ", decoration())
         return administrator_system()
+    else:
+        print("Invalid input, please try again.")
+        return admin_add_car()
 
 
 # 2. Modify car
@@ -318,8 +319,6 @@ def dis_rent_car():
     header()
     car_details = {}
     car_holder = []
-    index = 0
-    emp_spotter = []
     with open("carDatabase.txt", "r") as display_rent:
         for line in display_rent:
             row = line.strip().split(": ")
@@ -332,14 +331,16 @@ def dis_rent_car():
                     car_holder.append(copy_data)
                     car_details = {}
                     continue
+
+    index = 0
+    emp_spotter = []
     line_number = 1
     for car in car_holder:
-        if status == car_holder[index]['status']:
+        if status == car['status']:
             emp_spotter.append(index)
             print("{:<4}{:<9}{:<10}{:<12}{:<9}{:<6}{:<9}{:<5}"
-                  .format(line_number, car_holder[index]['car_id'], car_holder[index]['car_brand'],
-                          car_holder[index]['car_name'], car_holder[index]['car_plate'], car_holder[index]['year'],
-                          car_holder[index]['status'], car_holder[index]['price']))
+                  .format(line_number, car['car_id'], car['car_brand'], car['car_name'], car['car_plate'],
+                          car['year'], car['status'], car['price']))
             index += 1
             line_number += 1
         else:
@@ -385,15 +386,11 @@ def dis_cus_booking():
 
     line_number = 1
     for customer in customers:
-        if reservation[0] == customers[index]['reservation'] or reservation[1] == customers[index]['reservation']:
+        if reservation[0] == customer['reservation'] or reservation[1] == customer['reservation']:
             emp_spotter.append(index)
-            print("{:<4}{:<11}{:<8}{:<7}{:<8}RM{:<9}{:<8}{:<5}".format(line_number, customers[index]['username'],
-                                                                       customers[index]['car id'],
-                                                                       customers[index]['price'],
-                                                                       customers[index]['days'],
-                                                                       int(customers[index]['price'])*int(customers[index]['days']),
-                                                                       customers[index]['status'],
-                                                                       customers[index]['reservation']))
+            print("{:<4}{:<11}{:<8}{:<7}{:<8}RM{:<9}{:<8}{:<5}"
+                  .format(line_number, customer['username'], customer['car id'], customer['price'], customer['days'],
+                          int(customer['price'])*int(customer['days']), customer['status'], customer['reservation']))
             index += 1
             line_number += 1
         else:
@@ -421,9 +418,6 @@ def dis_cus_pay():
     cus_pay_header()
     customer_statement = {}
     customers = []
-    emp_spotter = []
-    index = 0
-    status = 'Paid'
     with open("customerBookingPayment.txt", 'r') as booking_details:
         for line in booking_details:
             row = line.strip().split(": ")
@@ -437,23 +431,23 @@ def dis_cus_pay():
                     customer_statement = {}
                     continue
 
+    emp_spotter = []
+    index = 0
     line_number = 1
+    status = 'Paid'
     for customer in customers:
-        if status == customers[index]['status']:
+        if status == customer['status']:
             emp_spotter.append(index)
-            print("{:<4}{:<11}{:<8}{:<7}{:<8}RM{:<9}{:<8}{:<5}".format(line_number, customers[index]['username'],
-                                                                        customers[index]['car id'],
-                                                                        customers[index]['price'],
-                                                                        customers[index]['days'],
-                                                                        int(customers[index]['price']) * int(customers[index]['days']),
-                                                                        customers[index]['status'],
-                                                                        customers[index]['payment method']))
+            print("{:<4}{:<11}{:<8}{:<7}{:<8}RM{:<9}{:<8}{:<5}"
+                  .format(line_number, customer['username'], customer['car id'], customer['price'],
+                          customer['days'], int(customer['price']) * int(customer['days']),
+                          customer['status'], customer['payment method']))
             index += 1
             line_number += 1
         else:
             index += 1
             continue
-
+    print(emp_spotter)
     # No data spotted
     if not emp_spotter:
         print("\nThere is no relevant data for records of customer payment statement.\n")
@@ -479,11 +473,9 @@ def registered_customer():
                     customer_details = {}
                     continue
 
-    index = 0
     customers_names = []
     for customer in customers:
-        customers_names.append(customers[index]['username'])
-        index += 1
+        customers_names.append(customer['username'])
 
     customers_names.sort()
 
@@ -560,13 +552,9 @@ What is the data type you would like to seek for: """).lower()
     for customer in customers:
         if search_phrase == customers[index][data_type]:
             emp_spotter.append(index)
-            print("{:<4}{:<10}{:<8}{:<7}{:<8}RM{:<9}{:<9}{:<5}".format(line_num, customers[index]['username'],
-                                                                        customers[index]['car id'],
-                                                                        customers[index]['price'],
-                                                                        customers[index]['days'],
-                                                                        int(customers[index]['price']) * int(customers[index]['days']),
-                                                                        customers[index]['status'],
-                                                                        customers[index]['reservation']))
+            print("{:<4}{:<10}{:<8}{:<7}{:<8}RM{:<9}{:<9}{:<5}"
+                  .format(line_num, customer['username'], customer['car id'], customer['price'], customer['days'],
+                          int(customer['price']) * int(customer['days']), customer['status'], customer['reservation']))
             index += 1
             line_num += 1
         else:
@@ -622,13 +610,10 @@ What is the data type you would like to seek for: """).lower()
     for customer in customers:
         if search_phrase == customers[index][data_type]:
             emp_spotter.append(index)
-            print("{:<4}{:<10}{:<9}{:<7}{:<8}RM{:<9}{:<9}{:<5}".format(line_num, customers[index]['username'],
-                                                                        customers[index]['car id'],
-                                                                        customers[index]['price'],
-                                                                        customers[index]['days'],
-                                                                        int(customers[index]['price']) * int(customers[index]['days']),
-                                                                        customers[index]['status'],
-                                                                        customers[index]['payment method']))
+            print("{:<4}{:<10}{:<9}{:<7}{:<8}RM{:<9}{:<9}{:<5}"
+                  .format(line_num, customer['username'], customer['car id'], customer['price'], customer['days'],
+                          int(customer['price']) * int(customer['days']), customer['status'],
+                          customer['payment method']))
             index += 1
             line_num += 1
         else:
@@ -685,17 +670,12 @@ def admin_return_rent():
         line_num = 1
         index_collector = []
         for customer in customers:
-            if customers[index1]['status'] == 'Paid' and customers[index1]['reservation'] == 'Renting':
+            if customer['status'] == 'Paid' and customer['reservation'] == 'Renting':
                 index_collector.append(index1)
-                print("{:<4}{:<11}{:<8}{:<7}{:<8}RM{:<8}{:<9}{:<13}{:<8}".format(line_num,
-                                                                                 customers[index1]['username'],
-                                                                                 customers[index1]['car id'],
-                                                                                 customers[index1]['price'],
-                                                                                 customers[index1]['days'],
-                                                                                 int(customers[index1]['price']) * int(customers[index1]['days']),
-                                                                                 customers[index1]['status'],
-                                                                                 customers[index1]['reservation'],
-                                                                                 customers[index1]['payment method']))
+                print("{:<4}{:<11}{:<8}{:<7}{:<8}RM{:<8}{:<9}{:<13}{:<8}"
+                      .format(line_num, customer['username'], customer['car id'], customer['price'], customer['days'],
+                              int(customer['price']) * int(customer['days']), customer['status'],
+                              customer['reservation'], customer['payment method']))
                 index1 += 1
                 line_num += 1
             else:
@@ -731,10 +711,9 @@ def admin_return_rent():
                     continue
 
         for car in cars:
-            if cars[index2]['car_id'] == car_id:
+            if car['car_id'] == car_id:
                 open_index = index2
                 index2 += 1
-
             else:
                 index2 += 1
                 continue
@@ -766,14 +745,11 @@ def admin_return_rent():
 
     print("\nReturned rent statement: ")
     cus_statement_header()
-    print("   {:<11}{:<8}{:<7}{:<8}RM {:<8}{:<9}{:<13}{:<8}".format(customers[new_index]['username'],
-                                                                    customers[new_index]['car id'],
-                                                                    customers[new_index]['price'],
-                                                                    customers[new_index]['days'],
-                                                                    int(customers[new_index]['price']) * int(customers[new_index]['days']),
-                                                                    customers[new_index]['status'],
-                                                                    customers[new_index]['reservation'],
-                                                                    customers[new_index]['payment method']))
+    print("   {:<11}{:<8}{:<7}{:<8}RM {:<8}{:<9}{:<13}{:<8}"
+          .format(customers[new_index]['username'], customers[new_index]['car id'], customers[new_index]['price'],
+                  customers[new_index]['days'], int(customers[new_index]['price']) * int(customers[new_index]['days']),
+                  customers[new_index]['status'], customers[new_index]['reservation'],
+                  customers[new_index]['payment method']))
     cont_return()
 
 
@@ -814,15 +790,10 @@ def admin_mark_ready():
         for customer in customers:
             if customers[index1]['status'] == 'Paid' and customers[index1]['reservation'] == 'In Queue':
                 index_collector.append(index1)
-                print("{:<4}{:<11}{:<8}{:<7}{:<8}RM{:<8}{:<9}{:<13}{:<8}".format(line_num,
-                                                                                 customers[index1]['username'],
-                                                                                 customers[index1]['car id'],
-                                                                                 customers[index1]['price'],
-                                                                                 customers[index1]['days'],
-                                                                                 int(customers[index1]['price']) * int(customers[index1]['days']),
-                                                                                 customers[index1]['status'],
-                                                                                 customers[index1]['reservation'],
-                                                                                 customers[index1]['payment method']))
+                print("{:<4}{:<11}{:<8}{:<7}{:<8}RM{:<8}{:<9}{:<13}{:<8}"
+                      .format(line_num, customer['username'], customer['car id'], customer['price'], customer['days'],
+                              int(customer['price']) * int(customer['days']), customer['status'],
+                              customer['reservation'], customer['payment method']))
                 index1 += 1
                 line_num += 1
             else:
@@ -835,7 +806,8 @@ def admin_mark_ready():
         print("Returning to administrator main screen...")
         administrator_system()
 
-    return_rent = int(input("\nWhich statement you would like to mark as ready upon customer's booking on confirmation towards booking: "))
+    return_rent = int(input(
+        "\nWhich statement you would like to mark as ready upon customer's booking on confirmation towards booking: "))
     index_value = index_converter(return_rent)
     new_index = index_collector[index_value]
     customers[new_index]['reservation'] = 'Ready'
@@ -995,7 +967,7 @@ Option =>\t"""))
 
 # Registration header
 def cust_reg_header():
-    print(decoration(), "Welcome to the registration page", decoration(),"\n")
+    print(decoration(), "Welcome to the registration page", decoration(), "\n")
     customer_registration()
 
 
@@ -1027,28 +999,27 @@ def registered_login():
     for time in range(1, 4):
         username = input("\nEnter your username: ")
         password = input("Enter your password: ")
-        with open("customerDetails.txt", 'r') as registration:
-            customer_details = {}
-            customers = []
-            index = 0
-            with open("customerDetails.txt", "r") as customer_file:
-                for line in customer_file:
-                    row = line.strip().split(": ")
-                    customer_details[row[0]] = row[1]
-                    for information in range(1, custdb_line_count()):
-                        if row == "":  # empty line
-                            break
-                        elif len(customer_details) == 5:
-                            copy_data = customer_details.copy()
-                            customers.append(copy_data)
-                            customer_details = {}
-                            continue
+
+        customer_details = {}
+        customers = []
+        with open("customerDetails.txt", "r") as customer_file:
+            for line in customer_file:
+                row = line.strip().split(": ")
+                customer_details[row[0]] = row[1]
+                for information in range(1, custdb_line_count()):
+                    if row == "":  # empty line
+                        break
+                    elif len(customer_details) == 5:
+                        copy_data = customer_details.copy()
+                        customers.append(copy_data)
+                        customer_details = {}
+                        continue
+
         for customer in customers:
-            if username == customers[index]['username'] and password == customers[index]['password']:
+            if username == customer['username'] and password == customer['password']:
                 print("\n", decoration(), " Welcome to the OCRS, ", username, decoration(), "\n")
                 reg_customer()
                 break
-            index += 1
         else:
             print("\nInvalid username or password, please try again...")
 
@@ -1288,7 +1259,6 @@ def book_car():
     username = input("Enter your username to request your booking: ")
     car_details = {}
     car_holder = []
-    index = 0
     with open('carDatabase.txt', 'r') as original:
         for line in original:
             row = line.strip().split(": ")
@@ -1302,11 +1272,10 @@ def book_car():
                     car_details = {}
                     continue
     for car in car_holder:
-        if car_holder[index]['car_id'] == select_car:
-            price = car_holder[index]['price']
-            car_holder[index]['status'] = 'Booked'
+        if car['car_id'] == select_car:
+            price = car['price']
+            car['status'] = 'Booked'
             break
-        index += 1
     days = int(input("How many day(s) you would like to book it: "))
 
     count = 1
