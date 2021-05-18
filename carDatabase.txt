@@ -48,8 +48,8 @@ year: 2020
 status: X
 price: 500
 car_id: R008
-car_brand: Bently
-car_name: SUV
+car_brand: Volkswagen
+car_name: Bently
 car_plate: SUK123
 year: 2012
 status: Open
@@ -89,3 +89,10 @@ car_plate: FRXL12
 year: 2000
 status: Open
 price: 125
+car_id: R014
+car_brand: Geely
+car_name: Lotus
+car_plate: LL129
+year: 2012
+status: Open
+price: 28

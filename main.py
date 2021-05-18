@@ -106,7 +106,7 @@ def view_cars():
     header()
     line_num = 1
     for car in car_holder:
-        print("{:<4}{:<9}{:<10}{:<11}{:<10}{:<6}{:<8}{:<5}"
+        print("{:<4}{:<7}{:<12}{:<11}{:<10}{:<6}{:<8}{:<5}"
               .format(line_num, car['car_id'], car['car_brand'], car['car_name'], car['car_plate'], car['year'],
                       car['status'], car['price']))
         line_num += 1
@@ -129,7 +129,7 @@ def administrator_login():
         print("Invalid credential, please check your username and password.")
         return administrator_login()
 
-
+view_cars()
 # Administrator access system
 def administrator_system():
     option = int(input("""
@@ -338,7 +338,7 @@ def dis_rent_car():
     for car in car_holder:
         if status == car['status']:
             emp_spotter.append(index)
-            print("{:<4}{:<9}{:<10}{:<12}{:<9}{:<6}{:<9}{:<5}"
+            print("{:<4}{:<7}{:<12}{:<11}{:<10}{:<6}{:<8}{:<5}"
                   .format(line_number, car['car_id'], car['car_brand'], car['car_name'], car['car_plate'],
                           car['year'], car['status'], car['price']))
             index += 1
@@ -887,7 +887,7 @@ def analytics_dashboard():
                     car_details = {}
                     continue
 
-    # retrive data from customer's information database
+    # retrieve data from customer's information database
     customer_details = {}
     customers2 = []
     with open("customerDetails.txt", "r") as customer_file:
@@ -1107,7 +1107,7 @@ def rent_car_details():
     line_num = 1
     for car in car_holder:
         if status == car_holder[index]['status']:
-            print("{:<4}{:<9}{:<10}{:<12}{:<9}{:<8}{:<7}{:<5}"
+            print("{:<4}{:<7}{:<12}{:<11}{:<10}{:<6}{:<8}{:<5}"
                   .format(line_num, car['car_id'], car['car_brand'], car['car_name'], car['car_plate'], car['year'],
                           car['status'], car['price']))
             index += 1
@@ -1329,8 +1329,7 @@ def pay_car():
                     continue
     cus_statement_header()
     for customer in customers:
-        if username == customers[index]['username'] and customers[index]['status'] == 'Pending' \
-                and customers[index]['payment method'] == 'N/A':
+        if username == customer['username'] and customer['status'] == 'Pending' and customer['payment method'] == 'N/A':
             new_index.append(index)
             print("{:<4}{:<10}{:<8}{:<7}{:<8}RM{:<8}{:<9}{:<13}{:<8}"
                   .format(line_num, customer['username'], customer['car id'], customer['price'], customer['days'],
