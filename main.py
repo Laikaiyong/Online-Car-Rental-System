@@ -475,7 +475,9 @@ def registered_customer():
     customers_names = []
     for customer in customers:
         customers_names.append(customer['username'])
-
+    
+    customers_names.sort()
+    
     line_num = 1
     print('\n\tUsername')
     for name in customers_names:
