@@ -17,7 +17,7 @@ car_brand: Perodua
 car_name: Kancil
 car_plate: DAMN520
 year: 1998
-status: Booked
+status: Rented
 price: 10
 car_id: R004
 car_brand: Perodua

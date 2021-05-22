@@ -17,7 +17,7 @@ car id: R003
 price: 10
 days: 3
 status: Paid
-reservation: Ready
+reservation: Renting
 payment method: credit card
 username: Vandyck
 car id: R004
