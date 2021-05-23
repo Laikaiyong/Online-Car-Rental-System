@@ -138,12 +138,14 @@ days: 8
 status: Pending
 reservation: N/A
 payment method: balance
+username: Vandyck
 car id: R022
 price: 20
 days: 20
 status: Paid
 reservation: Ready
 payment method: credit card
+username: Love
 car id: R023
 price: 10
 days: 2
