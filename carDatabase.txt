@@ -138,3 +138,9 @@ car_plate: IUI5678
 year: 2016
 status: Rented
 price: 10
+car_id: R021
+car_brand: Toyota
+car_name: Hilux
+car_plate: TRT7958
+year: 2017
+status: Booked
