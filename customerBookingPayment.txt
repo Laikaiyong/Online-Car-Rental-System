@@ -138,3 +138,15 @@ days: 8
 status: Pending
 reservation: N/A
 payment method: balance
+car id: R022
+price: 20
+days: 20
+status: Paid
+reservation: Ready
+payment method: credit card
+car id: R023
+price: 10
+days: 2
+status: Paid
+reservation: Ready
+payment method: balance
