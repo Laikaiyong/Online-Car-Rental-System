@@ -144,3 +144,16 @@ car_name: Hilux
 car_plate: TRT7958
 year: 2017
 status: Booked
+price: 50
+car_id: R022
+car_brand: Hyundai
+car_name: Kona
+car_plate: ICU4846
+year: 2020
+price: 20
+car_id: R023
+car_brand: Subaru
+car_name: Outback
+car_plate: FHF4746
+year: 2013
+price: 10
