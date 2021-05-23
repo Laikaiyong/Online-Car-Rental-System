@@ -131,3 +131,10 @@ days: 9
 status: Paid
 reservation: In Queue
 payment method: balance
+username: Hairy
+car id: R021
+price: 50
+days: 8
+status: Pending
+reservation: N/A
+payment method: balance
