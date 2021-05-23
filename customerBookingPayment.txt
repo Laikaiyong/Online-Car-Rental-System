@@ -123,9 +123,11 @@ price: 100
 days: 4
 status: Paid
 reservation: In Queue
+payment method: credit card
 username: Lancelot
 car id: R020
 price: 10
 days: 9
 status: Paid
 reservation: In Queue
+payment method: balance
