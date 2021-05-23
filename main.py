@@ -142,8 +142,8 @@ def login_system():
 # 3. Exit system
 def exit_system():
     # Asking for exit confirmation
-    confirmation = input("Are you sure you want to exit the Online Car Rental System?\n\n\t[YES] or [NO]"
-                         "\n[NO] will redirect you to the welcome page\n\nOption =>\t").upper()
+    confirmation = input("\nAre you sure you want to exit the Online Car Rental System?\n\n\t[YES] or [NO]"
+                         "\nNote: Selecting [NO] will navigate you back to the welcome page.\nOption =>\t").upper()
 
     # Terminate the program
     if confirmation == "YES":
@@ -321,7 +321,7 @@ def admin_modify():
     # Ask for modification required details
     data_line = int(input("\nWhich line of data you want to perform the modification: "))
     print("\nIMPORTANT!!! Note that uniqueID can't be modified. "
-          "\nIf the car had been removed from the system place X in rent status.\n\n")
+          "\nIf the car had been removed from the system place X in rent status.\n")
     item = input("Modify data type (e.g. Car Name, Price): ").replace(" ", '_').lower()
 
     # Extract and display original data
@@ -347,7 +347,7 @@ def admin_modify():
 
     # Ask for admins' preferences on continue editing / modify data
     def cont_or_no():
-        continue_or_not = input("Continue modifying?\n[YES] or [NO]\n=>\t").upper()
+        continue_or_not = input("\nContinue modifying?\n\t[YES] or [NO]\n\nOption =>\t").upper()
 
         # Continue modification
         if continue_or_not == 'YES':
@@ -723,8 +723,9 @@ What is the data type you would like to seek for: """).lower()
 
         # Ask for admins' options in continue searching or return to administrator main screen
         def cont_search_book():
-            option = input("Continue searching?\n\t[YES] or [NO] "
-                           "\n\n[NO] to navigate back to administrator main screen\n=>\t").upper()
+            option = input("Continue searching?\n\n\t[YES] or [NO]\n\n"
+                           "Note: Selecting [NO] will navigate you back to administrator main screen.\n"
+                           "Option=>\t").upper()
             if option == 'YES':
                 print("Returning back to the customer booking search page.")
                 cus_book_search()
@@ -785,14 +786,15 @@ What is the data type you would like to seek for: """).lower()
 
     # No data spotted
     if not emp_spotter:
-        print("There is no relevant data for the records of customer payment related to your search keyword.")
+        print("\nThere is no relevant data for the records of customer payment related to your search keyword.\n")
 
         # Ask for admins' options in continue searching or return to administrator main screen
         def cont_search_pay():
-            option = input("Continue searching?\n\t[YES] or [NO] "
-                           "\n\n[NO] to navigate back to administrator main screen\n=>\t").upper()
+            option = input("Continue searching?\n\n\t[YES] or [NO]\n\n"
+                           "Note: Selecting [NO] will navigate you back to administrator main screen.\n"
+                           "Option=>\t").upper()
             if option == 'YES':
-                print("Returning back to the customer payment search page.")
+                print("\nReturning back to the customer payment search page.")
                 cus_pay_search()
             elif option == 'NO':
                 print("\nYou will be redirected to the functionalities page shortly....\n")
@@ -871,7 +873,7 @@ def admin_return_rent():
 
     # If the data is empty or no data to display
     if not index_collector:
-        print("There is no relevant data for records of cars that should be return to the system.\n"
+        print("\nThere is no relevant data for records of cars that should be return to the system.\n"
               "Redirecting to the administrator main screen...\n")
 
         # Automatically redirect to administrator main screen
@@ -949,8 +951,9 @@ def admin_return_rent():
 
     # Ask for admins' preference in continuing returning car or back to administrator's main screen
     def cont_return():
-        option = input("\nContinue returning rent car?\n\t[YES] or [NO]\n"
-                       "[NO] to be redirected to administrator main screen\n\nOption=>\t").upper()
+        option = input("\nContinue returning rent car?\n\n\t[YES] or [NO]\n\n"
+                       "Note: Selecting [NO] will navigate you back to administrator main screen.\n"
+                       "Option=>\t").upper()
         # Continue return rent
         if option == 'YES':
             admin_return_rent()
@@ -1043,11 +1046,12 @@ def admin_mark_ready():
 
     # Ask for admins' preference in continue marking ready or return to administrator main screen.
     def cont_modify_or_not():
-        option = input("""\nDo you wish to mark more cars as ready?
+        option = input("""
+Do you wish to mark more cars as ready?
         
 \t[YES] or [NO]
-[NO] to navigate back to the administrator main screen.
-    
+
+Note: Selecting [NO] will navigate you back to administrator main screen.
 Option =>\t""").upper()
 
         # Continue marking ready
@@ -1274,19 +1278,21 @@ def registered_login():
             # Confirming whether the customer has an existing account or not
             def registration_inquiry():
                 register_confirm = input("""
-Do you have an account? [YES] or [NO]
+Do you have an account? 
+[YES] or [NO]
 
 Option =>\t""").upper()
 
                 # With account, customers can try again if they have an existing account
                 if register_confirm == "YES":
                     print("Please try again.")
-                    return registered_login()
 
                 # Without account, customers will be asked on whether to create a new account or not
                 elif register_confirm == "NO":
                     def register_account_ask():
-                        register_account = input("\nDo you wish to register a new account? [YES] or [NO]:\t")
+                        register_account = input("\nDo you wish to register a new account?\n\n\t[YES] or [NO]"
+                                                 "\n\nNote: Selecting [NO] will redirect you to customer landing page."
+                                                 "\nOption =>\t").upper()
 
                         # Customers will be redirected to the registration page
                         if register_account == "YES":
@@ -1314,7 +1320,7 @@ Option =>\t""").upper()
     else:
         print("\nYou had exceeded the limit to log in your account..Please try again after 1 minute..\n"
               "Redirecting to customer landing page....\n")
-        return customer_interface()
+        customer_interface()
 
 
 # 5. Customer functionalities menu
@@ -1622,8 +1628,8 @@ def book_car():
                           f"status: Pending\nreservation: N/A\npayment method: N/A")
 
     # Automatically redirect to customer functionalities page
-    print("\nYou will be redirected to the customer functionalities page.\n\n"
-          "You can make your payment by choosing option 5 to confirm your booking.")
+    print("\nYou will be redirected to the customer functionalities page.\n"
+          "You can make your payment by choosing option 5 to confirm your booking.\n")
     return reg_customer()
 
 
@@ -2204,6 +2210,6 @@ def car_claim():
             return cont_claim()
     cont_claim()
 
-car_claim()
+
 # Call function to execute the OCRS system
 welcome()
