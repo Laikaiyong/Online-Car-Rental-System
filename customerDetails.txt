@@ -7,7 +7,7 @@ username: Cheryl
 password: lim
 address: Milan, Europe
 contact number: 0132248212
-balance: 40
+balance: 140
 username: Vandyck
 password: lai
 address: Nagoya, Japan

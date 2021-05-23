@@ -17,7 +17,7 @@ car_brand: Perodua
 car_name: Kancil
 car_plate: DAMN520
 year: 1998
-status: Open
+status: Rented
 price: 10
 car_id: R004
 car_brand: Perodua
@@ -31,7 +31,7 @@ car_brand: Audi
 car_name: A4 Sedan
 car_plate: RW214
 year: 2002
-status: Open
+status: Rented
 price: 100
 car_id: R006
 car_brand: Mercedez

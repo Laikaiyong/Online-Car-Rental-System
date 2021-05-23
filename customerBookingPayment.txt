@@ -45,7 +45,7 @@ car id: R005
 price: 100
 days: 4
 status: Paid
-reservation: Ready
+reservation: Renting
 payment method: credit card
 username: Vandyck
 car id: R005
@@ -85,7 +85,7 @@ payment method: balance
 username: Vandyck
 car id: R002
 price: 100
-days : 2
+days: 2
 status: Paid
 reservation: Renting
 payment method: credit card
@@ -151,4 +151,11 @@ price: 10
 days: 2
 status: Paid
 reservation: Ready
+payment method: balance
+username: Cheryl
+car id: R003
+price: 10
+days: 10
+status: Paid
+reservation: In Queue
 payment method: balance

@@ -142,12 +142,12 @@ def login_system():
 # 3. Exit system
 def exit_system():
     # Asking for exit confirmation
-    confirmation = input("\nAre you sure you want to exit the Online Car Rental System?\n\n\t[YES] or [NO]"
+    confirmation = input("\nAre you sure you want to exit the Online Car Rental System?\n\n\t[YES] or [NO]\n"
                          "\nNote: Selecting [NO] will navigate you back to the welcome page.\nOption =>\t").upper()
 
     # Terminate the program
     if confirmation == "YES":
-        print(decoration(), "Exit", decoration())
+        print("\n", decoration(), "Exit", decoration())
         exit()
 
     # Direct to the welcome page
@@ -1551,16 +1551,18 @@ def rental_hist():
 
     # username validation and print
     index = 0
+    line_num = 1
     emp_spotter = []
     cus_statement_header()
     for customer in customers:
         if username == customer['username']:
             emp_spotter.append(index)
-            print("   {:<11}{:<8}{:<7}{:<8}RM{:<9}{:<9}{:<13}{:<8}"
-                  .format(customer['username'], customer['car id'], customer['price'], customer['days'],
+            print("{:<4}{:<11}{:<8}{:<7}{:<8}RM{:<9}{:<9}{:<13}{:<8}"
+                  .format(line_num, customer['username'], customer['car id'], customer['price'], customer['days'],
                           int(customer['price']) * int(customer['days']), customer['status'], customer['reservation'],
                           customer['payment method']))
             index += 1
+            line_num += 1
             continue
         else:
             index += 1
@@ -1571,7 +1573,7 @@ def rental_hist():
         print("\nThe rental history is empty, start to rent a car! :)")
 
     # Automatically redirect back to the customer functionalities screen
-    print("You will be redirected to the functionalities page...\n")
+    print("\nYou will be redirected to the functionalities page...\n")
     reg_customer()
 
 
@@ -1606,7 +1608,6 @@ def book_car():
     for car in car_holder:
         if car['car_id'] == select_car:
             price = car['price']
-            car['status'] = 'Booked'
             break
 
     # Ask to book for how many days
@@ -1668,7 +1669,6 @@ def pay_car():
                     customers.append(copy_data)
                     customer_statement = {}
                     continue
-    cus_statement_header()
 
     # Enter username to confirm booking
     username = input("\nEnter your username to pay for your booking confirmation: ")
@@ -1676,6 +1676,7 @@ def pay_car():
     index = 0
     new_index = []
     line_num = 1
+    cus_statement_header()
     for customer in customers:
         # Display booking that need to be paid
         if username == customer['username'] and customer['status'] == 'Pending' and customer['payment method'] == 'N/A':
@@ -1703,8 +1704,8 @@ def pay_car():
 
         # Ask to continue to pay or not
         def cont_pay():
-            option = input("\nContinue payment?\n\t[YES] or [NO]\n"
-                           "[NO] return to customer functionalities page\n=>\t").upper()
+            option = input("\nContinue payment?\n\n\t[YES] or [NO]\n\n"
+                           "Note: Select [NO] return to customer functionalities page\nOption =>\t").upper()
 
             # Return to payment page
             if option == 'YES':
@@ -1742,7 +1743,7 @@ def pay_car():
     with open("customerBookingPayment.txt", 'w') as update_pay_method:
         for data in customers:
             for records in data:
-                if count < len(car_holder) * 7:
+                if count < len(customers) * 7:
                     count += 1
                     list_of_records = f'{records}: {data[records]}'
                     update_pay_method.write(f'{list_of_records}\n')
@@ -1772,7 +1773,7 @@ Credit card: {credit_card_num}
 
         for car in car_holder:
             if car["car_id"] == car_id:
-                car["status"] = 'Rented'
+                car["status"] = 'Booked'
 
         # Update new data to the text file
         count1 = 1
@@ -1874,7 +1875,8 @@ def pay_balance():
             car_id = statement['car id']
 
             # Display how much the customer should pay and car ID
-            print("You have to pay: RM", total, "\nCar ID: ", statement['car id'])
+            print("You have to pay: RM", total, "\nCar ID: ", car_id)
+            break
         index2 += 1
 
     # Extracts car details to dictionaries in list
@@ -1895,14 +1897,14 @@ def pay_balance():
 
     # Deduct from balance if it is more than total
     if balance >= total:
-        balance -= total
+        new_balance = balance - total
 
         # Display remaining balance
-        print("\nCurrent balance: ", balance, "\nYou had paid the booking confirmation."
-                                              "\nTransaction completed. Your current balance is", balance)
+        print("\nCurrent balance: RM", balance, "\nYou had paid the booking confirmation."
+                                                "\nTransaction completed. Your current balance is RM", new_balance)
 
         # Change data to paid situation
-        customers[new_index1]["balance"] = str(balance)
+        customers[new_index1]["balance"] = str(new_balance)
         statements[new_index2]['status'] = 'Paid'
         statements[new_index2]['reservation'] = 'In Queue'
         statements[new_index2]['payment method'] = 'balance'
@@ -1930,7 +1932,7 @@ def pay_balance():
         with open('customerBookingPayment.txt', 'w') as paid:
             for information in statements:
                 for key in information:
-                    if count2 < len(statements)*7:
+                    if count2 < len(statements) * 7:
                         list_of_strings = f'{key}: {information[key]}'
                         paid.write(f'{list_of_strings}\n')
                         count2 += 1
@@ -2015,7 +2017,6 @@ Option =>\t"""))
         credit_card_num = input("Enter your credit/debit card number: ")
         cvv = input("Enter your credit/debit card's CVV: ")
         expiry_date = input("Enter your credit/debit card's expiry date: ")
-        print("\nTop up completed with ", credit_card_num)
 
     # FPX online banking payment method
     elif payment_method == 2:
@@ -2049,7 +2050,7 @@ Option =>\t"""))
     top_up_value = int(input("How much do you want to top up: "))
     balance += top_up_value
     customers[cus_index]['balance'] = str(balance)
-    print("Top up success, current balance: ", customers[cus_index]['balance'])
+    print("Top up success, current balance: RM", customers[cus_index]['balance'])
 
     with open('customerDetails.txt', 'w') as top_up_file:
         # Transfer new data into the text file
@@ -2062,9 +2063,10 @@ Option =>\t"""))
     def cont_top_up():
         cont_or_not = input("""
 Do you wish to top up more? 
-[YES] or [NO]
-[NO] will redirect you back to the functionalities main menu.
 
+    [YES] or [NO]
+    
+Note: Selecting [NO] will redirect you back to the functionalities main menu.
 Option =>\t""").upper()
         # Execute choices made by customers
         if cont_or_not == "YES":
@@ -2196,11 +2198,11 @@ def car_claim():
 
     # Continue claiming cars or not?
     def cont_claim():
-        cont_or_not = input("Do you wish to claim other cars you own? [YES] or [NO]").upper()
+        cont_or_not = input("\nDo you wish to claim other cars you own? [YES] or [NO]\n\nOption =>\t").upper()
 
         # Execute options made by customers
         if cont_or_not == "YES":
-            print("You will be redirected back to claim your other cars....")
+            print("\nYou will be redirected back to claim your other cars....\n")
             car_claim()
         elif cont_or_not == "NO":
             print("Returning to the customer functionalities menu....")
