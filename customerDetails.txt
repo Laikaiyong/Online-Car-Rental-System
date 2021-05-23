@@ -63,3 +63,8 @@ password: wat
 address: Kingdom, Albanana
 contact number: 0188888888
 balance: 0
+username: Anthony
+password: ant
+address: Asgard, Banana
+contact number: 0178928875
+balance: 0

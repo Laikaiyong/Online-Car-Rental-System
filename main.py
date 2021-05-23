@@ -71,28 +71,32 @@ def bookdb_line_count():
 # Section C: Headers
 # 1. Car data header
 def car_header():
-    car_headers = ['Car ID', 'Car Brand', 'Car Model', 'Car Plate', 'Year', 'Status', 'Price']
+    car_headers = ['Car ID', 'Car Brand', 'Car Model',
+                   'Car Plate', 'Year', 'Status', 'Price']
     format_row = "{}  " * (len(car_headers) + 1)
     print("\n", format_row.format("", *car_headers))
 
 
 # 2. Customer booking statement data header
 def cus_book_header():
-    cus_book = ['Username', 'Car ID', 'Price', 'Days', 'Total Amount', 'Status', 'Reservation']
+    cus_book = ['Username', 'Car ID', 'Price', 'Days',
+                'Total Amount', 'Status', 'Reservation']
     format_row = "{}  " * (len(cus_book) + 1)
     print("\n", format_row.format("", *cus_book))
 
 
 # 3. Customer payment statement data header
 def cus_pay_header():
-    cus_pay = ['Username', 'Car ID', 'Price', 'Days', 'Total Amount', 'Status', 'Payment Method']
+    cus_pay = ['Username', 'Car ID', 'Price', 'Days',
+               'Total Amount', 'Status', 'Payment Method']
     format_row = "{}  " * (len(cus_pay) + 1)
     print("\n", format_row.format("", *cus_pay))
 
 
 # 4. Customer statement data header
 def cus_statement_header():
-    cus_pay = ['Username', 'Car ID', 'Price', 'Days', 'Total Amount', 'Status', 'Reservation', 'Payment Method']
+    cus_pay = ['Username', 'Car ID', 'Price', 'Days',
+               'Total Amount', 'Status', 'Reservation', 'Payment Method']
     format_row = "{}  " * (len(cus_pay) + 1)
     print("\n", format_row.format("", *cus_pay))
 
@@ -112,7 +116,7 @@ def top_up_header():
 # Section D: General Users Interface
 # 1. Welcome page with text display.
 def welcome():
-    print(decoration(), "Welcome to the Online Car Rental System(OCRS) by Super Car Rental Services(SCRS)",
+    print("\n", decoration(), "Welcome to the Online Car Rental System(OCRS) by Super Car Rental Services(SCRS)",
           decoration())
     print("""\nEnter the number that best describe you.
 
@@ -288,7 +292,8 @@ Option =>\t""").upper()
     elif add_or_not == "NO":
         print(decoration(), " Displaying all data ", decoration())
         view_cars()
-        print("\n", decoration(), " Back to administrator main screen. ", decoration())
+        print("\n", decoration(),
+              " Back to administrator main screen. ", decoration())
         return administrator_system()
 
     # Invalid choice and ask for choice again
@@ -319,10 +324,14 @@ def admin_modify():
                     continue
 
     # Ask for modification required details
-    data_line = int(input("\nWhich line of data you want to perform the modification: "))
+    data_line = int(
+        input("\nWhich line of data you want to perform the modification: "))
+
     print("\nIMPORTANT!!! Note that uniqueID can't be modified. "
           "\nIf the car had been removed from the system place X in rent status.\n")
-    item = input("Modify data type (e.g. Car Name, Price): ").replace(" ", '_').lower()
+
+    item = input("Modify data type (e.g. Car Name, Price): ").replace(
+        " ", '_').lower()
 
     # Extract and display original data
     origin_word = car_holder[index_converter(data_line)][item]
@@ -347,11 +356,13 @@ def admin_modify():
 
     # Ask for admins' preferences on continue editing / modify data
     def cont_or_no():
-        continue_or_not = input("\nContinue modifying?\n\t[YES] or [NO]\n\nOption =>\t").upper()
+        continue_or_not = input(
+            "\nContinue modifying?\n\t[YES] or [NO]\n\nOption =>\t").upper()
 
         # Continue modification
         if continue_or_not == 'YES':
-            print("\nDisplaying modified data...\nContinue modification based on new data.")
+            print(
+                "\nDisplaying modified data...\nContinue modification based on new data.")
             return admin_modify()
 
         # Stop modification and return to admnistrator functionalities menu
@@ -452,7 +463,8 @@ def dis_rent_car():
                     continue
 
     # Ask for admins' preference on car status
-    status = input("\nCategories available [Open] [Rented] [X] [Booked]\nStatus =>\t").capitalize()
+    status = input(
+        "\nCategories available [Open] [Rented] [X] [Booked]\nStatus =>\t").capitalize()
 
     # Display cars with matching status
     index = 0
@@ -473,7 +485,8 @@ def dis_rent_car():
 
     # No data spotted
     if not emp_spotter:
-        print("\n\nThere is no relevant data for records of cars on that particular status.\n")
+        print(
+            "\n\nThere is no relevant data for records of cars on that particular status.\n")
 
         # Admins' option on redirection
         display_redirect()
@@ -562,7 +575,8 @@ def dis_cus_pay():
             emp_spotter.append(index)
             print("{:<4}{:<11}{:<8}{:<7}{:<8}RM{:<9}{:<8}{:<5}"
                   .format(line_number, customer['username'], customer['car id'], customer['price'],
-                          customer['days'], int(customer['price']) * int(customer['days']),
+                          customer['days'], int(
+                              customer['price']) * int(customer['days']),
                           customer['status'], customer['payment method']))
             index += 1
             line_number += 1
@@ -730,7 +744,8 @@ What is the data type you would like to seek for: """).lower()
                 print("Returning back to the customer booking search page.")
                 cus_book_search()
             elif option == 'NO':
-                print("\nYou will be redirected to the functionalities page shortly....\n")
+                print(
+                    "\nYou will be redirected to the functionalities page shortly....\n")
                 administrator_system()
             else:
                 print("Invalid input, please insert [YES] or [NO].")
@@ -776,7 +791,8 @@ What is the data type you would like to seek for: """).lower()
             emp_spotter.append(index)
             print("{:<4}{:<10}{:<9}{:<7}{:<8}RM{:<9}{:<9}{:<5}"
                   .format(line_num, customer['username'], customer['car id'], customer['price'], customer['days'],
-                          int(customer['price']) * int(customer['days']), customer['status'],
+                          int(customer['price']) *
+                          int(customer['days']), customer['status'],
                           customer['payment method']))
             index += 1
             line_num += 1
@@ -797,7 +813,8 @@ What is the data type you would like to seek for: """).lower()
                 print("\nReturning back to the customer payment search page.")
                 cus_pay_search()
             elif option == 'NO':
-                print("\nYou will be redirected to the functionalities page shortly....\n")
+                print(
+                    "\nYou will be redirected to the functionalities page shortly....\n")
                 administrator_system()
             else:
                 print("Invalid input, please insert [YES] or [NO].")
@@ -863,7 +880,8 @@ def admin_return_rent():
                 index_collector.append(index1)
                 print("{:<4}{:<11}{:<8}{:<7}{:<8}RM{:<8}{:<9}{:<13}{:<8}"
                       .format(line_num, customer['username'], customer['car id'], customer['price'], customer['days'],
-                              int(customer['price']) * int(customer['days']), customer['status'],
+                              int(customer['price']) *
+                              int(customer['days']), customer['status'],
                               customer['reservation'], customer['payment method']))
                 index1 += 1
                 line_num += 1
@@ -880,7 +898,8 @@ def admin_return_rent():
         administrator_system()
 
     # Choose statement to return the rented car
-    return_rent = int(input("\nWhich statement you would like to return the rent car (line of statement): "))
+    return_rent = int(input(
+        "\nWhich statement you would like to return the rent car (line of statement): "))
     index_value = index_converter(return_rent)
     new_index = index_collector[index_value]
     customers[new_index]['reservation'] = 'Completed'
@@ -945,7 +964,8 @@ def admin_return_rent():
     cus_statement_header()
     print("   {:<11}{:<8}{:<7}{:<8}RM {:<8}{:<9}{:<13}{:<8}"
           .format(customers[new_index]['username'], customers[new_index]['car id'], customers[new_index]['price'],
-                  customers[new_index]['days'], int(customers[new_index]['price']) * int(customers[new_index]['days']),
+                  customers[new_index]['days'], int(
+                      customers[new_index]['price']) * int(customers[new_index]['days']),
                   customers[new_index]['status'], customers[new_index]['reservation'],
                   customers[new_index]['payment method']))
 
@@ -999,7 +1019,8 @@ def admin_mark_ready():
             index_collector.append(index1)
             print("{:<4}{:<11}{:<8}{:<7}{:<8}RM{:<8}{:<9}{:<13}{:<8}"
                   .format(line_num, customer['username'], customer['car id'], customer['price'], customer['days'],
-                          int(customer['price']) * int(customer['days']), customer['status'],
+                          int(customer['price']) *
+                          int(customer['days']), customer['status'],
                           customer['reservation'], customer['payment method']))
             index1 += 1
             line_num += 1
@@ -1040,7 +1061,8 @@ def admin_mark_ready():
     cus_statement_header()
     print("   {:<11}{:<8}{:<7}{:<8}RM {:<8}{:<9}{:<13}{:<8}"
           .format(customers[new_index]['username'], customers[new_index]['car id'], customers[new_index]['price'],
-                  customers[new_index]['days'], int(customers[new_index]['price']) * int(customers[new_index]['days']),
+                  customers[new_index]['days'], int(
+                      customers[new_index]['price']) * int(customers[new_index]['days']),
                   customers[new_index]['status'], customers[new_index]['reservation'],
                   customers[new_index]['payment method']))
 
@@ -1155,7 +1177,7 @@ Returning to administrator system....""")
 # Section F : Customer
 # 1. Customer landing page
 def customer_interface():
-    option = int(input("""As a visitor, select your action.
+    option = int(input("""\nAs a visitor, select your action.
 
 1: View all cars with any status.
 2: Membership Registration \t - get access to more features.
@@ -1223,7 +1245,8 @@ def customer_registration():
 
         # Obtaining and inserting new users data into customerDetails.txt as a record
         else:
-            print("\nPlease fill in the following details to provide more information to rent a car / cars.\n")
+            print(
+                "\nPlease fill in the following details to provide more information to rent a car / cars.\n")
             address = input("Address: ")
             contact_number = input("Contact number: ")
             new_customer.write(f"\nusername: {username}\npassword: {password}\naddress: {address}"
@@ -1232,7 +1255,8 @@ def customer_registration():
 
             # Every newly registered customer will have RM 0 as their balance
             balance = 0
-            print("Your balance is now: ", balance, "\nYou can recharge it from the customer functionalities page.")
+            print("Your balance is now: ", balance,
+                  "\nYou can recharge it from the customer functionalities page.")
             new_customer.write(f"\nbalance: {balance}")
     print("\nYou can login to the system now. Start renting your car! :D\n")
 
@@ -1267,7 +1291,8 @@ def registered_login():
         # Username and password validation based on customers' input
         for customer in customers:
             if username == customer['username'] and password == customer['password']:
-                print("\n", decoration(), " Welcome to the OCRS, ", username, decoration(), "\n")
+                print("\n", decoration(), " Welcome to the OCRS, ",
+                      username, decoration(), "\n")
                 reg_customer()
                 break
 
@@ -1296,7 +1321,8 @@ Option =>\t""").upper()
 
                         # Customers will be redirected to the registration page
                         if register_account == "YES":
-                            print("Redirecting to the customer registration page...\n")
+                            print(
+                                "Redirecting to the customer registration page...\n")
                             cus_reg_header()
 
                         # Customers will be sent back to the customer landing page
@@ -1306,7 +1332,8 @@ Option =>\t""").upper()
 
                         # Invalid input, ask for option again
                         else:
-                            print("Invalid input, please key in [YES] or [NO].")
+                            print(
+                                "Invalid input, please key in [YES] or [NO].")
                             return register_account_ask()
                     register_account_ask()
 
@@ -1438,7 +1465,8 @@ Option =>\t"""))
 # 2. Modify personal details
 def modify_details():
     # Request customers' username to proceed in profile modification
-    username = input("Your username is requested to check your credential for profile modification: ")
+    username = input(
+        "Your username is requested to check your credential for profile modification: ")
 
     # Extract customers' details to dictionaries in list
     customer_details = {}
@@ -1475,10 +1503,12 @@ def modify_details():
 
     # Customers' details modification
     data_type = ['Password', 'Address', 'Contact Number']
-    print("\nIMPORTANT! Note that username is immutable.\nOptions: {}".format(data_type).replace("\'", " "))
+    print("\nIMPORTANT! Note that username is immutable.\nOptions: {}".format(
+        data_type).replace("\'", " "))
 
     # Modify desired attributes and values
-    modify_type = input("\nWhich type of data you would like to change: ").lower()
+    modify_type = input(
+        "\nWhich type of data you would like to change: ").lower()
     old_data = customers[cus_index][modify_type]
     print("Original data: ", old_data)
     new_data = input("Replace with: ")
@@ -1559,7 +1589,8 @@ def rental_hist():
             emp_spotter.append(index)
             print("{:<4}{:<11}{:<8}{:<7}{:<8}RM{:<9}{:<9}{:<13}{:<8}"
                   .format(line_num, customer['username'], customer['car id'], customer['price'], customer['days'],
-                          int(customer['price']) * int(customer['days']), customer['status'], customer['reservation'],
+                          int(customer['price']) * int(customer['days']
+                                                       ), customer['status'], customer['reservation'],
                           customer['payment method']))
             index += 1
             line_num += 1
@@ -1671,7 +1702,8 @@ def pay_car():
                     continue
 
     # Enter username to confirm booking
-    username = input("\nEnter your username to pay for your booking confirmation: ")
+    username = input(
+        "\nEnter your username to pay for your booking confirmation: ")
 
     index = 0
     new_index = []
@@ -1683,7 +1715,8 @@ def pay_car():
             new_index.append(index)
             print("{:<4}{:<10}{:<8}{:<7}{:<8}RM{:<8}{:<9}{:<13}{:<8}"
                   .format(line_num, customer['username'], customer['car id'], customer['price'], customer['days'],
-                          int(customer['price']) * int(customer['days']), customer['status'], customer['reservation'],
+                          int(customer['price']) * int(customer['days']
+                                                       ), customer['status'], customer['reservation'],
                           customer['payment method']))
             line_num += 1
 
@@ -1692,7 +1725,8 @@ def pay_car():
                 and customers[index]['payment method'] == 'balance':
             print("    {:<10}{:<8}{:<7}{:<8}RM{:<9}{:<9}{:<13}{:<8}"
                   .format(customer['username'], customer['car id'], customer['price'], customer['days'],
-                          int(customer['price']) * int(customer['days']), customer['status'], customer['reservation'],
+                          int(customer['price']) * int(customer['days']
+                                                       ), customer['status'], customer['reservation'],
                           customer['payment method']))
             pay_balance()
         else:
@@ -1714,7 +1748,8 @@ def pay_car():
 
             # Return to customer functionalities page
             elif option == 'NO':
-                print("\nYou will be redirected to the functionalities page shortly....\n")
+                print(
+                    "\nYou will be redirected to the functionalities page shortly....\n")
                 reg_customer()
 
             # Invalid input, ask for option again
@@ -1724,7 +1759,8 @@ def pay_car():
         cont_pay()
 
     # Select the booking that customers wish to pay
-    pay_statement = int(input("\nWhich booking statement (line) you would like to pay? "))
+    pay_statement = int(
+        input("\nWhich booking statement (line) you would like to pay? "))
     statement_index = index_converter(pay_statement)
     pay_index = new_index[statement_index]
     car_id = customers[pay_index]['car id']
@@ -1818,7 +1854,8 @@ Credit card: {credit_card_num}
 # Pay with balance
 def pay_balance():
     # Request username
-    username = input("\nYou are accessing your online balance, enter your username to make sure that is you: ")
+    username = input(
+        "\nYou are accessing your online balance, enter your username to make sure that is you: ")
 
     # Extracts customer Details into dictionaries in list
     customer_details = {}
@@ -2013,14 +2050,16 @@ Option =>\t"""))
 
     # Credit card payment method
     if payment_method == 1:
-        print("\n", decoration() * 3, "\nTop up with: Credit/debit card\n", decoration() * 3)
+        print("\n", decoration() * 3,
+              "\nTop up with: Credit/debit card\n", decoration() * 3)
         credit_card_num = input("Enter your credit/debit card number: ")
         cvv = input("Enter your credit/debit card's CVV: ")
         expiry_date = input("Enter your credit/debit card's expiry date: ")
 
     # FPX online banking payment method
     elif payment_method == 2:
-        print("\n", decoration() * 3, "\nTop up with: FPX online banking\n", decoration() * 3)
+        print("\n", decoration() * 3,
+              "\nTop up with: FPX online banking\n", decoration() * 3)
 
         # Bank options to proceed payment in FPX
         def bank_options():
@@ -2050,7 +2089,8 @@ Option =>\t"""))
     top_up_value = int(input("How much do you want to top up: "))
     balance += top_up_value
     customers[cus_index]['balance'] = str(balance)
-    print("Top up success, current balance: RM", customers[cus_index]['balance'])
+    print("Top up success, current balance: RM",
+          customers[cus_index]['balance'])
 
     with open('customerDetails.txt', 'w') as top_up_file:
         # Transfer new data into the text file
@@ -2113,7 +2153,8 @@ def car_claim():
             index_collector.append(index1)
             print("{:<4}{:<11}{:<8}{:<7}{:<8}RM{:<8}{:<9}{:<13}{:<8}"
                   .format(line_num, customer['username'], customer['car id'], customer['price'], customer['days'],
-                          int(customer['price']) * int(customer['days']), customer['status'],
+                          int(customer['price']) *
+                          int(customer['days']), customer['status'],
                           customer['reservation'], customer['payment method']))
             index1 += 1
             line_num += 1
@@ -2128,7 +2169,8 @@ def car_claim():
         reg_customer()
 
     # Select a car statement to claim
-    claim_car = int(input("\nWhich statement you would like to claim your car (line of statement): "))
+    claim_car = int(input(
+        "\nWhich statement you would like to claim your car (line of statement): "))
     index_value = index_converter(claim_car)
     new_index = index_collector[index_value]
 
@@ -2192,13 +2234,15 @@ def car_claim():
     cus_statement_header()
     print("   {:<11}{:<8}{:<7}{:<8}RM {:<8}{:<9}{:<13}{:<8}"
           .format(customers[new_index]['username'], customers[new_index]['car id'], customers[new_index]['price'],
-                  customers[new_index]['days'], int(customers[new_index]['price']) * int(customers[new_index]['days']),
+                  customers[new_index]['days'], int(
+                      customers[new_index]['price']) * int(customers[new_index]['days']),
                   customers[new_index]['status'], customers[new_index]['reservation'],
                   customers[new_index]['payment method']))
 
     # Continue claiming cars or not?
     def cont_claim():
-        cont_or_not = input("\nDo you wish to claim other cars you own? [YES] or [NO]\n\nOption =>\t").upper()
+        cont_or_not = input(
+            "\nDo you wish to claim other cars you own? [YES] or [NO]\n\nOption =>\t").upper()
 
         # Execute options made by customers
         if cont_or_not == "YES":
