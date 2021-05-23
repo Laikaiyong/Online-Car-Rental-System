@@ -43,3 +43,18 @@ password: pop
 address: Terengganu, Malaysia
 contact number: 0198767652
 balance: 100
+username: James
+password: jamie
+address: Avengers, Vibranium
+contact number: 0197766554
+balance: 0
+username: Nemesis
+password: alien
+address: Ababa, Alibaba
+contact number: 0165748393
+balance: 0
+username: Hiahianan
+password: hiahiahia
+address: HiaHiaLand, America
+contact number: 0177777777
+balance: 0
