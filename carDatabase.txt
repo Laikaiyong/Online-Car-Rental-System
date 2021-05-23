@@ -131,3 +131,10 @@ car_plate: PLP4847
 year: 2020
 status: Rented
 price: 100
+car_id: R020
+car_brand: Honda
+car_name: HR-V
+car_plate: IUI5678
+year: 2016
+status: Rented
+price: 10
