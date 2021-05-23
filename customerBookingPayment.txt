@@ -118,4 +118,14 @@ status: Pending
 reservation: N/A
 payment method: N/A
 username: James
-c
+car id: R019
+price: 100
+days: 4
+status: Paid
+reservation: In Queue
+username: Lancelot
+car id: R020
+price: 10
+days: 9
+status: Paid
+reservation: In Queue
