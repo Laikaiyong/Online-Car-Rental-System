@@ -1,0 +1,6 @@
+PROGRAM welcomePage
+BEGIN
+	CALL welcome()
+END
+
+		

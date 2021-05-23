@@ -1,0 +1,1945 @@
+FUNCTION decoration()
+	RETURN '*' * 10
+ENDFUNCTION
+
+FUNCTION cardb_line_count()
+	OPENFILE carDatabase.txt in READ mode
+	line_in_file = 0
+	FILEREAD content
+	co_list = SPLIT (content, "\n")
+	FOR EACH i in co_List
+		IF (i) THEN
+			line_in_file = line_in_file + 1
+	total = line_in_file / 7
+	RETURN total
+		ENDIF
+	ENDFOR
+ENDFUNCTION
+
+FUNCTION custdb_line_count()
+	OPENFILE customerDetails.txt in READ mode
+	line_in_file = 0
+	FILEREAD content
+	co_list = SPLIT (content, "\n")
+	FOR EACH i in co_List
+		IF (i) THEN
+			line_in_file = line_in_file + 1
+	total = line_in_file / 5
+	RETURN total
+		ENDIF
+	ENDFOR
+ENDFUNCTION
+
+FUNCTION bookdb_line_count()
+	OPENFILE customerBookingPayment.txt in READ mode
+	line_in_file = 0
+	FILEREAD content
+	co_list = SPLIT (content, "\n")
+	FOR EACH i in co_List
+		IF (i) THEN
+			line_in_file = line_in_file + 1
+	total = line_in_file / 7
+	RETURN total
+		ENDIF
+	ENDFOR
+ENDFUNCTION
+
+FUNCTION index_converter(a)
+	RETURN a - 1
+ENDFUNCTION
+
+FUNCTION welcome()
+	PRINT CALL decoration(), "Welcome to the Online Car Rental System(OCRS) by Super Car Rental Services(SCRS)", CALL decoration()
+	PRINT """\nEnter the number that best describe you.
+    		  Admin : 1
+    		  Customer : 2 """
+	CALL login_system()
+ENDFUNCTION
+
+FUNCTION exit_system()
+	PRINT "Are you sure you want to exit the Online Car Rental System?\n\n\t[YES] or [NO]\n\nOption =>\t"
+	READ confirmation
+	IF (confirmation == "YES") THEN
+		PRINT CALL decoration(), "Exit", CALL decoration()
+		EXIT
+	ELSE
+		IF (confirmation == "NO") THEN
+			PRINT "You will be redirect to the welcome page shortly...\n"
+			CALL welcome()
+		ELSE
+			PRINT "Invalid input, please enter YES or NO."
+			RETURN exit_system()
+		ENDIF
+	ENDIF
+ENDFUNCTION
+
+FUNCTION header()
+	car_header = ['Car ID', 'Car Brand', 'Car Model', 'Car Plate', 'Year', 'Status', 'Price']
+	format_row = "{}  " * (LEN(car_header) + 1)
+	PRINT "\n", FORMAT (format_row, (" ", *car_header))
+ENDFUNCTION
+
+FUNCTION view_cars()
+	car_details = {}
+	car_holder = []
+	OPENFILE carDatabase.txt in READ mode 
+		FOR EACH line IN original
+			row = STRIP line, SPLIT (line, ": ")
+			car_details[row[0]] = row[1]
+			FOR EACH car IN range(1, CALL cardb_line_count())
+				IF (row == "") THEN
+					STRIP line
+					CONTINUE
+				ELSE
+					IF (LEN(car_details) == 7) THEN
+						COPY car_details
+						FILEAPPEND copy_data
+						car_details = {}
+						CONTINUE
+					ENDIF
+				ENDIF
+			ENDFOR
+		ENDFOR
+	CALL header()
+	line_num = 1
+	FOR EACH car IN car_holder
+		PRINT line_num, car_id, car_brand, car_name, car_plate, year, status, price
+	line_num = line_num + 1
+	ENDFOR
+ENDFUNCTION
+
+FUNCTION administrator_login()
+	administrator_credential = {}
+	OPENFILE administratorLoginInfo.txt in READ mode
+		FOR EACH data in administrator_file
+			(key, value) = STRIP data, SPLIT (data, ": ")
+			administrator_credential[key] = value
+		ENDFOR
+	PRINT "\nEnter your username: "
+	READ username
+	PRINT "Enter your password: "
+	READ password
+	IF (username == administrator_credential["username"]) AND (password == administrator_credential["password"]) THEN
+		CLOSEFILE administratorLoginInfo.txt
+		PRINT "\n", CALL decoration(), "Welcome, administrator!", CALL decoration()
+		CALL administrator_system()
+	ELSE
+		PRINT "Invalid credential, please check your username and password."
+		RETURN administrator_login()
+	ENDIF
+ENDFUNCTION
+
+(Put in another pseudocode) CALL view_cars()
+
+FUNCTION administrator_system()
+	PRINT """Choose the action you want to perform:
+
+		 1: Add cars to be rented out.
+		 2: Modify car details.
+		 3: Display records.
+		 4: Search specific record.
+		 5: Return a rented car.
+		 6: Mark a car as Ready after the car is available upon customer's payment on confirmation for booking.
+		 7: OCRS Analytics Dashboard
+		 8: Exit the system.
+
+		 Select your action:\t"""
+	READ option
+	IF (option == 1) THEN
+		CALL admin_add_car()
+	ELSE
+		IF (option == 2) THEN
+			CALL admin_modify()
+		ELSE
+			IF (option == 3) THEN
+				CALL admin_display()
+			ELSE
+				IF (option == 4) THEN
+					CALL admin_search()
+				ELSE
+					IF (option == 5) THEN
+						CALL admin_return_rent()
+					ELSE
+						IF (option == 6) THEN
+							CALL admin_mark_ready()
+						ELSE
+							IF (option == 7) THEN 
+								CALL analytics_dashboard()
+							ELSE
+								IF (option == 8) THEN
+									CALL exit_system()
+								ELSE
+									PRINT "Invalid input, please choose options in range of 1 to 8"
+									RETURN administrator_system()
+								ENDIF
+							ENDIF
+						ENDIF
+					ENDIF
+				ENDIF
+			ENDIF
+		ENDIF
+	ENDIF
+ENDFUNCTION
+
+FUNCTION admin_add_car()
+	PRINT """Insert car data:
+		 [YES] to continue
+		 [NO] to stop and display all data. Will be redirected to admin main screen.
+
+		 Option =>\t"""
+	READ add_or_not
+	car_details = {}
+	car_holder = []
+	OPENFILE carDatabase.txt in READ mode
+		FOR EACH line IN car_id_automate
+			row = STRIP line, SPLIT (line, ": ")
+			car_details[row[0]] = row[1]
+			FOR EACH car IN range(1, CALL cardb_line_count())
+				IF (row == "") THEN
+					BREAK
+				ELSE
+					IF (LEN(car_details) == 7) THEN
+						COPY car_details
+						FILEAPPEND car_holder(copy_data)
+						car_details = {}
+						CONTINUE
+					ENDIF
+				ENDIF
+			ENDFOR
+		ENDFOR
+	FOR EACH car IN car_holder
+		last_car_id = car_holder[car_index]['car_id'], SPLIT (car_holder, "R")
+		new_car_id_num = last_car_id[1] + 1
+	ENDFOR
+	IF (add_or_not == "YES") THEN
+		new_car_id = "R" + new_car_id_num: 03d
+		PRINT "Car ID", new_car_id
+		PRINT "Enter car brand: "
+		READ new_car_brand
+		PRINT "Enter car model: "
+		READ new_car_model
+		PRINT "Enter car plate: "
+		READ new_car_plate
+		PRINT "Enter car manufacture year: "
+		READ new_year
+		PRINT "Enter status [Open/Rented]: "
+		READ new_status+
+		PRINT "Enter price per hour (Only numeric data): "
+		READ new_price
+		OPENFILE carDatabase.txt in APPEND mode
+			FILEWRITE new_car_id, new_car_brand, new_car_model, new_car_plate, new_year, new_status, new_price
+			PRINT "\nInsert completed... Processing...\n"
+			RETURN admin_add_car()
+	ELSE
+		IF (add_or_not == "NO") THEN
+			PRINT CALL decoration(), " Displaying all data ", CALL decoration()
+			CALL view_cars()
+			PRINT "\n", CALL decoration(), " Back to administrator main screen. ", CALL decoration()
+			RETURN administrator_system()
+		ELSE
+			PRINT "Invalid input, please try again."
+			RETURN admin_add_car()
+		ENDIF
+	ENDIF
+ENDFUNCTION
+
+FUNCTION admin_modify()
+	CALL view_cars()
+	car_details = {}
+	car_holder = []
+	OPENFILE carDatabase.txt in READ mode
+		FOR EACH line IN original
+			row = STRIP line, SPLIT (line, ": ")
+			car_details[row[0]] = row[1]
+			FOR EACH car IN range(1, CALL cardb_line_count())
+				IF (row == "") THEN
+					BREAK
+				ELSE
+					IF (LEN(car_details) == 7) THEN
+						COPY car_details
+						FILEAPPEND car_holder(copy_data)
+						car_details = {}
+						CONTINUE
+					ENDIF
+				ENDIF
+			ENDFOR
+		ENDFOR
+		PRINT "\nWhich line of data you want to perform the modification: "
+		READ data_line
+		PRINT """\nIMPORTANT!!! Note that uniqueID can't be modified.
+                         If the car had been removed from the system place X in rent status.\n\nModify data type (e.g. Car Name, Price): """
+		READ item
+		origin_word = car_holder[index_converter(data_line)][item]
+		PRINT "Origin word: ", origin_word
+		PRINT "Replaced by: "
+		READ replace_word
+		car_holder[index_converter(data_line)][item] = replace_word
+	count = 1
+	OPENFILE carDatabase.txt in WRITE mode
+		FOR EACH information IN car_holder
+			FOR EACH key IN information
+				IF (count < LEN(car_holder) * 7) THEN
+					count = count + 1
+					list_of_strings = {key}: {information[key]}
+					FILEWRITE {list_of_strings}"\n"
+				ELSE
+					list_of_strings = {key}: {information[key]}
+					FILEWRITE {list_of_strings}
+	CALL cont_or_no()
+				ENDIF
+			ENDFOR
+		ENDFOR
+ENDFUNCTION
+
+		
+FUNCTION cont_or_no()
+	PRINT "Continue modifying?\n[YES] or [NO]\n=>\t"
+	READ continue_or_not
+	IF (continue_or_not == "YES") THEN
+		PRINT "\nDisplaying modified data...\nContinue modification based on new data."
+		RETURN admin_modify()
+	ELSE
+		IF (continue_or_not == "NO") THEN
+			PRINT "\nYou will be redirected to the administrator main screen..."
+			RETURN administrator_system()
+		ELSE
+			PRINT "\nInvalid input, only [YES] or [NO] allowed.\n"
+			RETURN cont_or_no()
+		ENDIF
+	ENDIF
+ENDFUNCTION
+
+FUNCTION admin_display()
+	PRINT """\nDisplay data choice:
+		 1: Cars Availability
+		 2: Customer Bookings
+	         3: Customer Payment for a specific time duration
+		 4: Registered customers' username in the system
+		 5: Exit to administrator main screen.\nOption =>\t"""
+	READ dis_option
+	IF (dis_option == 1) THEN
+		CALL dis_rent_car()
+	ELSE
+		IF (dis_option == 2) THEN
+			CALL dis_cus_booking()
+		ELSE
+			IF (dis_option == 3) THEN
+				CALL dis_cus_pay()
+			ELSE
+				IF (dis_option == 4) THEN
+					CALL registered_customer()
+				ELSE
+					IF (dis_option == 5) THEN
+						CALL administrator_system()
+					ELSE
+						PRINT "Invalid input. Please select choices in range 1 to 5."
+						RETURN admin_display()
+					ENDIF
+				ENDIF
+			ENDIF
+		ENDIF
+	ENDIF
+ENDFUNCTION
+
+FUNCTION display_redirect()
+	PRINT """\nDo you wish to return to the display menu or administrator's main screen?
+
+		 1: Display Menu
+		 2: Administrator Main Screen
+		 =>\t"""
+	READ option
+	IF (option == 1) THEN
+		PRINT "\nYou will be redirected to the display menu..."
+		RETURN admin_display()
+	ELSE
+		IF (option == 2) THEN
+			PRINT "\nYou are returning to the administrator main screen...."
+			RETURN administrator_system()
+		ELSE
+			PRINT "\nInvalid input, please key in YES or NO.\n"
+			RETURN display_redirect()
+		ENDIF
+	ENDIF
+ENDFUNCTION
+
+FUNCTION dis_rent_car()
+	PRINT "\nCategories available [Open] [Rented] [X] [Booked]\n=>\t"
+	READ status
+	CALL header()
+	car_details = {}
+	car_holder = []
+	OPENFILE carDatabase.txt in READ mode
+		FOR EACH line IN display_rent
+			row = STRIP line, SPLIT (line, ": ")
+			car_details[row[0]] = row[1]
+			FOR EACH car IN range(1, CALL cardb_line_count())
+				IF (row == "") THEN
+					BREAK
+				ELSE
+					IF (LEN(car_details) == 7) THEN
+						COPY car_details
+						FILEAPPEND car_holder(copy_data)
+						car_details {}
+						CONTINUE
+					ENDIF
+				ENDIF
+			ENDFOR
+		ENDFOR
+	index = 0
+	emp_spotter = []
+	line_number = 1
+	FOR EACH car IN car_holder
+		IF (status == car_holder['status']) THEN
+			APPEND emp_spotter(index)
+			PRINT line_number, car_id, car_brand, car_name, car_plate, year, status, price
+			index = index + 1
+			line_number = line_number + 1
+		ELSE
+			index = index + 1
+			CONTINUE
+		ENDIF
+	ENDFOR
+	
+	IF NOT emp_spotter THEN
+		PRINT "\nThere is no relevant data for records of cars on that particular status.\n"
+		CALL display_redirect()
+	ENDIF
+	CALL display_redirect()
+ENDFUNCTION
+
+FUNCTION cus_book_header()
+	cus_book = ['Username', 'Car ID', 'Price', 'Days', 'Total Amount', 'Status', 'Reservation']
+	format_row = "{}  " * (LEN(cus_book) + 1)
+	PRINT "\n", FORMAT (format_row, ("", *cus_book))
+ENDFUNCTION
+
+FUNCTION dis_cus_booking()
+	CALL cus_book_header()
+	customer_statement = {}
+	customers = []
+	emp_spotter = []
+	index = 0
+	reservation = ('In Queue', 'Ready')
+	OPENFILE customerBookingPayment.txt in READ mode
+		FOR EACH line IN booking_details
+			row = STRIP line, SPLIT (line, ": ")
+			customer_statement[row[0]] = row[1]
+            		FOR EACH customer IN range(1, CALL bookdb_line_count())
+				IF (row == "") THEN
+					BREAK
+				ELSE
+					IF (LEN(customer_statement) == 7) THEN
+						COPY customer_statement
+						APPEND customers(copy_data)
+						customer_statement = {}
+						CONTINUE
+					ENDIF
+				ENDIF
+			ENDFOR
+		ENDFOR
+	line_number = 1
+	FOR EACH customer IN customers
+		IF (reservation[0] == customers['reservation']) OR (reservation[1] == customers['reservation']) THEN
+			APPEND emp_spotter(index)
+			PRINT line_number, username, car_id, price, days, (price*days), status, reservation
+			index = index + 1
+			line_number = line_number + 1
+		ELSE
+			index = index + 1
+			CONTINUE
+		ENDIF
+	ENDFOR
+
+	IF NOT emp_spotter THEN
+		PRINT "\nThere is no relevant data for records of customer booking statement.\n"
+		CALL display_redirect()
+	ENDIF
+
+	CALL display_redirect()
+	
+ENDFUNCTION
+
+FUNCTION dis_cus_pay()
+	CALL cus_pay_header()
+	customer_statement = {}
+	customers = []
+	OPENFILE customerBookingPayment.txt in READ mode
+		FOR EACH line IN booking_details
+			row = STRIP line, SPLIT (line, ": ")
+			customer_statement[row[0]] = row[1]
+			FOR EACH customer IN range(1, CALL bookdb_line_count())
+				IF (row == "") THEN
+					BREAK
+				ELSE
+					IF (LEN(customer_statement) == 7) THEN
+						COPY customer_statement
+						APPEND customers(copy_data)
+						customer_statement = {}
+						CONTINUE
+					ENDIF
+				ENDIF
+			ENDFOR
+		ENDFOR
+	emp_spotter = []
+	index = 0
+	line_number = 1
+	status = "Paid"
+	FOR EACH customer IN customers
+		IF (status == customers['status'] THEN
+			APPEND emp_spotter(index)
+			PRINT username, car_id, price, days, (price*days), status, payment_method
+			index = index + 1
+			line_number = line_number + 1
+		ELSE
+			index = index + 1
+			CONTINUE
+		ENDIF
+	ENDFOR
+	
+	IF NOT emp_spotter THEN
+		PRINT "\nThere is no relevant data for records of customer payment statement.\n"
+		CALL display_redirect()
+	ENDIF
+	CALL display_redirect()
+ENDFUNCTION
+
+FUNCTION registered_customer()
+	customer_details = {}
+	customers = []
+	OPENFILE customerDetails.txt in READ mode
+		FOR EACH line IN get_cust_info
+			row = STRIP line, SPLIT (line, ": ")
+			customer_details[row[0]] = row[1]
+			FOR EACH customer IN range (1, CALL custdb_line_count())
+				IF (row == "") THEN
+					BREAK
+				ELSE
+					IF (LEN(customer_details) == 5) THEN
+						COPY customer_details
+						APPEND customers(copy_data)
+						customer_details = {}
+						CONTINUE
+					ENDIF
+				ENDIF
+			ENDFOR
+		ENDFOR
+	customers_names = []
+	FOR EACH customer IN customers
+		APPEND customers_names(customers[index]['username'])
+
+	line_num = 1
+	PRINT "\n\tUsername"
+	FOR EACH name IN customers_names
+		PRINT {line_num}\t{name}, end= "\n"
+		line_num = line_num + 1
+	ENDFOR
+
+	PRINT "\nThis is all of the registered customers' username."
+        PRINT "\nReturning to the administrator main screen...."
+	CALL administrator_system()
+ENDFUNCTION
+
+FUNCTION admin_search()
+	PRINT """Choose database that you want to inspect / search
+		 1: Customer Booking
+		 2: Customer Payment
+
+		 Option =>\t"""
+	READ file_choose
+	IF (file_choose == 1) THEN
+		CALL cus_book_search()
+	ELSE
+		IF (file_choose == 2) THEN
+			CALL cus_pay_search()
+		ELSE
+			PRINT "Invalid input, choose only 1 or 2.\n"
+			RETURN admin_search()
+		ENDIF
+	ENDIF
+ENDFUNCTION
+
+FUNCTION search_redirect()
+	PRINT """\nDo you want to return to the search menu or administrator main screen?
+    
+		 1: Search menu
+		 2: Administrator Main screen
+		 =>\t"""
+	READ option
+	IF (option == 1) THEN
+		PRINT "\nYou will be redirected to the search menu shortly....\n"
+		RETURN admin_search()
+	ELSE
+		IF (option == 2) THEN
+			PRINT "\nYou will be redirected to the administrator main screen shortly...\n"
+			RETURN administrator_system()
+		ELSE
+			PRINT "\nInvalid input, please select 1 or 2.\n"
+			RETURN search_redirect()
+		ENDIF
+	ENDIF
+ENDFUNCTION
+
+FUNCTION cus_book_search()
+	PRINT """\nOptions: [Username] [Car ID] [Price] [Days] [Total Amount] [Status] [Reservation]
+ 
+                 What is the data type you would like to seek for: """
+	READ data_type
+	PRINT "Enter keyword to search: " 
+	READ search_phrase
+	CALL cus_book_header()
+	customer_statement = {}
+	customers = []
+	emp_spotter = []
+	index = 0
+	OPENFILE customerBookingPayment.txt in READ mode
+		FOR EACH line IN booking_details
+			row = STRIP line, SPLIT (line, ": ")
+			customer_statement[row[0]] = row[1]
+			FOR EACH customer IN range(1, CALL bookdb_line_count())
+				IF (row == "") THEN
+					BREAK
+				ELSE
+					IF (LEN(customer_statement) == 7) THEN
+					COPY customer_statement
+					APPEND customers(copy_data)
+					customer_statement = {}
+					CONTINUE
+					ENDIF
+				ENDIF
+			ENDFOR
+		ENDFOR
+	line_num = 1
+	FOR EACH customer IN customers
+		IF (search_phrase == customer[index][data_type]) THEN
+			APPEND emp_spotter(index)
+			PRINT line_num, username, car_id, price, days, (price * days), status, reservation
+			index = index + 1
+			line_num = line_num + 1
+		ELSE
+			index = index + 1
+			CONTINUE
+		ENDIF
+	ENDFOR
+
+	IF NOT emp_spotter THEN
+		PRINT "\nThere is no relevant data for records of customer booking statement based on your search keyword.\n"
+		CALL cont_search_book()
+	ENDIF
+
+	CALL search_redirect()
+	
+ENDFUNCTION
+
+FUNCTION cont_search_book()
+	PRINT "Continue searching?\n\t[YES] or [NO] "
+        PRINT "\n\n[NO] to navigate back to administrator main screen\n=>\t"
+	READ option
+	IF (option == "YES") THEN
+		PRINT "Returning back to the customer booking search page."
+		CALL cus_book_search()
+	ELSE
+		IF (option == "NO") THEN
+			PRINT "\nYou will be redirected to the functionalities page shortly....\n"
+			CALL administrator_system()
+		ELSE
+			PRINT "Invalid input, please insert [YES] or [NO]."
+			RETURN cont_search_book()
+		ENDIF
+	ENDIF
+ENDFUNCTION
+
+FUNCTION cus_pay_search()
+	PRINT """\nOptions: [Username] [Car ID] [Price] [Days] [Total Amount] [Status] [Reservation] 
+
+		 What is the data type you would like to seek for: """
+	READ data_type
+	PRINT "Enter keyword to search: "
+	READ search_phrase
+	CALL cus_pay_header()
+	customer_statement = {}
+	customers = []
+	emp_spotter = []
+	index = 0
+	OPENFILE customerBookingPayment.txt in READ mode
+		FOR EACH line IN booking_details
+			row = STRIP line, SPLIT (line, ": ")
+			customer_statement[row[0]] = row[1]
+			FOR EACH customer IN range(1, CALL bookdb_line_count())
+				IF (row == "") THEN
+					BREAK
+				ELSE
+					IF (LEN(customer_statement) == 7) THEN
+						COPY customer_statement
+						APPEND customers(copy_data)
+						customer_statement = {}
+						CONTINUE
+					ENDIF
+				ENDIF
+			ENDFOR
+		ENDFOR
+	line_num = 1
+	FOR EACH customer IN customers
+		IF (search_phrase == customers[index][data_type]) THEN
+			APPEND emp_spotter(index)
+			PRINT line_num, username, car_id, price, days, (price * days), status, payment_method
+			index = index + 1
+			line_num = line_num + 1
+		ELSE
+			index = index + 1
+			CONTINUE
+		ENDIF
+	ENDFOR
+	
+	IF NOT emp_spotter THEN
+		PRINT "There is no relevant data for the records of customer payment related to your search keyword."
+		CALL cont_search_pay()
+	ENDIF
+
+	CALL search_redirect()
+ENDFUNCTION
+
+FUNCTION cont_search_pay()
+	PRINT "Continue searching?\n\t[YES] or [NO] "
+        PRINT "\n\n[NO] to navigate back to administrator main screen\n=>\t"
+	READ option
+	IF (option == "YES") THEN
+		PRINT "Returning back to the customer payment search page."
+		CALL cus_pay_search()
+	ELSE
+		IF (option == "NO") THEN
+			PRINT "\nYou will be redirected to the functionalities page shortly....\n"
+			CALL administrator_system()
+		ELSE
+			PRINT "Invalid input, please insert [YES] or [NO]."
+			RETURN cont_search_pay()
+		ENDIF
+	ENDIF
+ENDFUNCTION
+
+FUNCTION cus_statement_header()
+	cus_pay = ['Username', 'Car ID', 'Price', 'Days', 'Total Amount', 'Status', 'Reservation', 'Payment Method']
+    	format_row = "{}  " * (LEN(cus_pay) + 1)
+    	PRINT("\n", FORMAT format_row("", *cus_pay)) 
+ENDFUNCTION
+
+FUNCTION admin_return_rent()
+	customer_statement = {}
+	customers = []
+	index1 = 0
+	OPENFILE customerBookingPayment.txt in READ mode
+		FOR EACH line IN booking_details
+			row = STRIP line, SPLIT (line, ": ")
+			customer_statement[row[0]] = row[1]
+			FOR EACH customer IN range(1, CALL bookdb_line_count()) 
+				IF (row == "") THEN
+					BREAK
+				ELSE
+					IF (LEN(customer_statement) == 7) THEN
+						COPY customer_statement
+						APPEND customers(copy_data)
+						customer_statement = {}
+						CONTINUE
+					ENDIF
+				ENDIF
+			ENDFOR
+		ENDFOR
+	CALL cus_statement_header()
+	line_num = 1
+	index_collector = []
+	FOR EACH customer IN customers
+		IF (customers['status'] == 'Paid') AND (customers['reservation'] == 'Renting') THEN
+			APPEND index_collector(index1)
+			PRINT line_num, username, car_id, price, days, (price * days), status, reservation, payment_method
+			index1 = index1 + 1
+			line_num = line_num + 1
+		ELSE
+			index1 = index1 + 1
+			CONTINUE
+		ENDIF
+	ENDFOR
+	
+	IF NOT index_collector THEN
+		PRINT "There is no relevant data for records of cars that should be return to the system.\n"
+              	PRINT "Redirecting to the administrator main screen...\n"
+		CALL administrator_system()
+
+	PRINT "\nWhich statement you would like to return the rent car (line of statement): "
+	READ return_rent
+	index_value = index_converter(return_rent)
+    	new_index = index_collector[index_value]
+    	customers[new_index]['reservation'] = 'Completed'
+    	car_id = customers[new_index]['car id']
+	
+	car_details = {}
+	cars = []
+	index2 = 0 
+	OPENFILE carDatabase.txt in READ mode
+		FOR EACH line IN read_mark_open
+			row = STRIP line, SPLIT (line, ": ")
+			car_details[row[0]] = row[1]
+			FOR EACH car IN range (1, CALL cardb_line_count())
+				IF (row == "") THEN
+					BREAK
+				ELSE
+					IF (LEN(car_details) == 7) THEN
+						COPY car_details
+						APPEND cars(copy_data)
+						car_details = {}
+						CONTINUE
+					ENDIF
+				ENDIF
+			ENDFOR
+		ENDFOR
+
+		FOR EACH car IN cars
+			IF (cars['car_id'] == car_id) THEN
+				open_index = index2
+				index2 = index2 + 1
+			ELSE
+				index2 = index2 + 1
+				CONTINUE
+			ENDIF
+		ENDFOR
+
+	cars[open_index]['status'] = 'Open'
+   	count1 = 1
+	OPENFILE customerBookingPayment.txt in WRITE mode
+		FOR EACH information IN customers
+			FOR EACH key IN information
+				IF (count1 < LEN(customers) * 7) THEN
+					count1 = count1 + 1
+					list_of_strings = {key}: {information[key]}
+					FILEWRITE {list_of_strings}\n
+				ELSE
+					list_of_strings = {key}: {information[key]}
+					FILEWRITE {list_of_strings}
+				ENDIF
+			ENDFOR
+		ENDFOR
+	
+	count2 = 1
+	OPENFILE carDatabase.txt in WRITE mode
+		FOR EACH car IN cars
+			FOR EACH key IN car
+				IF (count2 < LEN(cars) * 7) THEN
+					count2 = count2 + 1
+					list_of_strings = {key}: {information[key]}
+					FILEWRITE {list_of_strings}\n
+				ELSE
+					list_of_strings = {key}: {information[key]}
+					FILEWRITE {list_of_strings}
+				ENDIF
+			ENDFOR
+		ENDFOR
+	PRINT "\nReturned rent statement: "
+	CALL cus_statement_header()
+	PRINT username, car_id, price, days, (price * days), status, reservation, payment_method
+	CALL cont_return()
+ENDFUNCTION
+
+
+FUNCTION cont_return()	
+	PRINT "\nContinue returning rent car?\n\t[YES] or [NO]\n=>\t"
+	READ option 
+	IF (option == "YES") THEN
+		CALL admin_return_rent()
+	ELSE
+		IF (option == "NO") THEN
+			PRINT "Returning to administrator main screen..."
+			CALL administrator_system()
+		ELSE
+			PRINT "Invalid input, please insert YES or NO.\n"
+			RETURN cont_return()
+		ENDIF
+	ENDIF
+ENDFUNCTION
+
+FUNCTION admin_mark_ready()
+	customer_statement = {}
+	customers = []
+	index1 = 0
+	OPENFILE customerBookingPayment.txt in READ mode
+		FOR EACH line IN booking_details
+			row = STRIP line, SPLIT(line, ": ")
+			customer_statement[row[0]] = row[1]
+			FOR EACH customer IN range (1, CALL bookdb_line_count())
+				IF (row == "") THEN
+					BREAK
+				ELSE
+					IF (LEN(customer_statement) == 7) THEN
+						COPY customer_statement
+						APPEND customers(copy_data)
+						customer_statement = {}
+						CONTINUE
+					ENDIF
+				ENDIF
+			ENDFOR
+		ENDFOR
+		CALL cus_statement_header()
+		line_num = 1
+		index_collector = []
+		FOR EACH customer IN customers
+			IF (customers[index1]['status'] == 'Paid') AND (customers[index1]['reservation'] == 'In Queue') THEN
+				APPEND index_collector(index1)
+				print line_num, username, car_id, price, days, (price * days), status, reservation, payment_method
+				index1 = index1 + 1
+				line_num = line_num + 1
+			ELSE
+				index1 = index1 + 1
+				CONTINUE
+			ENDIF
+		ENDFOR
+
+	IF NOT index_collector THEN
+		PRINT "\nNo data had been identified which require the action of marking the car status as ready."
+		PRINT "Returning to administrator main screen..."
+		CALL administrator_system()
+	ENDIF
+	
+	PRINT "\nWhich statement you would like to mark as ready upon customer's booking on confirmation towards booking: "
+	READ return_rent
+	index_value = index_converter(return_rent)
+    	new_index = index_collector[index_value]
+    	customers[new_index]['reservation'] = 'Ready'
+    	count = 1
+	OPENFILE customerBookingPayment.txt in WRITE mode
+		FOR EACH information IN customers
+			FOR EACH key IN information
+				IF (count < LEN(customers) * 7) THEN
+					count = count + 1
+					list_of_strings = {key}: {information[key]}
+					FILEWRITE {list_of_strings}
+				ENDIF
+			ENDFOR
+		ENDFOR
+	PRINT "\nReturned rent statement: "
+	CALL cus_statement_header()
+	PRINT username, car_id, price, days, (price * days), status, reservation, payment_method
+	CALL cont_modify_or_not()
+ENDFUNCTION
+
+FUNCTION cont_modify_or_not()
+	PRINT """\nDo you wish to mark more cars as ready?
+        
+		 \t[YES] or [NO]
+	 	 [NO] to navigate back to the administrator main screen.
+    
+		 Option =>\t"""
+	READ option
+	IF (option == "YES") THEN
+		PRINT "\nYou are returning to the marking ready page,please be patient..\n"
+		CALL admin_mark_ready()
+	ELSE
+		IF (option == "NO") THEN
+			PRINT "\nYou will be redirected to the administrator main screen..\n"
+			CALL administrator_system()
+		ELSE
+			PRINT "\nInvalid input, please select either 1 or 2.\n"
+			RETURN cont_modify_or_not()
+		ENDIF
+	ENDIF
+ENDFUNCTION
+
+FUNCTION analytics_dashboard()
+	customer_statement = {}
+	customers1 = []
+	OPENFILE customerBookingPayment.txt in READ mode
+		FOR EACH line IN booking_details
+			row = STRIP line, SPLIT (line, ": ")
+			customer_statement[row[0]] = row[1]
+			FOR EACH customer IN range (1, CALL bookdb_line_count())
+				IF (row == "") THEN
+					BREAK
+				ELSE
+					IF (LEN(customer_statement) == 7) THEN
+						COPY customer_statement
+						APPEND customers1(copy_data)
+						customer_statement = {}
+						CONTINUE
+					ENDIF
+				ENDIF
+			ENDFOR
+		ENDFOR
+
+	car_details = {}
+	car_holder = []
+	OPENFILE carDatabase.txt in READ mode
+		FOR EACH line IN display_rent
+			row = STRIP line, SPLIT (line, ": ")
+			car_details[row[0]] = row[1]
+			FOR EACH car IN range (1, CALL cardb_Line_count())
+				IF (row == "") THEN
+					BREAK
+				ELSE
+					IF (LEN(car_details == 7) THEN
+						COPY car_details
+						APPEND car_holder(copy_data)
+						car_details = {}
+						CONTINUE
+					ENDIF
+				ENDIF
+			ENDFOR
+		ENDFOR
+	
+	customer_details = {}
+	customers2 = []
+	OPENFILE customerDetails.txt in READ mode
+		FOR EACH line IN customer_file
+			row = STRIP line, SPLIT (line, ": ")
+			customer_details[row[0]] = row[1]
+			FOR EACH information IN range (1, CALL custdb_line_count())
+				IF (row == "") THEN
+					BREAK
+				ELSE
+					IF (LEN(customer_details) == 5) THEN
+						COPY customer_details
+						APPEND customers1(copy_data)
+						customer_details = {}
+						BREAK
+					ENDIF
+				ENDIF
+			ENDFOR
+		ENDFOR
+	PRINT CALL decoration(), "OCRS Data Analytics Dashboard", CALL decoration()
+	PRINT "Total cars: ", LEN(car_holder), "cars"
+	PRINT "Total customers: ", LEN(customers2), "customers"
+	PRINT "Total booking / payment records", LEN(customers1), "statements"
+	PRINT "Keep up your great work!"
+	PRINT "Returning to administrator system...."
+	CALL administrator_system()
+ENDFUNCTION
+
+FUNCTION customer_interface()
+	PRINT """As a visitor, select your action.
+
+		 1: View all cars with any status.
+		 2: Membership Registration \t - get access to more features.
+		 3: Registered customers' section.
+		 4: Exit the system.
+
+		 Option  =>\t"""
+	READ option
+	IF (option == 1) THEN
+		CALL view_cars()
+		CALL cont_main_menu()
+	ELSE
+		IF (option == 2) THEN
+			CALL cust_reg_header()
+		ELSE
+			IF (option == 3) THEN
+				CALL registered_login()
+			ELSE
+				IF (option == 4) THEN
+					CALL exit_system()
+				ELSE
+					PRINT "Invalid input, please insert valid value (1 to 4): "
+					RETURN customer_interface()
+				ENDIF
+			ENDIF
+		ENDIF
+	ENDIF
+ENDFUNCTION
+
+FUNCTION cont_main_menu()
+	PRINT """\nDo you wish to go back to the main menu or login for more functionalities?
+    
+		 1: Main menu
+		 2: Proceed to log in
+		 3: Proceed to registration (For customer with no account in the server)
+
+		 Option =>\t"""
+	READ redirect
+	IF (redirect == 1) THEN	
+		PRINT "\nReturning to the main menu..."
+		RETURN customer_interface()
+	ELSE
+		IF (redirect == 2) THEN
+			PRINT "\nRedirecting to the customer log in page...."
+			RETURN registered_login()
+		ELSE
+			IF (redirect == 3) THEN
+				PRINT "\nRedirecting to the customer registration page...."
+				RETURN customer_registration()
+			ELSE
+				PRINT "\nInvalid input, please select either 1, 2 or 3."
+				RETURN cont_main_menu()
+			ENDIF
+		ENDIF
+	ENDIF
+ENDFUNCTION
+
+FUNCTION cust_reg_header()
+	PRINT CALL decoration(), "Welcome to the registration page", CALL decoration(),"\n"
+	CALL customer_registration()
+ENDFUNCTION
+
+FUNCTION customer_registration()
+	PRINT "Enter your username: "
+	READ username
+	PRINT "Enter your password: "
+	READ password
+	OPENFILE customerDetails.txt in READ mode
+	OPENFILE customerDetails.txt in APPEND mode
+		FILEREAD existing
+		IF username IN check THEN
+			PRINT "\nThis username had been used, please use another username.\n"
+			RETURN customer_registration()
+		ELSE
+			PRINT "\nPlease fill in the following details to provide more information to rent a car / cars.\n"
+			PRINT "Address: "
+			READ address
+			PRINT "Contact number: "
+			READ contact_number
+			FILEWRITE username, password, address, contact_number
+			PRINT CALL decoration(), "Thank you for registering", CALL decoration(), "\n"
+			balance = 0
+			PRINT "Your balance is now: ", balance, "\nYou can recharge it from the customer functionalities page."
+			FILEWRITE "Balance", balance
+		ENDIF
+	PRINT "\nYou can login to the system now. Start renting your car! :D\n"
+	CALL customer_interface()
+ENDFUNCTION
+
+FUNCTION registered_login()
+	FOR EACH time IN range(1, 4)
+		PRINT "\nEnter your username: "
+		READ username
+		PRINT "Enter your password: "
+		READ password
+		
+		customer_details = {}
+            	customers = []
+		OPENFILE customerDetails.txt in READ mode
+			FOR EACH line IN customer_file
+				row = STRIP line, SPLIT (line, ": ")
+				customer_details[row[0]] = row[1]
+				FOR EACH information IN range (1, CALL custdb_line_count)
+					IF (row == "") THEN
+						BREAK
+					ELSE
+						IF (LEN(customer_details) == 5) THEN
+							COPY customer_details
+							APPEND customers(copy_data)
+							customer_details = {}
+							CONTINUE
+						ENDIF
+					ENDIF
+				ENDFOR
+			ENDFOR
+		FOR EACH customer IN customers
+			IF (username == customer['username']) AND (password == customer['password']) THEN
+				PRINT "\n", CALL decoration(), " Welcome to the OCRS, ", username, CALL decoration(), "\n"
+				CALL reg_customer()
+				BREAK
+			ENDIF
+		ELSE
+			PRINT "\nInvalid username or password, please try again..."
+			CALL registration_inquiry()
+		ENDFOR
+	ELSE
+		PRINT "\nYou had exceeded the limit to log in your account..Please try again after 1 minute..\n"
+		RETURN customer_interface()
+	ENDFOR
+ENDFUNCTION
+
+FUNCTION registration_inquiry()
+	PRINT """\nDo you have an account? [YES] or [NO]
+
+		 Option =>\t"""
+	READ register_confirm
+	IF (register_confirm == "YES") THEN
+		PRINT "Please try again."
+	ELSE
+		IF (register_confirm == "NO") THEN
+			CALL register_account_ask()
+		ENDIF
+	ENDIF
+ENDFUNCTION
+
+FUNCTION register_account_ask()
+	PRINT "\nDo you wish to register a new account? [YES] or [NO]:\t"
+	READ register_account
+	IF (register_account == "YES") THEN
+		PRINT "Redirecting to the customer registration page...\n"
+		CALL cust_reg_header()
+	ELSE
+		IF (register_account == "NO") THEN
+			PRINT "\nReturning to the main menu..\n"
+			CALL customer_interface()
+		ELSE
+			PRINT "Invalid input, please key in [YES] or [NO]."
+			RETURN register_account_ask()
+		ENDIF
+	ENDIF
+ENDFUNCTION
+
+FUNCTION reg_customer()
+	PRINT CALL decoration() * 2, "\nFunctionalities Page\n, CALL decoration() * 2
+	PRINT """\nWhat would you like to perform?
+		 1: View all available car for rent.
+		 2: Modify personal details.
+		 3: View personal rental history.
+		 4: Book a car.
+		 5: Pay the car that you booked earlier.
+		 6: Top up your balance.
+		 7: Exit the portal. 
+
+		Option =>\t"""
+	READ option
+	IF (option == 1) THEN
+		CALL dis_all_rent()
+	ELSE
+		IF (option == 2) THEN
+			CALL modify_details()
+		ELSE
+			IF (option == 3) THEN
+				CALL rental_hist()
+			ELSE
+				IF (option == 4) THEN
+					CALL book_car()
+				ELSE
+					IF (option == 5) THEN
+						CALL pay_car()
+					ELSE
+						IF (option == 6) THEN
+							CALL top_up_header()
+						ELSE
+							IF (option == 7) THEN
+								CALL exit_system()
+							ELSE
+								PRINT "Invalid choice, please enter valid value (1 to 6).\n"
+								RETURN reg_customer()
+							ENDIF
+						ENDIF
+					ENDIF
+				ENDIF
+			ENDIF
+		ENDIF
+	ENDIF
+ENDFUNCTION
+
+FUNCTION rent_car_details()
+	status = "Open"
+	CALL header()
+	car_details = {}
+	car_holder = []
+	index = 0
+	OPENFILE carDatabase.txt in READ mode
+		FOR EACH line IN display_rent
+			row = STRIP line, SPLIT (line, ": ")
+			car_details[row[0]] = row[1]
+			FOR EACH car IN range(1, CALL cardb_line_count())
+				IF (row == "") THEN
+					BREAK
+				ELSE
+					IF (LEN(car_details) == 7) THEN
+						COPY car_details
+						APPEND car_holder(copy_data)
+						car_details = {}
+						CONTINUE
+					ENDIF
+				ENDIF
+			ENDFOR
+		ENDFOR
+	line_num = 1
+	FOR EACH car IN car_holder
+		IF (status == car_holder[index]['status']) THEN
+			PRINT line_num, car_id, car_brand, car_name, car_plate, year, status, price
+			index = index + 1
+			line_num = line_num + 1
+		ELSE
+			index = index + 1
+			CONTINUE
+		ENDIF
+	ENDFOR
+ENDFUNCTION
+
+FUNCTION dis_all_rent()
+	CALL rent_car_details()
+	CALL cont_book_car()
+ENDFUNCTION
+
+FUNCTION cont_book_car()
+	PRINT """\nDo you want to proceed to book a car or return to the main menu?
+    		  1: Booking
+    		  2: Customers functionalities menu
+
+		  Option =>\t"""
+	READ car_booking
+	IF (car_booking == 1) THEN
+		PRINT "Redirecting to booking page..."
+		CALL book_car()
+	ELSE
+		IF (car_booking == 2) THEN
+			PRINT "Returning to main menu..."
+			CALL reg_customer()
+		ELSE
+			PRINT "Invalid input, please select either [YES] or [NO]"
+			RETURN cont_book_car()
+		ENDIF
+	ENDIF
+ENDFUNCTION
+
+FUNCTION modify_details()
+	PRINT "Your username is requested to check your credential for profile modification: "
+	READ username
+	customer_details = {}
+	customers = []
+	index = 0
+	OPENFILE customerDetails.txt in READ mode
+		FOR EACH line IN customer_file
+			row = STRIP line, SPLIT (line, ": ")
+			customer_details[row[0]] = row[1]
+			FOR EACH information IN range(1, CALL custdb_line_count())
+				IF (row == "") THEN
+					BREAK
+				ELSE
+					IF (LEN(customer_details) == 5) THEN
+						COPY customer_details
+						APPEND customers(copy_data)
+						customer_details = {}
+						BREAK
+					ELSE
+						CONTINUE
+					ENDIF
+				ENDIF
+			ENDFOR
+		ENDFOR
+		FOR EACH customer IN customers
+			IF (customers[index]['username'] == username) THEN
+				cust_index = index
+				FOR EACH key, value IN customer
+					PRINT {key} : {value}
+				BREAK
+			ENDIF
+			index = index + 1
+		ELSE
+			PRINT "Username is unidentified, please try again."
+			RETURN modify_details()
+		ENDFOR
+		data_type = ['Password', 'Address', 'Contact Number']
+		PRINT "\nIMPORTANT! Note that username is immutable.\nOptions: {}"
+		PRINT "\nWhich type of data you would like to change: "
+		READ modify_type
+		old_data = customers[cust_index][modify_type]
+		PRINT "Original data: ", old_data
+		PRINT "Replace with: "
+		READ new_data
+		customers[cust_index][modify_type] = new_data
+	count = 1
+	OPENFILE customerDetails.txt in WRITE mode
+		FOR EACH information IN customers
+			FOR EACH key IN information
+				IF (count < LEN(customers) * 5) THEN
+					count = count + 1
+					list_of_strings = {key}: {information[key]}
+					FILEWRITE '{list_of_strings}\n'
+				ELSE
+					list_of_strings = {key}: {information[key]}
+					FILEWRITE '{list_of_strings}'
+				ENDIF
+			ENDFOR
+		ENDFOR
+	CALL cont_modify()
+ENDFUNCTION
+
+FUNCTION cont_modify()
+	PRINT "Continue modifying?\n[YES] or [NO]\n=>\t"
+	READ continue_or_not
+	IF (continue_or_not == "YES") THEN
+		PRINT "\nUpdating modified data...\n"
+		PRINT "Continue modification based on new data and your credential will be requested again\n"
+		RETURN modify_details()
+	ELSE
+		IF (continue_or_not == "NO") THEN
+			PRINT "\nYou will be redirected to the customer functionalities page..."
+			RETURN reg_customer()
+		ELSE
+			PRINT "\nInvalid input, only [YES] or [NO] allowed.\n"
+			RETURN cont_modify
+		ENDIF
+	ENDIF
+ENDFUNCTION
+
+FUNCTION rental_hist()
+	PRINT "\nIMPORTANT!! You are going to access customers' private data.\nEnter your credential username: "
+	READ username
+	customer_statement = []
+	customers = []
+	index = 0
+	OPENFILE customerBookingPayment.txt in READ mode
+		FOR EACH line IN booking_details
+			row = STRIP line, SPLIT(line, ": ")
+			customer_statement[row[0]] = row[1]
+			FOR EACH customer IN range(1, CALL bookdb_line_count())
+				IF (row == "") THEN
+					BREAK
+				ELSE
+					IF (LEN(customer_statement) == 7) THEN
+						COPY customer_statement
+						APPEND customers(copy_data)
+						customer_statement = {}
+						CONTINUE
+					ENDIF
+				ENDIF
+			ENDFOR
+		ENDFOR
+	emp_spotter = []
+	CALL cus_statement_header()
+	FOR EACH customer IN customers
+		IF (username == customer['username']) THEN
+			APPEND emp_spotter(index)
+			PRINT username, car_id, price, days, (price * days), status, reservation, payment_method
+		index = index + 1
+		ENDIF
+	ENDFOR
+
+	IF NOT emp_spotter THEN
+		PRINT "\nThe rental history is empty, start to rent a car! :)"
+	ENDIF
+
+	PRINT "\nYou will be redirected to the functionalities page...\n"
+	CALL reg_customer()
+ENDFUNCTION
+
+FUNCTION book_car()
+	CALL rent_car_details()
+	PRINT ""
+	PRINT "Select the car ID you would like to book: "
+	READ select_car
+	PRINT "Enter your username to request your booking: "
+	READ username
+	car_details = {}
+	car_holder = []
+	OPENFILE carDatabase.txt in READ mode
+		FOR EACH line IN original
+			row = STRIP line, SPLIT( line, ": ")
+			car_details[row[0]] = row[1]
+			FOR EACH car IN range(1, CALL cardb_line_count())
+				IF (row == "") THEN
+					BREAK
+				ELSE
+					IF (LEN(car_details) == 7) THEN
+						COPY car_details
+						APPEND car_holder(copy_data)
+						car_details = {}
+						CONTINUE
+					ENDIF
+				ENDIF
+			ENDFOR
+		ENDFOR
+	FOR EACH car IN car_holder
+		IF (car['car_id'] == select_car) THEN
+			price = car['price']
+            		car['status'] = 'Booked'
+			BREAK
+		ENDIF
+	PRINT "How many day(s) you would like to book it: "
+	READ days
+
+	count = 1
+	OPENFILE carDatabase.txt in WRITE mode
+		FOR EACH data IN car_holder
+			FOR EACH records IN data
+				IF (count < LEN(car_holder) * 7) THEN
+					count = count + 1
+					list_Of_records = '{records}: {data[records]}'
+					FILEWRITE '{list_of_records}\n'
+				ELSE
+					list_Of_records = '{records}: {data[records]}'
+					FILEWRITE '{list_of_records}'
+				ENDIF
+			ENDFOR
+		ENDFOR
+	OPENFILE customerBookingPayment.txt in APPEND mode
+		FILEWRITE username, select_car, price, days, "status: Pending, reservation: N/A, payment method: N/A"
+	PRINT "\nYou will be redirected to the customer functionalities page.\n\n"
+	PRINT "You can make your payment by choosing option 5 to confirm your booking."
+	RETURN reg_customer()
+ENDFUNCTION
+	
+FUNCTION pay_car()
+	PRINT "\nEnter your username to pay for your booking confirmation: "
+	READ username
+	car_details = {}
+	car_holder = []
+	OPENFILE carDatabase.txt in READ mode
+		FOR EACH line IN original
+			row = STRIP line, SPLIT(line, ": ")
+			car_details[row[0]] = row[1]
+			FOR EACH car IN range(1, CALL cardb_line_count())
+				IF (row == "") THEN
+					BREAK
+				ELSE
+					IF (LEN(car_details) == 7) THEN
+						COPY car_details
+						APPEND car_holder(copy_data)
+						car_details = {}
+						CONTINUE
+					ENDIF
+				ENDIF
+			ENDFOR
+		ENDFOR
+	customer_statement = {}
+	customers = []
+	index = 0
+	new_index = []
+	line_num = 1
+	OPENFILE customerBookingPayment.txt in READ mode
+		FOR EACH line IN booking_details
+			row = STRIP line, SPLIT (line, ": ")
+			customer_statement[row[0]] = row[1]
+			FOR EACH customer IN range (1, CALL bookdb_line_count())
+				IF (row == "") THEN
+					BREAK
+				ELSE
+					IF (LEN(customer_statement) == 7) THEN
+						COPY customer_statement
+						APPEND customers(copy_data)
+						customer_statement = {}
+						CONTINUE
+					ENDIF
+				ENDIF
+			ENDFOR
+		ENDFOR
+	CALL cus_statement_header()
+	FOR EACH customer IN customers
+		IF (username == customer['username']) AND (customer['status'] == 'Pending') AND (customer['payment method'] == 'N/A') THEN
+			APPEND new_index(index)
+			PRINT line_num, username, car_id, price, days, (price * days), status, reservation, payment_method
+			line_num = line_num + 1 
+		ELSE
+			IF (username == customers[index]['username']) AND (customers[index]['status'] == 'Pending') AND (customers[index]['payment method'] == 'balance') THEN
+				PRINT username, car_id, price, days, (price * days), status, reservation, payment_method
+				CALL pay_balance()
+			ELSE
+				index = index + 1
+			ENDIF
+		ENDIF
+	ENDIF
+	
+	IF NOT new_index THEN
+		PRINT  "\nInvalid username or customer does not have a booking request."
+		CALL cont_pay()
+	ENDIF
+	
+	PRINT "\nWhich booking statement (line) you would like to pay? "
+	READ payment_statement
+	statement_index = index_converter(pay_statement)
+	pay_index = new_index[statement_index]
+    	car_id = customers[pay_index]['car id']
+	PRINT "\nIMPORTANT!! Note that you will need to make full payment to confirm your booking.\n"
+	PRINT """What would you like to use to pay the booking?
+		 [credit card] [balance]
+		 =>\t"""
+	READ payment_method
+	
+	customers[pay_index]['payment method'] = payment_method
+
+    	count = 1
+
+	OPENFILE customerBookingPayment.txt in WRITE mode
+		FOR EACH data IN customers
+			FOR EACH records IN data
+				IF (count < LEN(car_holder) * 7) THEN
+					count = count + 1
+					list_of_records = '{records}: {data[records]}'
+					FILEWRITE '{list_of_records}\n'
+				ELSE
+					list_of_records = '{records}: {data[records]}'
+					FILEWRITE '{list_of_records}'
+				ENDIF
+			ENDFOR
+		ENDFOR
+	IF (payment_method == "credit card") THEN
+		PRINT "\nNote that your private information in this area will not be stored in our cookies.\n"
+		PRINT "Enter your credit card number: "
+		READ credit_card_num
+		PRINT "Enter your credit card's CVV: "
+		READ cvv
+		PRINT "Enter your credit card's expiry date: "
+		READ expiry_date
+		
+		PRINT "Transaction completed..."
+		PRINT CALL decoration(), "Payment details", CALL decoration()
+		PRINT "Paid amount: ", customers[pay_index]['price'] * customers[pay_index]['days']
+		PRINT "Credit card: ", credit_card_num
+
+		customers[pay_index]['status'] = 'Paid'
+        	customers[pay_index]['reservation'] = 'In Queue'
+
+		FOR EACH car IN car_holder
+			IF (car["car_id"] == car_id) THEN
+				car["status"] = 'Rented'
+		count1 = 1
+		OPENFILE customerBookingPayment.txt in WRITE mode
+			FOR EACH information IN customers
+				FOR EACH key IN information
+					IF (count1 < LEN(customers) * 7) THEN
+						list_of_strings = '{key}: {information[key]}'
+						WRITEFILE '{list_of_strings}\n'
+						count1 = count1 + 1
+					ELSE
+						list_of_strings = '{key}: {information[key]}'
+						WRITEFILE '{list_of_strings}'
+					ENDIF
+				ENDFOR
+			ENDFOR
+		count2 = 1
+		OPENFILE carDatabase.txt in WRITE mode
+			FOR EACH information IN car_holder
+				FOR EACH key IN information
+					IF (count2 < LEN(car_holder) * 7) THEN
+						list_of_strings = '{key}: {information[key]}'
+						WRITEFILE '{list_of_strings}\n'
+						count2 = count2 + 1
+					ELSE
+						list_of_strings = '{key}: {information[key]}'
+						WRITEFILE '{list_of_strings}'
+					ENDIF
+				ENDFOR
+			ENDFOR
+		
+		PRINT "\nRedirecting to customer functionalities page...\n"
+		CALL reg_customer()
+	ELSE
+		IF (payment_method == "balance") THEN
+			CALL pay_balance()
+		ELSE
+			PRINT "Invalid input, due to privacy you will be redirected to the car payment statement page again..."
+			RETURN pay_car()
+		ENDIF
+	ENDIF
+ENDFUNCTION
+
+FUNCTION cont_pay()
+	PRINT "\nContinue payment?\n\t[YES] or [NO]\n"
+	PRINT "[NO] return to customer functionalities page\n=>\t"
+	READ option
+	IF (option == "YES") THEN
+		PRINT "\nReturning to the payment page..."
+		CALL pay_car()
+	ELSE
+		IF (option == "NO") THEN
+			PRINT "\nYou will be redirected to the functionalities page shortly....\n"
+			CALL reg_customer()
+		ELSE
+			PRINT "Invalid input, please insert [YES] or [NO]."
+			RETURN cont_pay()
+		ENDIF
+	ENDIF
+ENDFUNCTION
+
+FUNCTION pay_balance()
+	PRINT "\nYou are accessing your online balance, enter your username to make sure that is you: "
+	READ username
+	customer_details = {}
+	customers = []
+	index1 = 0
+	OPENFILE customerDetails.txt in READ mode
+		FOR EACH line IN balance_checker
+			row = STRIP line, SPLIT (line, ": ")
+			customer_details[row[0]] = row[1]
+			FOR EACH information IN range(1, CALL custdb_line_count)
+				IF (row == "") THEN
+					BREAK
+				ELSE
+					IF (LEN(customer_details) == 5) THEN
+						COPY customer_details
+						APPEND customers(copy_data)
+						customer_details = {}
+						BREAK
+					ELSE
+						CONTINUE
+					ENDIF
+				ENDIF
+			ENDFOR
+		ENDFOR
+		FOR EACH customer IN customers 
+			IF (customer['username'] == username) THEN
+				new_index1 = index1
+				balance = customer["balance"]
+				BREAK
+			ENDIF
+			index1 = index + 1
+		ENDFOR
+	
+	customer_pay = {}
+	statements = []
+	index2 = 0
+	
+	OPENFILE customerBookingPayment.txt in READ mode
+		FOR EACH line IN booking_details
+			row = STRIP line, SPLIT(line, ": ")
+			customer_pay[row[0]] = row[1]
+			FOR EACH customer IN range(1, CALL bookdb_line_count())
+				IF (row == "") THEN
+					BREAK
+				ELSE
+					IF (LEN(customer_pay) == 7) THEN
+						COPY customer_pay
+						APPEND statements(copy_data)
+						customer_pay = {}
+						CONTINUE
+					ENDIF
+				ENDIF
+			ENDFOR
+		ENDFOR
+		
+		FOR EACH statement IN statements
+			IF (username == statement['username']) AND (statement['payment method'] == "balance") AND (statement['status'] == "Pending") THEN
+				new_index2 = index2
+				total = statement['price'] * statement['days']
+				car_id = statement['car id']
+				PRINT "You have to pay: RM", total, "\nCar ID: ", statement['car id']
+			ENDIF
+			index2 = index2 + 1
+		ENDFOR
+	
+	car_details = {}
+    	car_holder = []
+    	index3 = 0
+
+	OPENFILE carDatabase.txt in READ mode
+		FOR EACH line IN original
+			row = STRIP line, SPLIT(line, ": ")
+			car_details[row[0]] = row[1]
+			FOR EACH car IN range(1, CALL cardb_line_count())
+				IF (row == "") THEN
+					BREAK
+				ELSE
+					IF (LEN(car_details) == 7) THEN
+						COPY car_details
+						APPEND car_holder(copy_data)
+						car_details = {}
+						CONTINUE
+					ENDIF
+				ENDIF
+			ENDFOR
+		ENDFOR
+	IF (balance >= total) THEN
+		balance = balance - total
+		PRINT "\nCurrent balance: ", balance, "\nYou had paid the booking confirmation."
+		PRINT "\nTransaction completed. Your current balance is", balance
+		customers[new_index1]["balance"] = balance
+        	statements[new_index2]['status'] = "Paid"
+        	statements[new_index2]['reservation'] = "In Queue"
+        	statements[new_index2]['payment method'] = "balance"
+
+		count1 = 1
+		OPENFILE customerDetails.txt in WRITE mode
+			FOR EACH information IN customers
+				FOR EACH key IN information
+					IF (count1 < LEN(customers) * 5) THEN
+						list_of_strings = '{key}: {information[key]}'
+						FILEWRITE '{list_of_strings}\n'
+						count1 = count1 + 1
+					ELSE
+						list_of_strings = '{key}: {information[key]}'
+						FILEWRITE '{list_of_strings}'
+					ENDIF
+				ENDFOR
+			ENDFOR
+
+		count2 = 1
+		OPENFILE customerBookingPayment.txt in WRITE mode
+			FOR EACH information IN statements
+				FOR EACH key IN information
+					IF (count2 < LEN(statements) * 7) THEN
+						list_of_strings = '{key}: {information[key]}'
+						FILEWRITE '{list_of_strings}\n'
+						count2 = count2 + 1
+					ELSE
+						list_of_strings = '{key}: {information[key]}'
+						FILEWRITE '{list_of_strings}'	
+					ENDIF
+				ENDFOR	
+			ENDFOR
+
+		count3 = 1
+		OPENFILE carDatabase.txt in WRITE mode
+			FOR EACH information IN car_holder
+				FOR EACH key IN information
+					IF (count3 < LEN(car_holder) * 7) THEN
+						list_of_strings = '{key}: {information[key]}'
+						FILEWRITE '{list_of_strings}\n'
+						count3 = count3 + 1
+					ELSE
+						list_of_strings = '{key}: {information[key]}'
+						FILEWRITE '{list_of_strings}
+					ENDIF
+				ENDFOR
+			ENDFOR
+		PRINT "\nRedirecting to customer functionalities page...\n"
+		CALL reg_customer()
+	ELSE
+		IF (balance < total) THEN
+			PRINT "\nYour balance is insufficient...\nYour current balance: RM", balance
+			PRINT "\n\nYou will need to top up before paying your booking confirmation."
+			PRINT "\nRedirecting to top up system....\n"
+			CALL top_up_header()
+		ENDIF
+	ENDIF
+ENDFUNCTION
+
+FUNCTION top_up_header()
+	PRINT "\n", CALL decoration(), "Welcome to the top up system.", CALL decoration()
+	CALL top_up()
+ENDFUNCTION
+
+FUNCTION top_up()
+	PRINT "\nEnter your username to check your current balance: "
+	READ username
+	customer_details = {}
+    	customers = []
+    	index = 0
+	OPENFILE customerDetails.txt in READ mode
+		FOR EACH line IN balance_checker
+			row = STRIP line, SPLIT (line, ": ")
+			customer_details[row[0]] = row[1]
+			FOR EACH information IN range(1, CALL custdb_line_count())
+				IF (row == "") THEN
+					BREAK
+				ELSE
+					IF (LEN(customer_details) == 5) THEN
+						COPY customer_details
+						APPEND customers(copy_data)
+						customer_details = {}
+						BREAK
+					ELSE
+						CONTINUE
+					ENDIF
+				ENDIF
+			ENDFOR
+		ENDFOR
+		FOR EACH customer IN customers
+			IF (customer['username'] == username) THEN
+				cust_index = index
+				balance = customer['balance']
+				PRINT "Your current balance: ", balance
+				BREAK
+			ELSE
+				index = index + 1
+				CONTINUE
+			ENDIF
+		ELSE
+			PRINT "Invalid username, please try again."
+			CALL top_up()
+		ENDFOR
+	PRINT """Which payment method do you prefer to top up your balance with? 
+		 1: Credit/debit card 
+		 2: FPX online banking
+		 Option =>\t"""
+	READ payment_method
+	IF (payment_method == 1) THEN
+		PRINT "\n", CALL decoration() * 3, "\nTop up with: Credit/debit card\n", CALL decoration() * 3
+		PRINT "Enter your credit/debit card number: "
+		READ credit_card_num
+		PRINT "Enter your credit/debit card's CVV: "
+		READ cvv
+		PRINT "Enter your credit/debit card's expiry date: "
+		READ expiry_date
+		PRINT "\nTop up completed with ", credit_card_num
+	ELSE
+		IF (payment_method == 2) THEN
+			PRINT "\n", CALL decoration() * 3, "\nTop up with: FPX online banking\n", CALL decoration() * 3 
+			CALL bank_options()
+		ENDIF
+	ENDIF
+	
+	PRINT "How much do you want to top up: "
+	READ top_up_value
+	balance = balance + top_up_value
+	customers[cust_index]['balance'] = balance
+	
+	PRINT "Top up success, current balance: ", customers[cust_index]['balance']
+	
+	OPENFILE customerDetails.txt in WRITE mode
+		FOR EACH information IN customers
+			FOR EACH key IN information
+				list_of_strings = '{key}: {information[key]}'
+				FILEWRITE '{list_of_strings}\n'
+			ENDFOR
+		ENDFOR
+	CALL cont_top_up()
+ENDFUNCTION
+
+FUNCTION bank_options()
+	PRINT """Select your merchant:
+		 1: Maybank
+		 2: Public Bank
+		 3: Ambank 
+		 4: RHB Bank
+		 5: CIMB Bank
+		 =>\t"""
+	READ bank_choice
+	IF (bank_choice <= 5) THEN
+		PRINT "Enter your bank account number: "
+		READ account_no
+		PRINT "Enter your bank account password: "
+		READ account_password
+		PRINT "\nTop up with", account_no
+	ELSE
+		PRINT "Invalid input, please try again."
+		RETURN bank_options()
+	ENDIF
+ENDFUNCTION
+
+FUNCTION cont_top_up()
+	PRINT """\nDo you wish to top up more? [YES] or [NO]
+		 Note: Selecting NO will redirect you back to the functionalities main menu.
+		 =>\t"""
+	READ cont_or_not
+	IF (cont_or_not == "YES") THEN
+		PRINT "Redirecting back to the top up section...."
+		CALL top_up()
+	ELSE
+		IF (cont_or_not == "NO") THEN
+			PRINT "\nRedirecting to the customer functionalities main menu...\n"
+			CALL reg_customer()
+		ELSE
+			PRINT "Invalid input, please enter either [YES] or [NO]. "
+			RETURN cont_top_up()
+		ENDIF
+	ENDIF
+ENDFUNCTION
+
+FUNCTION login_system()
+	PRINT "Option =>\t"
+	READ role
+	IF (role == 1) THEN
+		CALL administrator_login()
+	ELSE
+		IF (role == 2) THEN
+			CALL customer_interface()
+		ELSE
+			PRINT "\nInvalid choice, please choose again."
+			RETURN login_system()
+		ENDIF
+	ENDIF
+ENDFUNCTION
+
+
+
+
+							
+
+	
+	
+		
+
+
+
+					
+	
+
+
+
+
+
+		
+
+
+				
+	
+
