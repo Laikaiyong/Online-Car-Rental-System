@@ -1499,10 +1499,12 @@ def modify_details():
 
     # Continue profile modification?
     def cont_modify():
-        continue_or_not = input("""Continue modifying?
-[YES] or [NO]
-[NO] will navigate you back to the customer functionalities page
+        continue_or_not = input("""
+Continue modifying?
 
+    [YES] or [NO]
+    
+Note: Selecting [NO] will navigate you back to the customer functionalities page
 Option =>\t""").upper()
 
         # Redirected to modify customer details again
@@ -1569,7 +1571,7 @@ def rental_hist():
         print("\nThe rental history is empty, start to rent a car! :)")
 
     # Automatically redirect back to the customer functionalities screen
-    print("\nYou will be redirected to the functionalities page...\n")
+    print("You will be redirected to the functionalities page...\n")
     reg_customer()
 
 

@@ -58,3 +58,8 @@ password: hiahiahia
 address: HiaHiaLand, America
 contact number: 0177777777
 balance: 0
+username: Alex
+password: wat
+address: Kingdom, Albanana
+contact number: 0188888888
+balance: 0
