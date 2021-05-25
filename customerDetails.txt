@@ -68,3 +68,13 @@ password: ant
 address: Asgard, Banana
 contact number: 0178928875
 balance: 0
+username: Banana
+password: lim
+address: Seoul, Korea
+contact number: 0123456789
+balance: 0
+username: Cherry
+password: bomb
+address: Nagasaki, Japan
+contact number: 0123454243
+balance: 0

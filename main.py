@@ -17,34 +17,52 @@ def index_converter(a):
 # 1. get total unique data based on lines in carDatabase file
 def cardb_line_count():
     # Read file and extract data
-    file = open("carDatabase.txt", "r")
-    line_in_file = 0
-    content = file.read()
-    co_list = content.split("\n")
-    for i in co_list:
-        if i:
-            line_in_file += 1
+    try:
+        file = open("carDatabase.txt", "r")
+        line_in_file = 0
+        content = file.read()
+        co_list = content.split("\n")
+        for i in co_list:
+            if i:
+                line_in_file += 1
+
+    # No file identified
+    except:
+        print("\nDatabase is corrupted..\n"
+              "Due to unstable database, You will be redirected to the welcome page..\n")
+        welcome()
 
     # total unique car details based on cars
     total = int(line_in_file / 7)
+    file.close()
 
     # store total unique data in cardb_line_count() function
     return total
 
 
 # 2. get total unique data based on lines in customerDetails file
+
+
 def custdb_line_count():
     # Read file and extract data
-    file = open("customerDetails.txt", "r")
-    line_in_file = 0
-    content = file.read()
-    co_list = content.split("\n")
-    for i in co_list:
-        if i:
-            line_in_file += 1
+    try:
+        file = open("customerDetails.txt", "r")
+        line_in_file = 0
+        content = file.read()
+        co_list = content.split("\n")
+        for i in co_list:
+            if i:
+                line_in_file += 1
+
+    # No file identified
+    except:
+        print("\nDatabase is corrupted..\n"
+              "Due to unstable database, You will be redirected to the welcome page..\n")
+        welcome()
 
     # total unique customer details based on customers
     total = int(line_in_file / 5)
+    file.close()
 
     # store total unique data in custdb_line_count() function
     return total
@@ -53,16 +71,24 @@ def custdb_line_count():
 # 3. get total unique data based on lines in customerBookingPayment file
 def bookdb_line_count():
     # Read file and extract data
-    file = open("customerBookingPayment.txt", "r")
-    line_in_file = 0
-    content = file.read()
-    co_list = content.split("\n")
-    for i in co_list:
-        if i:
-            line_in_file += 1
+    try:
+        file = open("customerBookingPayment.txt", "r")
+        line_in_file = 0
+        content = file.read()
+        co_list = content.split("\n")
+        for i in co_list:
+            if i:
+                line_in_file += 1
+
+    # No file identified
+    except:
+        print("\nDatabase is corrupted..\n"
+              "Due to unstable database, You will be redirected to the welcome page..\n")
+        welcome()
 
     # total unique customer booking/payment details based on customers
     total = int(line_in_file / 7)
+    file.close()
 
     # store total unique data in bookdb_line_count() function
     return total
@@ -103,7 +129,7 @@ def cus_statement_header():
 
 # 5. Customer registration page header
 def cus_reg_header():
-    print(decoration(), "Welcome to the registration page", decoration(), "\n")
+    print("\n", decoration(), "Welcome to the registration page", decoration(), "\n")
     customer_registration()
 
 
@@ -127,10 +153,20 @@ def welcome():
 
 
 # 2. Role definition pass
+
+
 def login_system():
     # Ask for users' role
-    role = int(input("Role =>\t"))
+    def role_validation():
+        try:
+            role = int(input("Role => "))
+            return role
 
+        except ValueError:
+            print("\nInvalid input, please insert a numeric value..\n")
+            return role_validation()
+
+    role = role_validation()
     # Administrator pass
     if role == 1:
         administrator_login()
@@ -139,7 +175,7 @@ def login_system():
         customer_interface()
     # Error if neither 1 nor 2 are entered
     else:
-        print("\nInvalid choice, please choose again.")
+        print("\nInvalid choice, please choose again.\n")
         return login_system()
 
 
@@ -147,7 +183,7 @@ def login_system():
 def exit_system():
     # Asking for exit confirmation
     confirmation = input("\nAre you sure you want to exit the Online Car Rental System?\n\n\t[YES] or [NO]\n"
-                         "\nNote: Selecting [NO] will navigate you back to the welcome page.\nOption =>\t").upper()
+                         "\nNote: Selecting [NO] will navigate you back to the welcome page.\nOption => ").upper()
 
     # Terminate the program
     if confirmation == "YES":
@@ -166,18 +202,77 @@ def exit_system():
 
 
 # Section E: Administrator
+# Additional: For administrator, when database corrupted and required to recreate one
+def maintenance_database_access():
+    # Accessing database by verifying username and password
+    maintenance_username = "SCRSLL001"
+    maintenance_password = "SCRSOCRSLaiLim"
+
+    username = input("Enter username: ")
+    password = input("Enter password: ")
+
+    if username == maintenance_username and password == maintenance_password:
+        print(f"\n{decoration()} Welcome administrator {decoration()}\n")
+
+        def admin_create_file():
+            try:
+                create_file = int(input("""What database you would like to create
+
+    1: Car database Database
+    2: Customer information Database
+    3: Customer Booking / Payment Database
+
+Option: """))
+                if create_file == 1:
+                    create_car = open("carDatabase.txt", "w")
+                    print(
+                        "\nDatabase created, you will be redirected to the add car functionalities.")
+                    admin_add_car()
+                elif create_file == 2:
+                    create_user = open("customerDetails.txt", "w")
+                    print(
+                        "\nDatabase created, you will be redirected to the administrator main screen.")
+                    administrator_system()
+                elif create_file == 3:
+                    create_booking = open("customerBookingPayment.txt", "w")
+                    print(
+                        "\nDatabase created, you will be redirected to the administrator main screen.")
+                    administrator_system()
+
+                else:
+                    print(
+                        "Please insert a number from 1 to 3.\n")
+                    return admin_create_file()
+
+            except ValueError:
+                print("\nPlease insert a numeric value.\n")
+                return admin_create_file()
+
+        admin_create_file()
+    else:
+        print("\nPlease try again.\n")
+        return maintenance_database_access()
+
+
 # 1. Administrator login page
 def administrator_login():
-    # store administrator credential username and password in a dictionary
-    administrator_credential = {}
-    with open("administratorLoginInfo.txt", "r") as administrator_file:
-        for data in administrator_file:
-            (key, value) = data.strip().split(": ")
-            administrator_credential[key] = value
-
     # request for admins username and password
     username = input("\nEnter your username: ")
     password = input("Enter your password: ")
+
+    # store administrator credential username and password in a dictionary
+    try:
+        administrator_credential = {}
+        with open("administratorLoginInfo.txt", "r") as administrator_file:
+            for data in administrator_file:
+                (key, value) = data.strip().split(": ")
+                administrator_credential[key] = value
+
+    # No file identified
+    except:
+        print("\nDatabase is corrupted.. \n"
+              "Access the database system to check database status.\n")
+        maintenance_database_access()
 
     # username and password validation
     if username == administrator_credential["username"] and password == administrator_credential["password"]:
@@ -194,20 +289,28 @@ def administrator_system():
     print("\n", decoration(), "Welcome, administrator!", decoration())
 
     # Admins functionalities menu
-    option = int(input("""
+    def admin_function_validation():
+        try:
+            option = int(input("""
 Choose the action you want to perform:
 
-1: Add cars to be rented out.
-2: Modify car details.
-3: Display records.
-4: Search specific record.
-5: Return a rented car.
-6: Mark a car as Ready after the car is available upon customer's payment on confirmation for booking.
-7: OCRS Data Analytics Dashboard
-8: Exit the system.
+    1: Add cars to be rented out.
+    2: Modify car details.
+    3: Display records.
+    4: Search specific record.
+    5: Return a rented car.
+    6: Mark a car as Ready after the car is available upon customer's payment on confirmation for booking.
+    7: OCRS Data Analytics Dashboard
+    8: Exit the system.
 
-Select your action:\t"""))
+Select your action: """))
+            return option
 
+        except ValueError:
+            print("\nInvalid input, please insert a numeric value..\n")
+            return admin_function_validation()
+
+    option = admin_function_validation()
     # Execute system based on option
     if option == 1:
         admin_add_car()
@@ -231,7 +334,7 @@ Select your action:\t"""))
         print("Invalid input, please choose options in range of 1 to 8.")
 
         # request for input again
-        return administrator_system()
+        return admin_function_validation()
 
 
 # Section E01: Administrator functionalities
@@ -243,23 +346,31 @@ Insert car data:
 [YES] to continue
 [NO] to stop and display all data. Will be redirected to admin main screen.
 
-Option =>\t""").upper()
+Option => """).upper()
 
     # Extract car data to dictionaries in list
-    car_details = {}
-    car_holder = []
-    with open("carDatabase.txt", 'r') as car_id_automate:
-        for line in car_id_automate:
-            row = line.strip().split(": ")
-            car_details[row[0]] = row[1]
-            for car in range(1, cardb_line_count()):
-                if row == "":  # empty line
-                    break
-                elif len(car_details) == 7:
-                    copy_data = car_details.copy()
-                    car_holder.append(copy_data)
-                    car_details = {}
-                    continue
+    try:
+        car_details = {}
+        car_holder = []
+        with open("carDatabase.txt", 'r') as car_id_automate:
+            for line in car_id_automate:
+                row = line.strip().split(": ")
+                car_details[row[0]] = row[1]
+                for car in range(1, cardb_line_count()):
+                    if row == "":  # empty line
+                        break
+                    elif len(car_details) == 7:
+                        copy_data = car_details.copy()
+                        car_holder.append(copy_data)
+                        car_details = {}
+                        continue
+        car_id_automate.close()
+
+    # No file identified
+    except:
+        print("\nDatabase under maintenance.. \n"
+              "Access the database system to check database progress\n")
+        maintenance_database_access()
 
     # Auto generate the new car id
     for car in car_holder:
@@ -275,15 +386,33 @@ Option =>\t""").upper()
         new_car_plate = input("Enter car plate: ")
         new_year = input("Enter car manufacture year: ")
         new_status = input("Enter status [Open / Rented / X / Booked]: ")
-        new_price = int(input("Enter price per hour (Only numeric data): "))
+
+        def new_price_validation():
+            try:
+                new_price = int(
+                    input("Enter price per hour (Only numeric data): "))
+                return new_price
+
+            except ValueError:
+                print("\nInvalid input, please insert a numeric value..\n")
+                return new_price_validation()
+
+        new_price = new_price_validation()
 
         # Append the new car data into carDatabase text file
-        with open('carDatabase.txt', "a") as admin_add_file:
-            admin_add_file.write("\ncar_id: {}\ncar_brand: {}\ncar_name: {}\n"
-                                 "car_plate: {}\nyear: {}\nstatus: {}\nprice: {}"
-                                 .format(new_car_id, new_car_brand, new_car_model, new_car_plate, new_year,
-                                         new_status, new_price))
-        print("\nInsert completed... Processing...\n")
+        try:
+            with open('carDatabase.txt', "a") as admin_add_file:
+                admin_add_file.write("\ncar_id: {}\ncar_brand: {}\ncar_name: {}\n"
+                                     "car_plate: {}\nyear: {}\nstatus: {}\nprice: {}"
+                                     .format(new_car_id, new_car_brand, new_car_model, new_car_plate, new_year,
+                                             new_status, new_price))
+            admin_add_file.close()
+            print("\nInsert completed... Processing...\n")
+
+        except:
+            print("\nDatabase under maintenance.. \n"
+                  "Access the database system to check database progress\n")
+            maintenance_database_access()
 
         # Ask for admins choice on inserting more cars or stop adding
         return admin_add_car()
@@ -308,25 +437,51 @@ def admin_modify():
     view_cars()
 
     # Extract cars data to dictionaries in list
-    car_details = {}
-    car_holder = []
-    with open('carDatabase.txt', 'r') as original:
-        for line in original:
-            row = line.strip().split(": ")
-            car_details[row[0]] = row[1]
-            for car in range(1, cardb_line_count()):
-                if row == "":  # empty line
-                    break
-                elif len(car_details) == 7:
-                    copy_data = car_details.copy()
-                    car_holder.append(copy_data)
-                    car_details = {}
-                    continue
+    try:
+        car_details = {}
+        car_holder = []
+        with open('carDatabase.txt', 'r') as original:
+            for line in original:
+                row = line.strip().split(": ")
+                car_details[row[0]] = row[1]
+                for car in range(1, cardb_line_count()):
+                    if row == "":  # empty line
+                        break
+                    elif len(car_details) == 7:
+                        copy_data = car_details.copy()
+                        car_holder.append(copy_data)
+                        car_details = {}
+                        continue
+    except:
+        print("\nDatabase under maintenance.. \n"
+              "Access the database system to check database progress\n")
+        maintenance_database_access()
+    original.close()
 
     # Ask for modification required details
-    data_line = int(
-        input("\nWhich line of data you want to perform the modification: "))
+    def data_line_validation():
+        try:
+            data_line = int(
+                input("\nWhich line of data you want to perform the modification: "))
+            return data_line
 
+        except ValueError:
+            print("\nInvalid input, please insert a numeric value..\n")
+            return data_line_validation()
+
+    data_line = data_line_validation()
+
+    def data_line_index():
+        try:
+            car_index = index_converter(data_line)
+            car = car_holder[car_index]
+            return car
+
+        except IndexError:
+            print("\nCar line is out of range.")
+            data_line_validation()
+
+    car = data_line_index()
     print("\nIMPORTANT!!! Note that uniqueID can't be modified. "
           "\nIf the car had been removed from the system place X in rent status.\n")
 
@@ -334,30 +489,36 @@ def admin_modify():
         " ", '_').lower()
 
     # Extract and display original data
-    origin_word = car_holder[index_converter(data_line)][item]
+    origin_word = car[item]
     print("Origin word: ", origin_word)
 
     # Replace data
     replace_word = input("Replaced by: ")
-    car_holder[index_converter(data_line)][item] = replace_word
+    car[item] = replace_word
 
     # Transfer new data to the text file
-    count = 1
-    with open('carDatabase.txt', 'w') as modified:
-        for information in car_holder:
-            for key in information:
-                if count < len(car_holder) * 7:
-                    count += 1
-                    list_of_strings = f'{key}: {information[key]}'
-                    modified.write(f'{list_of_strings}\n')
-                else:
-                    list_of_strings = f'{key}: {information[key]}'
-                    modified.write(f'{list_of_strings}')
+    try:
+        count = 1
+        with open('carDatabase.txt', 'w') as modified:
+            for information in car_holder:
+                for key in information:
+                    if count < len(car_holder) * 7:
+                        count += 1
+                        list_of_strings = f'{key}: {information[key]}'
+                        modified.write(f'{list_of_strings}\n')
+                    else:
+                        list_of_strings = f'{key}: {information[key]}'
+                        modified.write(f'{list_of_strings}')
+    except:
+        print("\nDatabase under maintenance.. \n"
+              "Access the database system to check database progress\n")
+        maintenance_database_access()
+    modified.close()
 
     # Ask for admins' preferences on continue editing / modify data
     def cont_or_no():
         continue_or_not = input(
-            "\nContinue modifying?\n\t[YES] or [NO]\n\nOption =>\t").upper()
+            "\nContinue modifying?\n\t[YES] or [NO]\n\nOption => ").upper()
 
         # Continue modification
         if continue_or_not == 'YES':
@@ -382,16 +543,26 @@ def admin_modify():
 # 3. Display all data
 def admin_display():
     # data display menu
-    dis_option = int(input("""\nDisplay data choice:
-    
-1. All Cars
-2: Cars Availability
-3: Customer Bookings
-4: Customer Payment for a specific time duration
-5: Registered customers' username in the system
-6: Exit to administrator main screen.
+    def display_validation():
+        try:
+            dis_option = int(input("""
+Display data choice:
 
-Option =>\t"""))
+    1. All Cars
+    2: Cars Availability
+    3: Customer Bookings
+    4: Customer Payment for a specific time duration
+    5: Registered customers' username in the system
+    6: Exit to administrator main screen.
+
+Option => """))
+            return dis_option
+
+        except ValueError:
+            print("\nInvalid input, please insert a numeric value..\n")
+            return display_validation()
+
+    dis_option = display_validation()
 
     # Read option
     if dis_option == 1:
@@ -418,21 +589,27 @@ Option =>\t"""))
 # 1. View all car data
 def view_cars():
     # Extract car data to dictionaries in list
-    car_details = {}
-    car_holder = []
-    with open('carDatabase.txt', 'r') as original:
-        for line in original:
-            row = line.strip().split(": ")
-            car_details[row[0]] = row[1]
-            for car in range(1, cardb_line_count()):
-                if row == "":  # empty line
-                    line.strip()
-                    continue
-                elif len(car_details) == 7:
-                    copy_data = car_details.copy()
-                    car_holder.append(copy_data)
-                    car_details = {}
-                    continue
+    try:
+        car_details = {}
+        car_holder = []
+        with open('carDatabase.txt', 'r') as original:
+            for line in original:
+                row = line.strip().split(": ")
+                car_details[row[0]] = row[1]
+                for car in range(1, cardb_line_count()):
+                    if row == "":  # empty line
+                        line.strip()
+                        continue
+                    elif len(car_details) == 7:
+                        copy_data = car_details.copy()
+                        car_holder.append(copy_data)
+                        car_details = {}
+                        continue
+    except:
+        print("\nDatabase under maintenance.. \n"
+              "Access the database system to check database progress\n")
+        maintenance_database_access()
+    original.close()
 
     # Display all car data
     car_header()
@@ -447,24 +624,30 @@ def view_cars():
 # 2. Display car with different status
 def dis_rent_car():
     # Extract car data to dictionaries in list
-    car_details = {}
-    car_holder = []
-    with open("carDatabase.txt", "r") as display_rent:
-        for line in display_rent:
-            row = line.strip().split(": ")
-            car_details[row[0]] = row[1]
-            for car in range(1, cardb_line_count()):
-                if row == "":  # empty line
-                    break
-                elif len(car_details) == 7:
-                    copy_data = car_details.copy()
-                    car_holder.append(copy_data)
-                    car_details = {}
-                    continue
+    try:
+        car_details = {}
+        car_holder = []
+        with open("carDatabase.txt", "r") as display_rent:
+            for line in display_rent:
+                row = line.strip().split(": ")
+                car_details[row[0]] = row[1]
+                for car in range(1, cardb_line_count()):
+                    if row == "":  # empty line
+                        break
+                    elif len(car_details) == 7:
+                        copy_data = car_details.copy()
+                        car_holder.append(copy_data)
+                        car_details = {}
+                        continue
+    except:
+        print("\nDatabase under maintenance.. \n"
+              "Access the database system to check database progress\n")
+        maintenance_database_access()
+    display_rent.close()
 
     # Ask for admins' preference on car status
     status = input(
-        "\nCategories available [Open] [Rented] [X] [Booked]\nStatus =>\t").capitalize()
+        "\nCategories available [Open] [Rented] [X] [Booked]\nStatus => ").capitalize()
 
     # Display cars with matching status
     index = 0
@@ -498,20 +681,26 @@ def dis_rent_car():
 # 2. Display customer booking statement
 def dis_cus_booking():
     # Extract customer booking / payment statement to dictionaries in list
-    customer_statement = {}
-    customers = []
-    with open("customerBookingPayment.txt", 'r') as booking_details:
-        for line in booking_details:
-            row = line.strip().split(": ")
-            customer_statement[row[0]] = row[1]
-            for customer in range(1, bookdb_line_count()):
-                if row == "":  # empty line
-                    break
-                elif len(customer_statement) == 7:
-                    copy_data = customer_statement.copy()
-                    customers.append(copy_data)
-                    customer_statement = {}
-                    continue
+    try:
+        customer_statement = {}
+        customers = []
+        with open("customerBookingPayment.txt", 'r') as booking_details:
+            for line in booking_details:
+                row = line.strip().split(": ")
+                customer_statement[row[0]] = row[1]
+                for customer in range(1, bookdb_line_count()):
+                    if row == "":  # empty line
+                        break
+                    elif len(customer_statement) == 7:
+                        copy_data = customer_statement.copy()
+                        customers.append(copy_data)
+                        customer_statement = {}
+                        continue
+    except:
+        print("\nDatabase under maintenance.. \n"
+              "Access the database system to check database progress\n")
+        maintenance_database_access()
+    booking_details.close()
 
     # Set reservation only specify on booking status
     reservation = ('In Queue', 'Ready')
@@ -549,18 +738,24 @@ def dis_cus_pay():
     # Extract customer booking / payment statement to dictionaries in list
     customer_statement = {}
     customers = []
-    with open("customerBookingPayment.txt", 'r') as booking_details:
-        for line in booking_details:
-            row = line.strip().split(": ")
-            customer_statement[row[0]] = row[1]
-            for customer in range(1, bookdb_line_count()):
-                if row == "":  # empty line
-                    break
-                elif len(customer_statement) == 7:
-                    copy_data = customer_statement.copy()
-                    customers.append(copy_data)
-                    customer_statement = {}
-                    continue
+    try:
+        with open("customerBookingPayment.txt", 'r') as booking_details:
+            for line in booking_details:
+                row = line.strip().split(": ")
+                customer_statement[row[0]] = row[1]
+                for customer in range(1, bookdb_line_count()):
+                    if row == "":  # empty line
+                        break
+                    elif len(customer_statement) == 7:
+                        copy_data = customer_statement.copy()
+                        customers.append(copy_data)
+                        customer_statement = {}
+                        continue
+    except:
+        print("\nDatabase under maintenance.. \n"
+              "Access the database system to check database progress\n")
+        maintenance_database_access()
+    booking_details.close()
 
     # Set statement status only specify on 'Paid'
     status = 'Paid'
@@ -598,20 +793,26 @@ def dis_cus_pay():
 # 4. Display all registered customer username
 def registered_customer():
     # Extract customer details to dictionaries in list
-    customer_details = {}
-    customers = []
-    with open("customerDetails.txt", 'r') as get_cus_info:
-        for line in get_cus_info:
-            row = line.strip().split(": ")
-            customer_details[row[0]] = row[1]
-            for customer in range(1, custdb_line_count()):
-                if row == "":  # empty line
-                    break
-                elif len(customer_details) == 5:
-                    copy_data = customer_details.copy()
-                    customers.append(copy_data)
-                    customer_details = {}
-                    continue
+    try:
+        customer_details = {}
+        customers = []
+        with open("customerDetails.txt", 'r') as get_cus_info:
+            for line in get_cus_info:
+                row = line.strip().split(": ")
+                customer_details[row[0]] = row[1]
+                for customer in range(1, custdb_line_count()):
+                    if row == "":  # empty line
+                        break
+                    elif len(customer_details) == 5:
+                        copy_data = customer_details.copy()
+                        customers.append(copy_data)
+                        customer_details = {}
+                        continue
+    except:
+        print("\nDatabase under maintenance.. \n"
+              "Access the database system to check database progress\n")
+        maintenance_database_access()
+    get_cus_info.close()
 
     # Store all customers' username in a list
     customers_names = []
@@ -637,13 +838,22 @@ def registered_customer():
 # 3.2 Continue to display menu or administrator page.
 def display_redirect():
     # Ask for admins' preference in redirection
-    option = int(input("""
+    def redirect_validation():
+        try:
+            option = int(input("""
 Do you wish to return to the display menu or administrator's main screen?
 
-1: Display Menu
-2: Administrator Main Screen
+    1: Display Menu
+    2: Administrator Main Screen
 
-Option=>\t"""))
+Option=> """))
+            return option
+
+        except ValueError:
+            print("\nInvalid input, please insert a numeric value..\n")
+            return redirect_validation()
+
+    option = redirect_validation()
 
     # Return to the display menu
     if option == 1:
@@ -664,13 +874,22 @@ Option=>\t"""))
 # 4. Search Record
 def admin_search():
     # Admin's option database search
-    file_choose = int(input("""
+    def search_choice_validation():
+        try:
+            file_choose = int(input("""
 Choose database that you want to inspect / search:
 
-1: Customer Booking
-2: Customer Payment
+    1: Customer Booking
+    2: Customer Payment
 
-Option =>\t"""))
+Option => """))
+            return file_choose
+
+        except ValueError:
+            print("\nInvalid input, please insert a numeric value..\n")
+            return search_choice_validation()
+
+    file_choose = search_choice_validation()
 
     # Booking statement searh
     if file_choose == 1:
@@ -690,24 +909,30 @@ Option =>\t"""))
 # 1. Search on customer booking data
 def cus_book_search():
     # Extract customer booking / payment statement to dictionaries in list
-    customer_statement = {}
-    customers = []
-    with open("customerBookingPayment.txt", 'r') as booking_details:
-        for line in booking_details:
-            row = line.strip().split(": ")
-            customer_statement[row[0]] = row[1]
-            for customer in range(1, bookdb_line_count()):
-                if row == "":  # empty line
-                    break
-                elif len(customer_statement) == 7:
-                    copy_data = customer_statement.copy()
-                    customers.append(copy_data)
-                    customer_statement = {}
-                    continue
+    try:
+        customer_statement = {}
+        customers = []
+        with open("customerBookingPayment.txt", 'r') as booking_details:
+            for line in booking_details:
+                row = line.strip().split(": ")
+                customer_statement[row[0]] = row[1]
+                for customer in range(1, bookdb_line_count()):
+                    if row == "":  # empty line
+                        break
+                    elif len(customer_statement) == 7:
+                        copy_data = customer_statement.copy()
+                        customers.append(copy_data)
+                        customer_statement = {}
+                        continue
+    except:
+        print("\nDatabase under maintenance.. \n"
+              "Access the database system to check database progress\n")
+        maintenance_database_access()
+    booking_details.close()
 
     # Ask for data users want to search
     data_type = input("""
-Options: [Username] [Car ID] [Price] [Days] [Total Amount] 
+Options: [Username] [Car ID] [Price] [Days] [Total Amount]
 
 What is the data type you would like to seek for: """).lower()
     search_phrase = input("Enter keyword to search: ")
@@ -739,7 +964,7 @@ What is the data type you would like to seek for: """).lower()
         def cont_search_book():
             option = input("Continue searching?\n\n\t[YES] or [NO]\n\n"
                            "Note: Selecting [NO] will navigate you back to administrator main screen.\n"
-                           "Option=>\t").upper()
+                           "Option=> ").upper()
             if option == 'YES':
                 print("Returning back to the customer booking search page.")
                 cus_book_search()
@@ -759,24 +984,30 @@ What is the data type you would like to seek for: """).lower()
 # 2. Search on customer payment data
 def cus_pay_search():
     # Extract customer booking / payment statement to dictionaries in list
-    customer_statement = {}
-    customers = []
-    with open("customerBookingPayment.txt", 'r') as booking_details:
-        for line in booking_details:
-            row = line.strip().split(": ")
-            customer_statement[row[0]] = row[1]
-            for customer in range(1, bookdb_line_count()):
-                if row == "":  # empty line
-                    break
-                elif len(customer_statement) == 7:
-                    copy_data = customer_statement.copy()
-                    customers.append(copy_data)
-                    customer_statement = {}
-                    continue
+    try:
+        customer_statement = {}
+        customers = []
+        with open("customerBookingPayment.txt", 'r') as booking_details:
+            for line in booking_details:
+                row = line.strip().split(": ")
+                customer_statement[row[0]] = row[1]
+                for customer in range(1, bookdb_line_count()):
+                    if row == "":  # empty line
+                        break
+                    elif len(customer_statement) == 7:
+                        copy_data = customer_statement.copy()
+                        customers.append(copy_data)
+                        customer_statement = {}
+                        continue
+    except:
+        print("\nDatabase under maintenance.. \n"
+              "Access the database system to check database progress\n")
+        maintenance_database_access()
+    booking_details.close()
 
     # Request for required data for search
     data_type = input("""
-Options: [Username] [Car ID] [Price] [Days] [Total Amount] 
+Options: [Username] [Car ID] [Price] [Days] [Total Amount]
 
 What is the data type you would like to seek for: """).lower()
     search_phrase = input("Enter keyword to search: ")
@@ -808,7 +1039,7 @@ What is the data type you would like to seek for: """).lower()
         def cont_search_pay():
             option = input("Continue searching?\n\n\t[YES] or [NO]\n\n"
                            "Note: Selecting [NO] will navigate you back to administrator main screen.\n"
-                           "Option=>\t").upper()
+                           "Option=> ").upper()
             if option == 'YES':
                 print("\nReturning back to the customer payment search page.")
                 cus_pay_search()
@@ -828,13 +1059,22 @@ What is the data type you would like to seek for: """).lower()
 # 4.2 Continue at search menu or back to administrator main screen.
 def search_redirect():
     # Ask for admins' preference in redirection
-    option = int(input("""
+    def option_validation():
+        try:
+            option = int(input("""
 Do you want to return to the search menu or administrator main screen?
 
-1: Search menu
-2: Administrator Main screen
+    1: Search menu
+    2: Administrator Main screen
 
-Option =>\t"""))
+Option => """))
+            return option
+
+        except ValueError:
+            print("\nInvalid input, please insert a numeric value..\n")
+            return option_validation()
+
+    option = option_validation()
 
     # Return back to the search menu
     if option == 1:
@@ -855,39 +1095,45 @@ Option =>\t"""))
 # 5. Return a Rented Car.
 def admin_return_rent():
     # Extract customer booking / payment to dictionaries in list
-    customer_statement = {}
-    customers = []
-    with open("customerBookingPayment.txt", 'r') as booking_details:
-        for line in booking_details:
-            row = line.strip().split(": ")
-            customer_statement[row[0]] = row[1]
-            for customer in range(1, bookdb_line_count()):
-                if row == "":  # empty line
-                    break
-                elif len(customer_statement) == 7:
-                    copy_data = customer_statement.copy()
-                    customers.append(copy_data)
-                    customer_statement = {}
-                    continue
+    try:
+        customer_statement = {}
+        customers = []
+        with open("customerBookingPayment.txt", 'r') as booking_details:
+            for line in booking_details:
+                row = line.strip().split(": ")
+                customer_statement[row[0]] = row[1]
+                for customer in range(1, bookdb_line_count()):
+                    if row == "":  # empty line
+                        break
+                    elif len(customer_statement) == 7:
+                        copy_data = customer_statement.copy()
+                        customers.append(copy_data)
+                        customer_statement = {}
+                        continue
+    except:
+        print("\nDatabase under maintenance.. \n"
+              "Access the database system to check database progress\n")
+        maintenance_database_access()
+    booking_details.close()
 
-        # Display data that required to be return to the system
-        index1 = 0
-        line_num = 1
-        index_collector = []
-        cus_statement_header()
-        for customer in customers:
-            if customer['status'] == 'Paid' and customer['reservation'] == 'Renting':
-                index_collector.append(index1)
-                print("{:<4}{:<11}{:<8}{:<7}{:<8}RM{:<8}{:<9}{:<13}{:<8}"
-                      .format(line_num, customer['username'], customer['car id'], customer['price'], customer['days'],
-                              int(customer['price']) *
-                              int(customer['days']), customer['status'],
-                              customer['reservation'], customer['payment method']))
-                index1 += 1
-                line_num += 1
-            else:
-                index1 += 1
-                continue
+    # Display data that required to be return to the system
+    index1 = 0
+    line_num = 1
+    index_collector = []
+    cus_statement_header()
+    for customer in customers:
+        if customer['status'] == 'Paid' and customer['reservation'] == 'Renting':
+            index_collector.append(index1)
+            print("{:<4}{:<11}{:<8}{:<7}{:<8}RM{:<8}{:<9}{:<13}{:<8}"
+                  .format(line_num, customer['username'], customer['car id'], customer['price'], customer['days'],
+                          int(customer['price']) *
+                          int(customer['days']), customer['status'],
+                          customer['reservation'], customer['payment method']))
+            index1 += 1
+            line_num += 1
+        else:
+            index1 += 1
+            continue
 
     # If the data is empty or no data to display
     if not index_collector:
@@ -898,66 +1144,102 @@ def admin_return_rent():
         administrator_system()
 
     # Choose statement to return the rented car
-    return_rent = int(input(
-        "\nWhich statement you would like to return the rent car (line of statement): "))
+    def statement_validation():
+        try:
+            return_rent = int(input(
+                "\nWhich statement you would like to return the rent car (line of statement): "))
+            return return_rent
+
+        except ValueError:
+            print("\nInvalid input, please insert a numeric value..\n")
+            return statement_validation()
+
+    return_rent = statement_validation()
     index_value = index_converter(return_rent)
-    new_index = index_collector[index_value]
+
+    def index_validation():
+        try:
+            new_index = index_collector[index_value]
+            return new_index
+        except IndexError:
+            print("Invalid input, please try again.")
+            statement_validation()
+
+    new_index = index_validation()
+
     customers[new_index]['reservation'] = 'Completed'
     car_id = customers[new_index]['car id']
-
     # Extract car data to dictionaries in list
-    car_details = {}
-    cars = []
-    index2 = 0
-    with open("carDatabase.txt", 'r') as read_mark_open:
-        for line in read_mark_open:
-            row = line.strip().split(": ")
-            car_details[row[0]] = row[1]
-            for car in range(1, cardb_line_count()):
-                if row == "":  # empty line
-                    break
-                elif len(car_details) == 7:
-                    copy_data = car_details.copy()
-                    cars.append(copy_data)
-                    car_details = {}
-                    continue
+    try:
+        car_details = {}
+        cars = []
+        with open("carDatabase.txt", 'r') as read_mark_open:
+            for line in read_mark_open:
+                row = line.strip().split(": ")
+                car_details[row[0]] = row[1]
+                for car in range(1, cardb_line_count()):
+                    if row == "":  # empty line
+                        break
+                    elif len(car_details) == 7:
+                        copy_data = car_details.copy()
+                        cars.append(copy_data)
+                        car_details = {}
+                        continue
+    except:
+        print("\nDatabase under maintenance.. \n"
+              "Access the database system to check database progress\n")
+        maintenance_database_access()
+    read_mark_open.close()
 
-        # Find for cars that status should be changed to 'Open'
-        for car in cars:
-            if car['car_id'] == car_id:
-                open_index = index2
-                index2 += 1
-            else:
-                index2 += 1
-                continue
+    # Find for cars that status should be changed to 'Open'
+    index2 = 0
+    for car in cars:
+        if car['car_id'] == car_id:
+            open_index = index2
+            index2 += 1
+        else:
+            index2 += 1
+            continue
 
     # Set car status to 'Open'
     cars[open_index]['status'] = 'Open'
 
     # Update data in text files
-    count1 = 1
-    with open('customerBookingPayment.txt', 'w') as modified:
-        for information in customers:
-            for key in information:
-                if count1 < len(customers) * 7:
-                    count1 += 1
-                    list_of_strings = f'{key}: {information[key]}'
-                    modified.write(f'{list_of_strings}\n')
-                else:
-                    list_of_strings = f'{key}: {information[key]}'
-                    modified.write(f'{list_of_strings}')
+    try:
+        count1 = 1
+        with open('customerBookingPayment.txt', 'w') as modified:
+            for information in customers:
+                for key in information:
+                    if count1 < len(customers) * 7:
+                        count1 += 1
+                        list_of_strings = f'{key}: {information[key]}'
+                        modified.write(f'{list_of_strings}\n')
+                    else:
+                        list_of_strings = f'{key}: {information[key]}'
+                        modified.write(f'{list_of_strings}')
+    except:
+        print("\nDatabase under maintenance.. \n"
+              "Access the database system to check database progress\n")
+        maintenance_database_access()
+    modified.close()
 
-    count2 = 1
-    with open('carDatabase.txt', 'w') as mark_open:
-        for car in cars:
-            for key in car:
-                if count2 < len(cars) * 7:
-                    count2 += 1
-                    list_of_strings = f'{key}: {car[key]}'
-                    mark_open.write(f'{list_of_strings}\n')
-                else:
-                    list_of_strings = f'{key}: {car[key]}'
-                    mark_open.write(f'{list_of_strings}')
+    try:
+        count2 = 1
+        with open('carDatabase.txt', 'w') as mark_open:
+            for car in cars:
+                for key in car:
+                    if count2 < len(cars) * 7:
+                        count2 += 1
+                        list_of_strings = f'{key}: {car[key]}'
+                        mark_open.write(f'{list_of_strings}\n')
+                    else:
+                        list_of_strings = f'{key}: {car[key]}'
+                        mark_open.write(f'{list_of_strings}')
+    except:
+        print("\nDatabase under maintenance.. \n"
+              "Access the database system to check database progress\n")
+        maintenance_database_access()
+    mark_open.close()
 
     # Display updated data
     print("\nReturned rent statement: ")
@@ -973,7 +1255,7 @@ def admin_return_rent():
     def cont_return():
         option = input("\nContinue returning rent car?\n\n\t[YES] or [NO]\n\n"
                        "Note: Selecting [NO] will navigate you back to administrator main screen.\n"
-                       "Option=>\t").upper()
+                       "Option=> ").upper()
         # Continue return rent
         if option == 'YES':
             admin_return_rent()
@@ -994,20 +1276,26 @@ def admin_return_rent():
 # 6: Mark a car as Ready after the car is available upon customer's payment on confirmation for booking.
 def admin_mark_ready():
     # Extract customers' booking / payment statement to dictionaries in list
-    customer_statement = {}
-    customers = []
-    with open("customerBookingPayment.txt", 'r') as booking_details:
-        for line in booking_details:
-            row = line.strip().split(": ")
-            customer_statement[row[0]] = row[1]
-            for customer in range(1, bookdb_line_count()):
-                if row == "":  # empty line
-                    break
-                elif len(customer_statement) == 7:
-                    copy_data = customer_statement.copy()
-                    customers.append(copy_data)
-                    customer_statement = {}
-                    continue
+    try:
+        customer_statement = {}
+        customers = []
+        with open("customerBookingPayment.txt", 'r') as booking_details:
+            for line in booking_details:
+                row = line.strip().split(": ")
+                customer_statement[row[0]] = row[1]
+                for customer in range(1, bookdb_line_count()):
+                    if row == "":  # empty line
+                        break
+                    elif len(customer_statement) == 7:
+                        copy_data = customer_statement.copy()
+                        customers.append(copy_data)
+                        customer_statement = {}
+                        continue
+    except:
+        print("\nDatabase under maintenance.. \n"
+              "Access the database system to check database progress\n")
+        maintenance_database_access()
+    booking_details.close()
 
     # Display data that required to be mark as 'Ready'
     index1 = 0
@@ -1037,24 +1325,38 @@ def admin_mark_ready():
         administrator_system()
 
     # Choose and update car to be ready for paid booking
-    return_rent = int(input(
-        "\nWhich statement you would like to mark as ready upon customer's booking on confirmation towards booking: "))
+    def return_rent_validation():
+        try:
+            return_rent = int(input(
+                "\nWhich statement you would like to mark as ready upon customer's booking on confirmation towards booking: "))
+            return return_rent
+
+        except ValueError:
+            print("\nInvalid input, please insert a numeric value..\n")
+            return return_rent_validation()
+
+    return_rent = return_rent_validation()
     index_value = index_converter(return_rent)
     new_index = index_collector[index_value]
     customers[new_index]['reservation'] = 'Ready'
-
     # Update text file
-    count = 1
-    with open('customerBookingPayment.txt', 'w') as modified:
-        for information in customers:
-            for key in information:
-                if count < len(customers) * 7:
-                    count += 1
-                    list_of_strings = f'{key}: {information[key]}'
-                    modified.write(f'{list_of_strings}\n')
-                else:
-                    list_of_strings = f'{key}: {information[key]}'
-                    modified.write(f'{list_of_strings}')
+    try:
+        count = 1
+        with open('customerBookingPayment.txt', 'w') as modified:
+            for information in customers:
+                for key in information:
+                    if count < len(customers) * 7:
+                        count += 1
+                        list_of_strings = f'{key}: {information[key]}'
+                        modified.write(f'{list_of_strings}\n')
+                    else:
+                        list_of_strings = f'{key}: {information[key]}'
+                        modified.write(f'{list_of_strings}')
+    except:
+        print("\nDatabase under maintenance.. \n"
+              "Access the database system to check database progress\n")
+        maintenance_database_access()
+    modified.close()
 
     # Display returned rent car
     print("\nReturned rent statement: ")
@@ -1070,11 +1372,11 @@ def admin_mark_ready():
     def cont_modify_or_not():
         option = input("""
 Do you wish to mark more cars as ready?
-        
+
 \t[YES] or [NO]
 
 Note: Selecting [NO] will navigate you back to administrator main screen.
-Option =>\t""").upper()
+Option => """).upper()
 
         # Continue marking ready
         if option == 'YES':
@@ -1088,7 +1390,7 @@ Option =>\t""").upper()
 
         # Invalid input, ask for admins' choice again
         else:
-            print("\nInvalid input, please select either 1 or 2.\n")
+            print("\nInvalid input, please select either 'YES' or 'NO'.\n")
             return cont_modify_or_not()
 
     # Call function to execute
@@ -1098,52 +1400,70 @@ Option =>\t""").upper()
 # 7. Analytics Dashboard
 def analytics_dashboard():
     # Extract customer booking / payment statement to dictionaries in list
-    customer_statement = {}
-    customers1 = []
-    with open("customerBookingPayment.txt", 'r') as booking_details:
-        for line in booking_details:
-            row = line.strip().split(": ")
-            customer_statement[row[0]] = row[1]
-            for customer in range(1, bookdb_line_count()):
-                if row == "":  # empty line
-                    break
-                elif len(customer_statement) == 7:
-                    copy_data = customer_statement.copy()
-                    customers1.append(copy_data)
-                    customer_statement = {}
-                    continue
+    try:
+        customer_statement = {}
+        customers1 = []
+        with open("customerBookingPayment.txt", 'r') as booking_details:
+            for line in booking_details:
+                row = line.strip().split(": ")
+                customer_statement[row[0]] = row[1]
+                for customer in range(1, bookdb_line_count()):
+                    if row == "":  # empty line
+                        break
+                    elif len(customer_statement) == 7:
+                        copy_data = customer_statement.copy()
+                        customers1.append(copy_data)
+                        customer_statement = {}
+                        continue
+    except:
+        print("\nDatabase under maintenance.. \n"
+              "Access the database system to check database progress\n")
+        maintenance_database_access()
+    booking_details.close()
 
     # Extract car data to dictionaries in list
-    car_details = {}
-    car_holder = []
-    with open("carDatabase.txt", "r") as display_rent:
-        for line in display_rent:
-            row = line.strip().split(": ")
-            car_details[row[0]] = row[1]
-            for car in range(1, cardb_line_count()):
-                if row == "":  # empty line
-                    break
-                elif len(car_details) == 7:
-                    copy_data = car_details.copy()
-                    car_holder.append(copy_data)
-                    car_details = {}
-                    continue
+    try:
+        car_details = {}
+        car_holder = []
+        with open("carDatabase.txt", "r") as display_rent:
+            for line in display_rent:
+                row = line.strip().split(": ")
+                car_details[row[0]] = row[1]
+                for car in range(1, cardb_line_count()):
+                    if row == "":  # empty line
+                        break
+                    elif len(car_details) == 7:
+                        copy_data = car_details.copy()
+                        car_holder.append(copy_data)
+                        car_details = {}
+                        continue
+    except:
+        print("\nDatabase under maintenance.. \n"
+              "Access the database system to check database progress\n")
+        maintenance_database_access()
+    display_rent.close()
 
     # Extract customer details to dictionaries in list
-    customer_details = {}
-    customers2 = []
-    with open("customerDetails.txt", "r") as customer_file:
-        for line in customer_file:
-            row = line.strip().split(": ")
-            customer_details[row[0]] = row[1]
-            for information in range(1, custdb_line_count()):
-                if row == "":  # empty line
-                    break
-                elif len(customer_details) == 5:
-                    copy_data = customer_details.copy()
-                    customers2.append(copy_data)
-                    customer_details = {}
-                    break
+    try:
+        customer_details = {}
+        customers2 = []
+        with open("customerDetails.txt", "r") as customer_file:
+            for line in customer_file:
+                row = line.strip().split(": ")
+                customer_details[row[0]] = row[1]
+                for information in range(1, custdb_line_count()):
+                    if row == "":  # empty line
+                        break
+                    elif len(customer_details) == 5:
+                        copy_data = customer_details.copy()
+                        customers2.append(copy_data)
+                        customer_details = {}
+                        break
+    except:
+        print("\nDatabase under maintenance.. \n"
+              "Access the database system to check database progress\n")
+        maintenance_database_access()
+    customer_file.close()
 
     # Retrieve all customer payment total amount
     payment_amount = []
@@ -1177,56 +1497,69 @@ Returning to administrator system....""")
 # Section F : Customer
 # 1. Customer landing page
 def customer_interface():
-    option = int(input("""\nAs a visitor, select your action.
+    try:
+        option = int(input("""\nAs a visitor, select your action.
 
 1: View all cars with any status.
 2: Membership Registration \t - get access to more features.
 3: Registered customers' section.
 4: Exit the system.
 
-Option  =>\t"""))
+Option  => """))
 
-    # Execute system based on option
-    if option == 1:
-        view_cars()
-        cont_main_menu()
-    elif option == 2:
-        cus_reg_header()
-    elif option == 3:
-        registered_login()
-    elif option == 4:
-        exit_system()
+        # Execute system based on option
+        if option == 1:
+            view_cars()
+            cont_main_menu()
+        elif option == 2:
+            cus_reg_header()
+        elif option == 3:
+            registered_login()
+        elif option == 4:
+            exit_system()
 
-    # Error if integers 1 to 4 are not entered, customers can try entering again
-    else:
-        print("Invalid input, please insert valid value (1 to 4): ")
-        return customer_interface()
+        # Error if integers 1 to 4 are not entered, customers can try entering again
+        else:
+            print("Invalid input, please insert valid value (1 to 4): ")
+            return customer_interface()
+
+    # Non numeric value validation
+    except ValueError:
+        print("Invalid input, please insert a valid numeric value.")
+        return cont_main_menu()
 
 
 # 2. Redirect customer landing page, login or register
 def cont_main_menu():
-    redirect = int(input("""\nDo you wish to go back to the main menu or login for more functionalities?
-    
+    try:
+        redirect = int(input("""
+Do you wish to go back to the main menu or login for more functionalities?
+
 1: Main menu
 2: Proceed to log in
 3: Proceed to registration (For customer with no account in the server)
 
-Option =>\t"""))
+Option => """))
 
-    # Executes according to customer's option
-    if redirect == 1:
-        print("\nReturning to the main menu...")
-        return customer_interface()
-    elif redirect == 2:
-        print("\nRedirecting to the customer log in page....")
-        return registered_login()
-    elif redirect == 3:
-        print("\nRedirecting to the customer registration page....")
-        return customer_registration()
-    # Error if integers form 1 to 3 are not entered, customers can try entering again
-    else:
-        print("\nInvalid input, please select either 1, 2 or 3.")
-        return cont_main_menu
+        # Executes according to customer's option
+        if redirect == 1:
+            print("\nReturning to the main menu...")
+            customer_interface()
+        elif redirect == 2:
+            print("\nRedirecting to the customer log in page....")
+            registered_login()
+        elif redirect == 3:
+            print("\nRedirecting to the customer registration page....")
+            customer_registration()
+        # Error if integers form 1 to 3 are not entered, customers can try entering again
+        else:
+            print("\nInvalid input, please select either 1, 2 or 3.")
+            return cont_main_menu()
+
+    # Non numeric value validation
+    except ValueError:
+        print("Invalid input, please insert a valid numeric value.")
+        return cont_main_menu()
 
 
 # 3. Customer Registration
@@ -1236,28 +1569,62 @@ def customer_registration():
     password = input("Enter your password: ")
 
     # Open text file for validation and insertion
-    with open("customerDetails.txt", 'r') as existing, open("customerDetails.txt", 'a') as new_customer:
-        # Check whether the username is taken by other customer, duplicate usernames are not allowed
-        check = existing.read()
-        if username in check:
+    names = {}
+    username_holder = []
+    try:
+        with open("customerDetails.txt", 'r') as existing:
+            # Check whether the username is taken by other customer, duplicate usernames are not allowed
+            for line in existing:
+                row = line.strip().split(": ")
+                names[row[0]] = row[1]
+                if row[0] == "username":
+                    copy_data = names.copy()
+                    username_holder.append(copy_data)
+                    names = {}
+                    continue
+                else:
+                    names = {}
+                    continue
+
+    except:
+        print("\nDatabase is corrupted..\n"
+              "Due to unstable database, You will be redirected to the welcome page..\n")
+        welcome()
+    existing.close()
+
+    for name in username_holder:
+        if username == name['username']:
             print("\nThis username had been used, please use another username.\n")
             return customer_registration()
 
-        # Obtaining and inserting new users data into customerDetails.txt as a record
+        # Obtaining new customers' details
         else:
             print(
                 "\nPlease fill in the following details to provide more information to rent a car / cars.\n")
             address = input("Address: ")
             contact_number = input("Contact number: ")
-            new_customer.write(f"\nusername: {username}\npassword: {password}\naddress: {address}"
-                               f"\ncontact number: {contact_number}")
-            print(decoration(), " Thank you for registering ", decoration(), "\n")
+            break
 
-            # Every newly registered customer will have RM 0 as their balance
-            balance = 0
-            print("Your balance is now: ", balance,
-                  "\nYou can recharge it from the customer functionalities page.")
-            new_customer.write(f"\nbalance: {balance}")
+    # Every newly registered customer will have RM 0 as their balance
+    balance = 0
+    print(f"""Your balance is now: RM{balance}
+You can recharge it from the customer functionalities page.
+
+{decoration()} Thank you for registering {decoration()}
+""")
+
+    try:
+        # Inserting new users data into customerDetails.txt as a record
+        with open("customerDetails.txt", 'a') as new_customer:
+            new_customer.write(f"\nusername: {username}\npassword: {password}\naddress: {address}"
+                               f"\ncontact number: {contact_number}\nbalance: {balance}")
+    except:
+        print("\nDatabase is corrupted..\n"
+              "Due to unstable database, You will be redirected to the welcome page..\n")
+        welcome()
+
+    new_customer.close()
+
     print("\nYou can login to the system now. Start renting your car! :D\n")
 
     # Automatically redirect to customer landing page
@@ -1273,20 +1640,26 @@ def registered_login():
         password = input("Enter your password: ")
 
         # Extract customer details to dictionaries in list
-        customer_details = {}
-        customers = []
-        with open("customerDetails.txt", "r") as customer_file:
-            for line in customer_file:
-                row = line.strip().split(": ")
-                customer_details[row[0]] = row[1]
-                for information in range(1, custdb_line_count()):
-                    if row == "":  # empty line
-                        break
-                    elif len(customer_details) == 5:
-                        copy_data = customer_details.copy()
-                        customers.append(copy_data)
-                        customer_details = {}
-                        continue
+        try:
+            customer_details = {}
+            customers = []
+            with open("customerDetails.txt", "r") as customer_file:
+                for line in customer_file:
+                    row = line.strip().split(": ")
+                    customer_details[row[0]] = row[1]
+                    for information in range(1, custdb_line_count()):
+                        if row == "":  # empty line
+                            break
+                        elif len(customer_details) == 5:
+                            copy_data = customer_details.copy()
+                            customers.append(copy_data)
+                            customer_details = {}
+                            continue
+        except:
+            print("\nDatabase is corrupted..\n"
+                  "Due to unstable database, You will be redirected to the welcome page..\n")
+            welcome()
+        customer_file.close()
 
         # Username and password validation based on customers' input
         for customer in customers:
@@ -1306,7 +1679,7 @@ def registered_login():
 Do you have an account? 
 [YES] or [NO]
 
-Option =>\t""").upper()
+Option => """).upper()
 
                 # With account, customers can try again if they have an existing account
                 if register_confirm == "YES":
@@ -1317,7 +1690,7 @@ Option =>\t""").upper()
                     def register_account_ask():
                         register_account = input("\nDo you wish to register a new account?\n\n\t[YES] or [NO]"
                                                  "\n\nNote: Selecting [NO] will redirect you to customer landing page."
-                                                 "\nOption =>\t").upper()
+                                                 "\nOption => ").upper()
 
                         # Customers will be redirected to the registration page
                         if register_account == "YES":
@@ -1355,7 +1728,9 @@ def reg_customer():
     print(decoration()*2, "Functionalities Page", decoration()*2)
 
     # Request for users input
-    option = int(input("""
+    def option_validation():
+        try:
+            option = int(input("""
 What would you like to perform?
 
 1: View all available car for rent.
@@ -1367,8 +1742,15 @@ What would you like to perform?
 7: Claim car that is Ready to be rented
 8: Exit the portal. 
 
-Option =>\t"""))
+Option => """))
+            return option
 
+        # Non numeric value validation
+        except:
+            print("Invalid input, please insert a numeric value.")
+            return option_validation()
+
+    option = option_validation()
     # Executes based on the options entered from customers
     if option == 1:
         dis_all_rent()
@@ -1398,20 +1780,26 @@ Option =>\t"""))
 # Retrieve car that is available to be rented out
 def rent_car_details():
     # Extract car data to dictionaries in list
-    car_details = {}
-    car_holder = []
-    with open("carDatabase.txt", "r") as display_rent:
-        for line in display_rent:
-            row = line.strip().split(": ")
-            car_details[row[0]] = row[1]
-            for car in range(1, cardb_line_count()):
-                if row == "":  # empty line
-                    break
-                elif len(car_details) == 7:
-                    copy_data = car_details.copy()
-                    car_holder.append(copy_data)
-                    car_details = {}
-                    continue
+    try:
+        car_details = {}
+        car_holder = []
+        with open("carDatabase.txt", "r") as display_rent:
+            for line in display_rent:
+                row = line.strip().split(": ")
+                car_details[row[0]] = row[1]
+                for car in range(1, cardb_line_count()):
+                    if row == "":  # empty line
+                        break
+                    elif len(car_details) == 7:
+                        copy_data = car_details.copy()
+                        car_holder.append(copy_data)
+                        car_details = {}
+                        continue
+    except:
+        print("\nDatabase is corrupted..\n"
+              "Due to unstable database, You will be redirected to the welcome page..\n")
+        welcome()
+    display_rent.close()
 
     # Displaying cars based on the "open" status
     index = 0
@@ -1436,26 +1824,31 @@ def dis_all_rent():
 
     # ask to book car or back to the main menu from the open status cars
     def cont_book_car():
-        # Request customers' option in directly book a car or back to customers' functionalities menu
-        car_booking = int(input("""
+        try:
+            # Request customers' option in directly book a car or back to customers' functionalities menu
+            car_booking = int(input("""
 Do you want to proceed to book a car or return to the functionalities menu?
 
     1: Booking
     2: Customers functionalities menu
 
-Option =>\t"""))
+Option => """))
 
-        # Executes based on the customer's option
-        if car_booking == 1:
-            print("Redirecting to booking page...")
-            book_car()
-        elif car_booking == 2:
-            print("Returning to main menu...")
-            reg_customer()
+            # Executes based on the customer's option
+            if car_booking == 1:
+                print("\nRedirecting to booking page...")
+                book_car()
+            elif car_booking == 2:
+                print("\nReturning to main menu...")
+                reg_customer()
 
-        # Invalid input, ask for customers' option again
-        else:
-            print("Invalid input, please select either [YES] or [NO]")
+            # Invalid input, ask for customers' option again
+            else:
+                print("\nInvalid input, please select either [YES] or [NO].\n")
+                return cont_book_car()
+
+        except ValueError:
+            print("\nInvalid input, please insert a numeric value.\n")
             return cont_book_car()
 
     # Call function to execute
@@ -1469,22 +1862,28 @@ def modify_details():
         "Your username is requested to check your credential for profile modification: ")
 
     # Extract customers' details to dictionaries in list
-    customer_details = {}
-    customers = []
-    with open("customerDetails.txt", "r") as customer_file:
-        for line in customer_file:
-            row = line.strip().split(": ")
-            customer_details[row[0]] = row[1]
-            for information in range(1, custdb_line_count()):
-                if row == "":  # empty line
-                    break
-                elif len(customer_details) == 5:
-                    copy_data = customer_details.copy()
-                    customers.append(copy_data)
-                    customer_details = {}
-                    break
-                else:
-                    continue
+    try:
+        customer_details = {}
+        customers = []
+        with open("customerDetails.txt", "r") as customer_file:
+            for line in customer_file:
+                row = line.strip().split(": ")
+                customer_details[row[0]] = row[1]
+                for information in range(1, custdb_line_count()):
+                    if row == "":  # empty line
+                        break
+                    elif len(customer_details) == 5:
+                        copy_data = customer_details.copy()
+                        customers.append(copy_data)
+                        customer_details = {}
+                        break
+                    else:
+                        continue
+    except:
+        print("\nDatabase is corrupted..\n"
+              "Due to unstable database, You will be redirected to the welcome page..\n")
+        welcome()
+    customer_file.close()
 
     # Customers' username validation
     index = 0
@@ -1515,17 +1914,23 @@ def modify_details():
     customers[cus_index][modify_type] = new_data
 
     # Update new data into the text file
-    count = 1
-    with open('customerDetails.txt', 'w') as modified:
-        for information in customers:
-            for key in information:
-                if count < len(customers) * 5:
-                    count += 1
-                    list_of_strings = f'{key}: {information[key]}'
-                    modified.write(f'{list_of_strings}\n')
-                else:
-                    list_of_strings = f'{key}: {information[key]}'
-                    modified.write(f'{list_of_strings}')
+    try:
+        count = 1
+        with open('customerDetails.txt', 'w') as modified:
+            for information in customers:
+                for key in information:
+                    if count < len(customers) * 5:
+                        count += 1
+                        list_of_strings = f'{key}: {information[key]}'
+                        modified.write(f'{list_of_strings}\n')
+                    else:
+                        list_of_strings = f'{key}: {information[key]}'
+                        modified.write(f'{list_of_strings}')
+    except:
+        print("\nDatabase is corrupted..\n"
+              "Due to unstable database, You will be redirected to the welcome page..\n")
+        welcome()
+    modified.close()
 
     # Continue profile modification?
     def cont_modify():
@@ -1535,7 +1940,7 @@ Continue modifying?
     [YES] or [NO]
     
 Note: Selecting [NO] will navigate you back to the customer functionalities page
-Option =>\t""").upper()
+Option => """).upper()
 
         # Redirected to modify customer details again
         if continue_or_not == 'YES':
@@ -1560,20 +1965,26 @@ Option =>\t""").upper()
 # 3. View personal rental history
 def rental_hist():
     # Extract customer booking details into dictionaries in list
-    customer_statement = {}
-    customers = []
-    with open("customerBookingPayment.txt", 'r') as booking_details:
-        for line in booking_details:
-            row = line.strip().split(": ")
-            customer_statement[row[0]] = row[1]
-            for customer in range(1, bookdb_line_count()):
-                if row == "":  # empty line
-                    break
-                elif len(customer_statement) == 7:
-                    copy_data = customer_statement.copy()
-                    customers.append(copy_data)
-                    customer_statement = {}
-                    continue
+    try:
+        customer_statement = {}
+        customers = []
+        with open("customerBookingPayment.txt", 'r') as booking_details:
+            for line in booking_details:
+                row = line.strip().split(": ")
+                customer_statement[row[0]] = row[1]
+                for customer in range(1, bookdb_line_count()):
+                    if row == "":  # empty line
+                        break
+                    elif len(customer_statement) == 7:
+                        copy_data = customer_statement.copy()
+                        customers.append(copy_data)
+                        customer_statement = {}
+                        continue
+    except:
+        print("\nDatabase is corrupted..\n"
+              "Due to unstable database, You will be redirected to the welcome page..\n")
+        welcome()
+    booking_details.close()
 
     # Enter username to confirm identity
     print("\nIMPORTANT!! You are going to access customers' private data.\n")
@@ -1620,20 +2031,26 @@ def book_car():
     username = input("Enter your username to request your booking: ")
 
     # Extract car details to dictionaries in list
-    car_details = {}
-    car_holder = []
-    with open('carDatabase.txt', 'r') as original:
-        for line in original:
-            row = line.strip().split(": ")
-            car_details[row[0]] = row[1]
-            for car in range(1, cardb_line_count()):
-                if row == "":  # empty line
-                    break
-                elif len(car_details) == 7:
-                    copy_data = car_details.copy()
-                    car_holder.append(copy_data)
-                    car_details = {}
-                    continue
+    try:
+        car_details = {}
+        car_holder = []
+        with open('carDatabase.txt', 'r') as original:
+            for line in original:
+                row = line.strip().split(": ")
+                car_details[row[0]] = row[1]
+                for car in range(1, cardb_line_count()):
+                    if row == "":  # empty line
+                        break
+                    elif len(car_details) == 7:
+                        copy_data = car_details.copy()
+                        car_holder.append(copy_data)
+                        car_details = {}
+                        continue
+    except:
+        print("\nDatabase is corrupted..\n"
+              "Due to unstable database, You will be redirected to the welcome page..\n")
+        welcome()
+    original.close()
 
     # Change the status of the car to "booked"
     for car in car_holder:
@@ -1642,24 +2059,44 @@ def book_car():
             break
 
     # Ask to book for how many days
-    days = int(input("How many day(s) you would like to book it: "))
+    def days_validation():
+        try:
+            days = int(input("How many day(s) you would like to book it: "))
+            return days
 
+        # Non-numeric value validation
+        except:
+            print("\nInvalid input, please insert numeric value.\n")
+            return days_validation()
+
+    days = days_validation()
     # Update new data into the text file
-    count = 1
-    with open("carDatabase.txt", 'w') as new_status:
-        for data in car_holder:
-            for records in data:
-                if count < len(car_holder) * 7:
-                    count += 1
-                    list_of_records = f'{records}: {data[records]}'
-                    new_status.write(f'{list_of_records}\n')
-                else:
-                    list_of_records = f'{records}: {data[records]}'
-                    new_status.write(f'{list_of_records}')
+    try:
+        count = 1
+        with open("carDatabase.txt", 'w') as new_status:
+            for data in car_holder:
+                for records in data:
+                    if count < len(car_holder) * 7:
+                        count += 1
+                        list_of_records = f'{records}: {data[records]}'
+                        new_status.write(f'{list_of_records}\n')
+                    else:
+                        list_of_records = f'{records}: {data[records]}'
+                        new_status.write(f'{list_of_records}')
+    except:
+        print("\nDatabase is corrupted..\n"
+              "Due to unstable database, You will be redirected to the welcome page..\n")
+        welcome()
+    new_status.close()
 
-    with open("customerBookingPayment.txt", 'a') as new_booking:
-        new_booking.write(f"\nusername: {username}\ncar id: {select_car}\nprice: {price}\ndays: {days}\n"
-                          f"status: Pending\nreservation: N/A\npayment method: N/A")
+    try:
+        with open("customerBookingPayment.txt", 'a') as new_booking:
+            new_booking.write(f"\nusername: {username}\ncar id: {select_car}\nprice: {price}\ndays: {days}\n"
+                              f"status: Pending\nreservation: N/A\npayment method: N/A")
+    except:
+        print("\nDatabase is corrupted..\n"
+              "Due to unstable database, You will be redirected to the welcome page..\n")
+        welcome()
 
     # Automatically redirect to customer functionalities page
     print("\nYou will be redirected to the customer functionalities page.\n"
@@ -1670,36 +2107,48 @@ def book_car():
 # 7. Do payment to confirm Booking.
 def pay_car():
     # Extract car details to dictionaries in list
-    car_details = {}
-    car_holder = []
-    with open('carDatabase.txt', 'r') as original:
-        for line in original:
-            row = line.strip().split(": ")
-            car_details[row[0]] = row[1]
-            for car in range(1, cardb_line_count()):
-                if row == "":  # empty line
-                    break
-                elif len(car_details) == 7:
-                    copy_data = car_details.copy()
-                    car_holder.append(copy_data)
-                    car_details = {}
-                    continue
+    try:
+        car_details = {}
+        car_holder = []
+        with open('carDatabase.txt', 'r') as original:
+            for line in original:
+                row = line.strip().split(": ")
+                car_details[row[0]] = row[1]
+                for car in range(1, cardb_line_count()):
+                    if row == "":  # empty line
+                        break
+                    elif len(car_details) == 7:
+                        copy_data = car_details.copy()
+                        car_holder.append(copy_data)
+                        car_details = {}
+                        continue
+    except:
+        print("\nDatabase is corrupted..\n"
+              "Due to unstable database, You will be redirected to the welcome page..\n")
+        welcome()
+    original.close()
 
     # Extract customer booking details into dictionaries in list
-    customer_statement = {}
-    customers = []
-    with open("customerBookingPayment.txt", 'r') as booking_details:
-        for line in booking_details:
-            row = line.strip().split(": ")
-            customer_statement[row[0]] = row[1]
-            for customer in range(1, bookdb_line_count()):
-                if row == "":  # empty line
-                    break
-                elif len(customer_statement) == 7:
-                    copy_data = customer_statement.copy()
-                    customers.append(copy_data)
-                    customer_statement = {}
-                    continue
+    try:
+        customer_statement = {}
+        customers = []
+        with open("customerBookingPayment.txt", 'r') as booking_details:
+            for line in booking_details:
+                row = line.strip().split(": ")
+                customer_statement[row[0]] = row[1]
+                for customer in range(1, bookdb_line_count()):
+                    if row == "":  # empty line
+                        break
+                    elif len(customer_statement) == 7:
+                        copy_data = customer_statement.copy()
+                        customers.append(copy_data)
+                        customer_statement = {}
+                        continue
+    except:
+        print("\nDatabase is corrupted..\n"
+              "Due to unstable database, You will be redirected to the welcome page..\n")
+        welcome()
+    booking_details.close()
 
     # Enter username to confirm booking
     username = input(
@@ -1739,7 +2188,7 @@ def pay_car():
         # Ask to continue to pay or not
         def cont_pay():
             option = input("\nContinue payment?\n\n\t[YES] or [NO]\n\n"
-                           "Note: Select [NO] return to customer functionalities page\nOption =>\t").upper()
+                           "Note: Select [NO] return to customer functionalities page\nOption => ").upper()
 
             # Return to payment page
             if option == 'YES':
@@ -1759,8 +2208,18 @@ def pay_car():
         cont_pay()
 
     # Select the booking that customers wish to pay
-    pay_statement = int(
-        input("\nWhich booking statement (line) you would like to pay? "))
+    def booking_pay():
+        try:
+            pay_statement = int(
+                input("\nWhich booking statement (line) you would like to pay? "))
+            return pay_statement
+
+        # Non numeric value validation
+        except:
+            print("\nInvalid input, please insert numeric value.\n")
+            return booking_pay()
+
+    pay_statement = booking_pay()
     statement_index = index_converter(pay_statement)
     pay_index = new_index[statement_index]
     car_id = customers[pay_index]['car id']
@@ -1769,23 +2228,29 @@ def pay_car():
     print("\nIMPORTANT!! Note that you will need to make full payment to confirm your booking.\n")
     payment_method = input("""What would you like to use to pay the booking?
 [credit card] [balance]
-=>\t""").lower()
+=> """).lower()
 
     # Update data
     customers[pay_index]['payment method'] = payment_method
 
     # Update new data to the text file
-    count = 1
-    with open("customerBookingPayment.txt", 'w') as update_pay_method:
-        for data in customers:
-            for records in data:
-                if count < len(customers) * 7:
-                    count += 1
-                    list_of_records = f'{records}: {data[records]}'
-                    update_pay_method.write(f'{list_of_records}\n')
-                else:
-                    list_of_records = f'{records}: {data[records]}'
-                    update_pay_method.write(f'{list_of_records}')
+    try:
+        count = 1
+        with open("customerBookingPayment.txt", 'w') as update_pay_method:
+            for data in customers:
+                for records in data:
+                    if count < len(customers) * 7:
+                        count += 1
+                        list_of_records = f'{records}: {data[records]}'
+                        update_pay_method.write(f'{list_of_records}\n')
+                    else:
+                        list_of_records = f'{records}: {data[records]}'
+                        update_pay_method.write(f'{list_of_records}')
+    except:
+        print("\nDatabase is corrupted..\n"
+              "Due to unstable database, You will be redirected to the welcome page..\n")
+        welcome()
+    update_pay_method.close()
 
     # Credit card payment method
     if payment_method == 'credit card':
@@ -1812,30 +2277,42 @@ Credit card: {credit_card_num}
                 car["status"] = 'Booked'
 
         # Update new data to the text file
-        count1 = 1
-        with open("customerBookingPayment.txt", 'w') as paid_statement:
-            for information in customers:
-                for key in information:
-                    if count1 < len(customers) * 7:
-                        list_of_strings = f'{key}: {information[key]}'
-                        paid_statement.write(f'{list_of_strings}\n')
-                        count1 += 1
-                    else:
-                        list_of_strings = f'{key}: {information[key]}'
-                        paid_statement.write(f'{list_of_strings}')
+        try:
+            count1 = 1
+            with open("customerBookingPayment.txt", 'w') as paid_statement:
+                for information in customers:
+                    for key in information:
+                        if count1 < len(customers) * 7:
+                            list_of_strings = f'{key}: {information[key]}'
+                            paid_statement.write(f'{list_of_strings}\n')
+                            count1 += 1
+                        else:
+                            list_of_strings = f'{key}: {information[key]}'
+                            paid_statement.write(f'{list_of_strings}')
+        except:
+            print("\nDatabase is corrupted..\n"
+                  "Due to unstable database, You will be redirected to the welcome page..\n")
+        welcome()
+        paid_statement.close()
 
-        count2 = 1
-        with open("carDatabase.txt", 'w') as mark_rented:
-            # Transfer new car data into the text file
-            for information in car_holder:
-                for key in information:
-                    if count2 < len(car_holder) * 7:
-                        list_of_strings = f'{key}: {information[key]}'
-                        mark_rented.write(f'{list_of_strings}\n')
-                        count2 += 1
-                    else:
-                        list_of_strings = f'{key}: {information[key]}'
-                        mark_rented.write(f'{list_of_strings}')
+        try:
+            count2 = 1
+            with open("carDatabase.txt", 'w') as mark_rented:
+                # Transfer new car data into the text file
+                for information in car_holder:
+                    for key in information:
+                        if count2 < len(car_holder) * 7:
+                            list_of_strings = f'{key}: {information[key]}'
+                            mark_rented.write(f'{list_of_strings}\n')
+                            count2 += 1
+                        else:
+                            list_of_strings = f'{key}: {information[key]}'
+                            mark_rented.write(f'{list_of_strings}')
+        except:
+            print("\nDatabase is corrupted..\n"
+                  "Due to unstable database, You will be redirected to the welcome page..\n")
+        welcome()
+        mark_rented.close()
 
         # Automatically redirect to the customer functionalities page
         print("\nRedirecting to customer functionalities page...\n")
@@ -1858,22 +2335,28 @@ def pay_balance():
         "\nYou are accessing your online balance, enter your username to make sure that is you: ")
 
     # Extracts customer Details into dictionaries in list
-    customer_details = {}
-    customers = []
-    with open("customerDetails.txt", "r") as balance_checker:
-        for line in balance_checker:
-            row = line.strip().split(": ")
-            customer_details[row[0]] = row[1]
-            for information in range(1, custdb_line_count()):
-                if row == "":  # empty line
-                    break
-                elif len(customer_details) == 5:
-                    copy_data = customer_details.copy()
-                    customers.append(copy_data)
-                    customer_details = {}
-                    break
-                else:
-                    continue
+    try:
+        customer_details = {}
+        customers = []
+        with open("customerDetails.txt", "r") as balance_checker:
+            for line in balance_checker:
+                row = line.strip().split(": ")
+                customer_details[row[0]] = row[1]
+                for information in range(1, custdb_line_count()):
+                    if row == "":  # empty line
+                        break
+                    elif len(customer_details) == 5:
+                        copy_data = customer_details.copy()
+                        customers.append(copy_data)
+                        customer_details = {}
+                        break
+                    else:
+                        continue
+    except:
+        print("\nDatabase is corrupted..\n"
+              "Due to unstable database, You will be redirected to the welcome page..\n")
+        welcome()
+    balance_checker.close()
 
     # Verifying username
     index1 = 0
@@ -1885,20 +2368,26 @@ def pay_balance():
         index1 += 1
 
     # Extracts customer booking/payment details into dictionaries in list
-    customer_pay = {}
-    statements = []
-    with open("customerBookingPayment.txt", 'r') as booking_details:
-        for line in booking_details:
-            row = line.strip().split(": ")
-            customer_pay[row[0]] = row[1]
-            for customer in range(1, bookdb_line_count()):
-                if row == "":  # empty line
-                    break
-                elif len(customer_pay) == 7:
-                    copy_data = customer_pay.copy()
-                    statements.append(copy_data)
-                    customer_pay = {}
-                    continue
+    try:
+        customer_pay = {}
+        statements = []
+        with open("customerBookingPayment.txt", 'r') as booking_details:
+            for line in booking_details:
+                row = line.strip().split(": ")
+                customer_pay[row[0]] = row[1]
+                for customer in range(1, bookdb_line_count()):
+                    if row == "":  # empty line
+                        break
+                    elif len(customer_pay) == 7:
+                        copy_data = customer_pay.copy()
+                        statements.append(copy_data)
+                        customer_pay = {}
+                        continue
+    except:
+        print("\nDatabase is corrupted..\n"
+              "Due to unstable database, You will be redirected to the welcome page..\n")
+        welcome()
+    booking_details.close()
 
     # Search for relevant payment / booking statement
     index2 = 0
@@ -1917,20 +2406,26 @@ def pay_balance():
         index2 += 1
 
     # Extracts car details to dictionaries in list
-    car_details = {}
-    car_holder = []
-    with open('carDatabase.txt', 'r') as original:
-        for line in original:
-            row = line.strip().split(": ")
-            car_details[row[0]] = row[1]
-            for car in range(1, cardb_line_count()):
-                if row == "":  # empty line
-                    break
-                elif len(car_details) == 7:
-                    copy_data = car_details.copy()
-                    car_holder.append(copy_data)
-                    car_details = {}
-                    continue
+    try:
+        car_details = {}
+        car_holder = []
+        with open('carDatabase.txt', 'r') as original:
+            for line in original:
+                row = line.strip().split(": ")
+                car_details[row[0]] = row[1]
+                for car in range(1, cardb_line_count()):
+                    if row == "":  # empty line
+                        break
+                    elif len(car_details) == 7:
+                        copy_data = car_details.copy()
+                        car_holder.append(copy_data)
+                        car_details = {}
+                        continue
+    except:
+        print("\nDatabase is corrupted..\n"
+              "Due to unstable database, You will be redirected to the welcome page..\n")
+        welcome()
+    original.close()
 
     # Deduct from balance if it is more than total
     if balance >= total:
@@ -1953,41 +2448,59 @@ def pay_balance():
                 break
 
         # Update new data to the text file
-        count1 = 1
-        with open('customerDetails.txt', 'w') as paid:
-            for information in customers:
-                for key in information:
-                    if count1 < len(customers)*5:
-                        list_of_strings = f'{key}: {information[key]}'
-                        paid.write(f'{list_of_strings}\n')
-                        count1 += 1
-                    else:
-                        list_of_strings = f'{key}: {information[key]}'
-                        paid.write(f'{list_of_strings}')
+        try:
+            count1 = 1
+            with open('customerDetails.txt', 'w') as deduct_balance:
+                for information in customers:
+                    for key in information:
+                        if count1 < len(customers)*5:
+                            list_of_strings = f'{key}: {information[key]}'
+                            deduct_balance.write(f'{list_of_strings}\n')
+                            count1 += 1
+                        else:
+                            list_of_strings = f'{key}: {information[key]}'
+                            deduct_balance.write(f'{list_of_strings}')
+        except:
+            print("\nDatabase is corrupted..\n"
+                  "Due to unstable database, You will be redirected to the welcome page..\n")
+            welcome()
+        deduct_balance.close()
 
-        count2 = 1
-        with open('customerBookingPayment.txt', 'w') as paid:
-            for information in statements:
-                for key in information:
-                    if count2 < len(statements) * 7:
-                        list_of_strings = f'{key}: {information[key]}'
-                        paid.write(f'{list_of_strings}\n')
-                        count2 += 1
-                    else:
-                        list_of_strings = f'{key}: {information[key]}'
-                        paid.write(f'{list_of_strings}')
+        try:
+            count2 = 1
+            with open('customerBookingPayment.txt', 'w') as paid:
+                for information in statements:
+                    for key in information:
+                        if count2 < len(statements) * 7:
+                            list_of_strings = f'{key}: {information[key]}'
+                            paid.write(f'{list_of_strings}\n')
+                            count2 += 1
+                        else:
+                            list_of_strings = f'{key}: {information[key]}'
+                            paid.write(f'{list_of_strings}')
+        except:
+            print("\nDatabase is corrupted..\n"
+                  "Due to unstable database, You will be redirected to the welcome page..\n")
+            welcome()
+        paid.close()
 
-        count3 = 1
-        with open("carDatabase.txt", 'w') as mark_rented:
-            for information in car_holder:
-                for key in information:
-                    if count3 < len(car_holder) * 7:
-                        list_of_strings = f'{key}: {information[key]}'
-                        mark_rented.write(f'{list_of_strings}\n')
-                        count3 += 1
-                    else:
-                        list_of_strings = f'{key}: {information[key]}'
-                        mark_rented.write(f'{list_of_strings}')
+        try:
+            count3 = 1
+            with open("carDatabase.txt", 'w') as mark_rented:
+                for information in car_holder:
+                    for key in information:
+                        if count3 < len(car_holder) * 7:
+                            list_of_strings = f'{key}: {information[key]}'
+                            mark_rented.write(f'{list_of_strings}\n')
+                            count3 += 1
+                        else:
+                            list_of_strings = f'{key}: {information[key]}'
+                            mark_rented.write(f'{list_of_strings}')
+        except:
+            print("\nDatabase is corrupted..\n"
+                  "Due to unstable database, You will be redirected to the welcome page..\n")
+            welcome()
+        mark_rented.close()
 
         # Automatically redirect to customer functionalities page
         print("\nRedirecting to customer functionalities page...\n")
@@ -2004,22 +2517,28 @@ def pay_balance():
 # 8. Top up your balance.
 def top_up():
     # Extract customer details to dictionaries in list
-    customer_details = {}
-    customers = []
-    with open("customerDetails.txt", "r") as balance_checker:
-        for line in balance_checker:
-            row = line.strip().split(": ")
-            customer_details[row[0]] = row[1]
-            for information in range(1, custdb_line_count()):
-                if row == "":  # empty line
-                    break
-                elif len(customer_details) == 5:
-                    copy_data = customer_details.copy()
-                    customers.append(copy_data)
-                    customer_details = {}
-                    break
-                else:
-                    continue
+    try:
+        customer_details = {}
+        customers = []
+        with open("customerDetails.txt", "r") as balance_checker:
+            for line in balance_checker:
+                row = line.strip().split(": ")
+                customer_details[row[0]] = row[1]
+                for information in range(1, custdb_line_count()):
+                    if row == "":  # empty line
+                        break
+                    elif len(customer_details) == 5:
+                        copy_data = customer_details.copy()
+                        customers.append(copy_data)
+                        customer_details = {}
+                        break
+                    else:
+                        continue
+    except:
+        print("\nDatabase is corrupted..\n"
+              "Due to unstable database, You will be redirected to the welcome page..\n")
+        welcome()
+    balance_checker.close()
 
     # Request username
     username = input("\nEnter your username to check your current balance: ")
@@ -2041,13 +2560,21 @@ def top_up():
         top_up()
 
     # Select desired payment method
-    payment_method = int(input(f"""Which payment method do you prefer to top up your balance with? 
+    def payment_type():
+        try:
+            payment_method = int(input(f"""
+Which payment method do you prefer to top up your balance with? 
 
-1: Credit/debit card 
-2: FPX online banking
+    1: Credit/debit card 
+    2: FPX online banking
 
-Option =>\t"""))
+Option => """))
+            return payment_method
+        except ValueError:
+            print("\nInvalid input, please insert numeric value.\n")
+            return payment_type()
 
+    payment_method = payment_type()
     # Credit card payment method
     if payment_method == 1:
         print("\n", decoration() * 3,
@@ -2063,41 +2590,65 @@ Option =>\t"""))
 
         # Bank options to proceed payment in FPX
         def bank_options():
-            bank_choice = int(input(f"""Select your merchant:
+            try:
+                bank_choice = int(input(f"""
+Select your merchant:
 
-1: Maybank
-2: Public Bank
-3: Ambank 
-4: RHB Bank
-5: CIMB Bank
+    1: Maybank
+    2: Public Bank
+    3: Ambank 
+    4: RHB Bank
+    5: CIMB Bank
 
-Option =>\t"""))
+Option => """))
+                return bank_choice
 
-            # Execute based on options by customers
-            if bank_choice <= 5:
-                account_no = input("Enter your bank account number: ")
-                account_password = input("Enter your bank account password: ")
-                print("\nTop up with", account_no)
-
-            # Error if numbers less than 5 are not entered and request bank again
-            else:
-                print("Invalid input, please select in range 1 to 5.")
+            except ValueError:
+                print("\nInvalid input, please insert numeric value.\n")
                 return bank_options()
-        bank_options()
+
+        bank_choice = bank_options()
+        # Execute based on options by customers
+        if bank_choice <= 5:
+            account_no = input("Enter your bank account number: ")
+            account_password = input("Enter your bank account password: ")
+            print("\nTop up with", account_no)
+
+        # Error if numbers less than 5 are not entered and request bank again
+        else:
+            print("Invalid input, please select in range 1 to 5.")
+            return bank_options()
+    bank_options()
 
     # Request top up amount
-    top_up_value = int(input("How much do you want to top up: "))
+    def top_up_amount():
+        try:
+            top_up_value = int(input("How much do you want to top up: "))
+            return top_up_value
+
+        # Validation for non numeric value
+        except ValueError:
+            print("Invalid input, please insert numeric value..")
+            return top_up_amount()
+
+    top_up_value = top_up_amount()
     balance += top_up_value
     customers[cus_index]['balance'] = str(balance)
     print("Top up success, current balance: RM",
           customers[cus_index]['balance'])
 
-    with open('customerDetails.txt', 'w') as top_up_file:
-        # Transfer new data into the text file
-        for information in customers:
-            for key in information:
-                list_of_strings = f'{key}: {information[key]}'
-                top_up_file.write(f'{list_of_strings}\n')
+    try:
+        with open('customerDetails.txt', 'w') as top_up_file:
+            # Transfer new data into the text file
+            for information in customers:
+                for key in information:
+                    list_of_strings = f'{key}: {information[key]}'
+                    top_up_file.write(f'{list_of_strings}\n')
+    except:
+        print("\nDatabase is corrupted..\n"
+              "Due to unstable database, You will be redirected to the welcome page..\n")
+        welcome()
+    top_up_file.close()
 
     # Continue top up?
     def cont_top_up():
@@ -2107,7 +2658,7 @@ Do you wish to top up more?
     [YES] or [NO]
     
 Note: Selecting [NO] will redirect you back to the functionalities main menu.
-Option =>\t""").upper()
+Option => """).upper()
         # Execute choices made by customers
         if cont_or_not == "YES":
             print("Redirecting back to the top up section....")
@@ -2125,20 +2676,26 @@ Option =>\t""").upper()
 # 9. Claim car that is ready to be rented
 def car_claim():
     # Extracts customer booking/payment details into dictionaries in list
-    customers = []
-    customer_details = {}
-    with open("customerBookingPayment.txt", 'r') as booking_details:
-        for line in booking_details:
-            row = line.strip().split(": ")
-            customer_details[row[0]] = row[1]
-            for customer in range(1, bookdb_line_count()):
-                if row == "":  # empty line
-                    break
-                elif len(customer_details) == 7:
-                    copy_data = customer_details.copy()
-                    customers.append(copy_data)
-                    customer_details = {}
-                    continue
+    try:
+        customers = []
+        customer_details = {}
+        with open("customerBookingPayment.txt", 'r') as booking_details:
+            for line in booking_details:
+                row = line.strip().split(": ")
+                customer_details[row[0]] = row[1]
+                for customer in range(1, bookdb_line_count()):
+                    if row == "":  # empty line
+                        break
+                    elif len(customer_details) == 7:
+                        copy_data = customer_details.copy()
+                        customers.append(copy_data)
+                        customer_details = {}
+                        continue
+    except:
+        print("\nDatabase is corrupted..\n"
+              "Due to unstable database, You will be redirected to the welcome page..\n")
+        welcome()
+    booking_details.close()
 
     # Request username to check car that is able to claim
     username = input("Enter your username to confirm your identity: ")
@@ -2169,30 +2726,52 @@ def car_claim():
         reg_customer()
 
     # Select a car statement to claim
-    claim_car = int(input(
-        "\nWhich statement you would like to claim your car (line of statement): "))
-    index_value = index_converter(claim_car)
-    new_index = index_collector[index_value]
+    def claim_line_statement():
+        try:
+            claim_car = int(input(
+                "\nWhich statement you would like to claim your car (line of statement): "))
+            return claim_car
+
+        # Validation for non numeric value
+        except ValueError:
+            print("Invalid input, please insert numeric value..")
+            return claim_line_statement()
+
+    claim_car = claim_line_statement()
+    try:
+        index_value = index_converter(claim_car)
+        new_index = index_collector[index_value]
+
+    # validation for invalid line of statement
+    except IndexError:
+        print("\nThere is no relevant line statement that appear to be claimed.")
+        claim_line_statement()
 
     # Change status
     customers[new_index]['reservation'] = 'Renting'
     car_id = customers[new_index]['car id']
 
     # Extract car details to dictionaries in list
-    car_details = {}
-    cars = []
-    with open("carDatabase.txt", 'r') as car_data:
-        for line in car_data:
-            row = line.strip().split(": ")
-            car_details[row[0]] = row[1]
-            for car in range(1, cardb_line_count()):
-                if row == "":  # empty line
-                    break
-                elif len(car_details) == 7:
-                    copy_data = car_details.copy()
-                    cars.append(copy_data)
-                    car_details = {}
-                    continue
+    try:
+        car_details = {}
+        cars = []
+        with open("carDatabase.txt", 'r') as car_data:
+            for line in car_data:
+                row = line.strip().split(": ")
+                car_details[row[0]] = row[1]
+                for car in range(1, cardb_line_count()):
+                    if row == "":  # empty line
+                        break
+                    elif len(car_details) == 7:
+                        copy_data = car_details.copy()
+                        cars.append(copy_data)
+                        car_details = {}
+                        continue
+    except:
+        print("\nDatabase is corrupted..\n"
+              "Due to unstable database, You will be redirected to the welcome page..\n")
+        welcome()
+    car_data.close()
 
     # Change car status
     index2 = 0
@@ -2205,29 +2784,41 @@ def car_claim():
             continue
 
     # Update new data to text file
-    count1 = 1
-    with open('customerBookingPayment.txt', 'w') as modified:
-        for information in customers:
-            for key in information:
-                if count1 < len(customers) * 7:
-                    count1 += 1
-                    list_of_strings = f'{key}: {information[key]}'
-                    modified.write(f'{list_of_strings}\n')
-                else:
-                    list_of_strings = f'{key}: {information[key]}'
-                    modified.write(f'{list_of_strings}')
+    try:
+        count1 = 1
+        with open('customerBookingPayment.txt', 'w') as modified:
+            for information in customers:
+                for key in information:
+                    if count1 < len(customers) * 7:
+                        count1 += 1
+                        list_of_strings = f'{key}: {information[key]}'
+                        modified.write(f'{list_of_strings}\n')
+                    else:
+                        list_of_strings = f'{key}: {information[key]}'
+                        modified.write(f'{list_of_strings}')
+    except:
+        print("\nDatabase is corrupted..\n"
+              "Due to unstable database, You will be redirected to the welcome page..\n")
+        welcome()
+    modified.close()
 
-    count2 = 1
-    with open('carDatabase.txt', 'w') as mark_open:
-        for car in cars:
-            for key in car:
-                if count2 < len(cars) * 7:
-                    count2 += 1
-                    list_of_strings = f'{key}: {car[key]}'
-                    mark_open.write(f'{list_of_strings}\n')
-                else:
-                    list_of_strings = f'{key}: {car[key]}'
-                    mark_open.write(f'{list_of_strings}')
+    try:
+        count2 = 1
+        with open('carDatabase.txt', 'w') as mark_open:
+            for car in cars:
+                for key in car:
+                    if count2 < len(cars) * 7:
+                        count2 += 1
+                        list_of_strings = f'{key}: {car[key]}'
+                        mark_open.write(f'{list_of_strings}\n')
+                    else:
+                        list_of_strings = f'{key}: {car[key]}'
+                        mark_open.write(f'{list_of_strings}')
+    except:
+        print("\nDatabase is corrupted..\n"
+              "Due to unstable database, You will be redirected to the welcome page..\n")
+        welcome()
+    mark_open.close()
 
     # Display claimed car statement
     print("\nClaimed car statement: ")
@@ -2242,7 +2833,7 @@ def car_claim():
     # Continue claiming cars or not?
     def cont_claim():
         cont_or_not = input(
-            "\nDo you wish to claim other cars you own? [YES] or [NO]\n\nOption =>\t").upper()
+            "\nDo you wish to claim other cars you own? [YES] or [NO]\n\nOption => ").upper()
 
         # Execute options made by customers
         if cont_or_not == "YES":

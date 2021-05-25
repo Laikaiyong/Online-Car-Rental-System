@@ -159,3 +159,10 @@ days: 10
 status: Paid
 reservation: In Queue
 payment method: balance
+username: Cherry
+car id: R008
+price: 25
+days: 6
+status: Pending
+reservation: N/A
+payment method: N/A

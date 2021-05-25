@@ -145,3 +145,17 @@ car_plate: TRT7958
 year: 2017
 status: Booked
 price: 50
+car_id: R022
+car_brand: Perodua
+car_name: Psiva
+car_plate: PSV155
+year: 1980
+status: Open
+price: 80
+car_id: R023
+car_brand: Volkswagen
+car_name: VV1
+car_plate: TIY985
+year: 2000
+status: X
+price: 20
