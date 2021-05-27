@@ -1,80 +1,18 @@
-username: Sweet
-password: pink
-address: Kuala Lumpur, Malaysia
-contact number: 0119892384
-balance: 900
-username: Cheryl
-password: lim
-address: Milan, Europe
-contact number: 0132248212
-balance: 140
-username: Vandyck
-password: lai
-address: Nagoya, Japan
-contact number: 0129989852
-balance: 10073
-username: Love
-password: lylong
-address: NingGuang, China
-contact number: 0192342345
-balance: 9000
-username: Lancelot
-password: arthur
-address: English,England
-contact number: 0123456789
-balance: 123
-username: Hairy
-password: portal
-address: Dumbledore, Hoghwarts
-contact number: 0199999919
-balance: 0
-username: Linux
-password: python
-address: Java, Cpp
-contact number: 0198898787
-balance: 0
-username: Kali
-password: pup
-address: Ryazan, Russia
-contact number: 0198989273
-balance: 0
-username: Kari
-password: pop
-address: Terengganu, Malaysia
-contact number: 0198767652
-balance: 100
-username: James
-password: jamie
-address: Avengers, Vibranium
-contact number: 0197766554
-balance: 0
-username: Nemesis
-password: alien
-address: Ababa, Alibaba
-contact number: 0165748393
-balance: 0
-username: Hiahianan
-password: hiahiahia
-address: HiaHiaLand, America
-contact number: 0177777777
-balance: 0
-username: Alex
-password: wat
-address: Kingdom, Albanana
-contact number: 0188888888
-balance: 0
-username: Anthony
-password: ant
-address: Asgard, Banana
-contact number: 0178928875
-balance: 0
-username: Banana
-password: lim
-address: Seoul, Korea
-contact number: 0123456789
-balance: 0
-username: Cherry
-password: bomb
-address: Nagasaki, Japan
-contact number: 0123454243
-balance: 0
+Sweet | pink | Kuala Lumpur | 0119892384 | 900
+Cheryl | lim | Puchong | 0153646252 | 140
+Vandyck | lai | Johor Bahru | 0129989852 | 10073
+Love | lylong | Butterworth | 0192342345 | 9000
+Lancelot | arthur | Kuala Pilah | 0123456789 | 123
+Hairy | portal | Jenjarom | 0199999919 | 0
+Linux | python | Puchong | 0198898787 | 0
+Kali | pup | Bukit Jalil | 0198989273 | 0
+Kari | pop | Kuala Terengganu | 0198767652 | 100
+James | jamie | Kota Bahru | 0197766554 | 0
+Nemesis | alien | Petaling Jaya | 0165748393 | 0
+Hiahianan | hiahiahia | Kuala Selangor | 0177777777 | 0
+Alex | wat | Klang | 0188888888 | 0
+Anthony | ant | Ipoh | 0178928875 | 0
+Banana | lim | Kuantan | 0123456789 | 0
+Cherry | bomb | Kuala Perlis | 0123454243 | 0
+Kylie | ronon | Sepang | 0182535247 | 0
+Karen | lee | Subang | 0123456789 | 0

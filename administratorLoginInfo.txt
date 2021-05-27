@@ -1,2 +1,0 @@
-username: SCRSLL001
-password: SCRSOCRSLaiLim

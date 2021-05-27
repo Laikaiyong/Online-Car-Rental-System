@@ -1,168 +1,25 @@
-username: Sweet
-car id: R001
-price: 50
-days: 7
-status: Paid
-reservation: Completed
-payment method: credit card
-username: Love
-car id: R002
-price: 100
-days: 5
-status: Pending
-reservation: N/A
-payment method: N/A
-username: Cheryl
-car id: R003
-price: 10
-days: 3
-status: Paid
-reservation: Completed
-payment method: credit card
-username: Vandyck
-car id: R004
-price: 60
-days: 10
-status: Paid
-reservation: Completed
-payment method: balance
-username: Vandyck
-car id: R006
-price: 200
-days: 5
-status: Paid
-reservation: Completed
-payment method: balance
-username: Love
-car id: R001
-price: 50
-days: 3
-status: Paid
-reservation: Ready
-payment method: balance
-username: Cheryl
-car id: R005
-price: 100
-days: 4
-status: Paid
-reservation: Renting
-payment method: credit card
-username: Vandyck
-car id: R005
-price: 100
-days: 7
-status: Pending
-reservation: N/A
-payment method: balance
-username: Hairy
-car id: R010
-price: 5
-days: 2
-status: Pending
-reservation: N/A
-payment method: N/A
-username: Kari
-car id: R011
-price: 300
-days: 8
-status: Paid
-reservation: Ready
-payment method: credit card
-username: Kari
-car id: R006
-price: 200
-days: 1
-status: Paid
-reservation: Ready
-payment method: balance
-username: Love
-car id: R007
-price: 500
-days: 6
-status: Paid
-reservation: Renting
-payment method: balance
-username: Vandyck
-car id: R002
-price: 100
-days: 2
-status: Paid
-reservation: Renting
-payment method: credit card
-username: Cheryl
-car id: R015
-price: 280
-days: 5
-status: Paid
-reservation: In Queue
-payment method: balance
-username: Kari
-car id: R014
-price: 28
-days: 2
-status: Paid
-reservation: In Queue
-payment method: credit card
-username: Linux
-car id: R016
-price: 500
-days: 10
-status: Pending
-reservation: N/A
-payment method: N/A
-username: Kali
-car id: R018
-price: 25
-days: 8
-status: Pending
-reservation: N/A
-payment method: N/A
-username: James
-car id: R019
-price: 100
-days: 4
-status: Paid
-reservation: In Queue
-payment method: credit card
-username: Lancelot
-car id: R020
-price: 10
-days: 9
-status: Paid
-reservation: In Queue
-payment method: balance
-username: Hairy
-car id: R021
-price: 50
-days: 8
-status: Pending
-reservation: N/A
-payment method: balance
-username: Vandyck
-car id: R022
-price: 20
-days: 20
-status: Paid
-reservation: Ready
-payment method: credit card
-username: Love
-car id: R023
-price: 10
-days: 2
-status: Paid
-reservation: Ready
-payment method: balance
-username: Cheryl
-car id: R003
-price: 10
-days: 10
-status: Paid
-reservation: In Queue
-payment method: balance
-username: Cherry
-car id: R008
-price: 25
-days: 6
-status: Pending
-reservation: N/A
-payment method: N/A
+Sweet | R001 | 50 | 7 | Paid | Completed | credit card
+Love | R002 | 100 | 5 | Pending | N/A | N/A
+Cheryl | R003 | 10 | 3 | Paid | Completed | credit card
+Vandyck | R004 | 60 | 10 | Paid | Completed | balance
+Vandyck | R006 | 200 | 5 | Paid | Completed | balance
+Love | R001 | 50 | 3 | Paid | Ready | balance
+Cheryl | R005 | 100 | 4 | Paid | Completed | credit card
+Vandyck | R005 | 100 | 7 | Pending | N/A | balance
+Hairy | R010 | 5 | 2 | Pending | N/A | N/A
+Kari | R011 | 300 | 8 | Paid | Ready | credit card
+Kari | R006 | 200 | 1 | Paid | Ready | balance
+Love | R007 | 500 | 6 | Paid | Completed | balance
+Vandyck | R002 | 100 | 2 | Paid | Completed | credit card
+Cheryl | R015 | 280 | 5 | Paid | In Queue | balance
+Kari | R014 | 28 | 2 | Paid | Ready | credit card
+Linux | R016 | 500 | 10 | Pending | N/A | N/A
+Kali | R018 | 25 | 8 | Pending | N/A | N/A
+James | R019 | 100 | 4 | Paid | In Queue | credit card
+Lancelot | R020 | 10 | 9 | Paid | In Queue | balance
+Hairy | R021 | 50 | 8 | Pending | N/A | balance
+Vandyck | R022 | 20 | 20 | Paid | Ready | credit card
+Love | R023 | 10 | 2 | Paid | Ready | balance
+Cheryl | R003 | 10 | 10 | Paid | Ready | balance
+Cherry | R008 | 25 | 6 | Pending | N/A | N/A
+Cheryl | R005 | 100 | 3 | Pending | N/A | balance
