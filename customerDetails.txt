@@ -16,3 +16,9 @@ Banana | lim | Kuantan | 0123456789 | 0
 Cherry | bomb | Kuala Perlis | 0123454243 | 0
 Kylie | ronon | Sepang | 0182535247 | 0
 Karen | lee | Subang | 0123456789 | 0
+John | tan | Sitiawan | 0163746252 | 300
+Zhongli | guizhong | Kuala Lumpur | 0125647263 | 1000
+Diluc | jean | Putrajaya | 0190374624 | 10000
+Kaeya | coolit | Cyberjaya | 0164527482 | 500
+Tartaglia | mora | OUG | 0127563536 | 11000
+Xiao | almondtofu | Genting Highlands | 0163596857 | 100
