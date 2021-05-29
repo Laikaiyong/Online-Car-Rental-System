@@ -1937,7 +1937,7 @@ def rental_hist():
             return username_validation()
 
     username = username_validation()
-    # username validation and print
+    # username validation and display statement
     index = 0
     line_num = 1
     emp_spotter = []
@@ -1985,14 +1985,15 @@ def book_car():
         try:
             select_line = int(
                 input("\nSelect the car (line of statement) you would like to book: "))
-            if select_line <= 0 or select_line > len(cars):
+            if select_line <= 0 or select_line > len(available_rent_car):
                 print("Invalid choice, choose from available line statement.")
                 return select_car_validation()
             else:
                 return select_line
 
         except ValueError:
-            print("\nInvalid input, please insert a numeric value.\n")
+            print(
+                "\nInvalid input, please insert a numeric value within the available car range.\n")
             return select_car_validation()
 
     select_line = select_car_validation()
@@ -2000,7 +2001,7 @@ def book_car():
 
     def car_statement_index_validation():
         try:
-            new_index = cars[index_value]
+            new_index = available_rent_index[index_value]
             return new_index
 
         # Exclude non existent lines
@@ -2024,10 +2025,11 @@ def book_car():
             return booking_username_validation()
 
     username = booking_username_validation()
+    select_car = cars[new_index[0]]
 
-    # Change the status of the car to "booked"
+    # Extract car price
     for car in cars:
-        if car[0] == select_line:
+        if car[0] == cars[new_index][0]:
             price = car[6]
             break
 
@@ -2038,106 +2040,55 @@ def book_car():
             return days
 
         # Non-numeric value validation
-        except:
+        except ValueError:
             print("\nInvalid input, please insert numeric value.\n")
             return days_validation()
 
     days = days_validation()
-    # Update new data into the text file
-    try:
-        count = 1
-        with open("carDatabase.txt", 'w') as new_status:
-            for data in car_holder:
-                for records in data:
-                    if count < len(car_holder) * 7:
-                        count += 1
-                        list_of_records = f'{records}: {data[records]}'
-                        new_status.write(f'{list_of_records}\n')
-                    else:
-                        list_of_records = f'{records}: {data[records]}'
-                        new_status.write(f'{list_of_records}')
 
-    # No file identified
-    except:
-        print("\nDatabase is corrupted..\n"
-              "Due to unstable database, You will be redirected to the welcome page..\n")
-        welcome()
-    new_status.close()
+    new_booking_details = []
+    new_booking_details.extend([username, select_car, price, days])
 
     try:
         with open("customerBookingPayment.txt", 'a') as new_booking:
-            new_booking.write(f"\nusername: {username}\ncar id: {select_car}\nprice: {price}\ndays: {days}\n"
-                              f"status: Pending\nreservation: N/A\npayment method: N/A")
+            new_booking.write("\n")
+            for detail in new_booking_details:
+                new_booking.write(f"{detail} | ")
+            new_booking.write("Pending | N/A | N/A")
 
-    # No file identified
+    # No file spotted
     except:
-        print("\nDatabase is corrupted..\n"
-              "Due to unstable database, You will be redirected to the welcome page..\n")
+        print("Due to unstable database, You will be redirected to the welcome page..\n")
         welcome()
 
     # Automatically redirect to customer functionalities page
-    print("\nYou will be redirected to the customer functionalities page.\n"
+    print("\nYou will be redirected to the customer functionalities page.\nNote: Your booking is not confirm yet.\n"
           "You can make your payment by choosing option 5 to confirm your booking.\n")
     return reg_customer()
 
 
 # 5. Do payment to confirm Booking.
 def pay_car():
-    # Extract car details to dictionaries in list
     try:
-        car_details = {}
-        car_holder = []
-        with open('carDatabase.txt', 'r') as original:
-            for line in original:
-                row = line.strip().split(": ")
-                car_details[row[0]] = row[1]
-                for car in range(1, cardb_line_count()):
-                    if row == "":  # empty line
-                        break
-                    elif len(car_details) == 7:
-                        copy_data = car_details.copy()
-                        car_holder.append(copy_data)
-                        car_details = {}
-                        continue
+        # Extract car data to a variable that store list
+        cars = car_database_read()[0]
 
-    # No file identified
+        # Extract customer booking / payment statement to a variable that store a list
+        statements = bookpay_stmnt_read()
+
+    # No file spotted
     except:
-        print("\nDatabase is corrupted..\n"
-              "Due to unstable database, You will be redirected to the welcome page..\n")
+        print("Due to unstable database, You will be redirected to the welcome page..\n")
         welcome()
-    original.close()
-
-    # Extract customer booking details into dictionaries in list
-    try:
-        customer_statement = {}
-        customers = []
-        with open("customerBookingPayment.txt", 'r') as booking_details:
-            for line in booking_details:
-                row = line.strip().split(": ")
-                customer_statement[row[0]] = row[1]
-                for customer in range(1, bookdb_line_count()):
-                    if row == "":  # empty line
-                        break
-                    elif len(customer_statement) == 7:
-                        copy_data = customer_statement.copy()
-                        customers.append(copy_data)
-                        customer_statement = {}
-                        continue
-
-    # No file identified
-    except:
-        print("\nDatabase is corrupted..\n"
-              "Due to unstable database, You will be redirected to the welcome page..\n")
-        welcome()
-    booking_details.close()
 
     # Enter username to confirm booking
     def payment_username_validation():
         username = input(
             "\nEnter your username to pay for your booking confirmation: ")
 
-        for customer in customers:
-            if username == customer["username"]:
+        # username checking
+        for statement in statements:
+            if username == statement[0]:
                 return username
 
         # Username not available in the database
@@ -2149,28 +2100,29 @@ def pay_car():
 
     index = 0
     new_index = []
+    stmnt_index = []
     line_num = 1
     cus_statement_header()
-    for customer in customers:
+    for statement in statements:
         # Display booking that need to be paid
-        if username == customer['username'] and customer['status'] == 'Pending' and customer['payment method'] == 'N/A':
+        if username == statement[0] and statement[4] == 'Pending' and statement[6] == 'N/A':
             new_index.append(index)
-            print("{:<4}{:<10}{:<8}{:<7}{:<8}RM{:<8}{:<9}{:<13}{:<8}"
-                  .format(line_num, customer['username'], customer['car id'], customer['price'], customer['days'],
-                          int(customer['price']) * int(customer['days']
-                                                       ), customer['status'], customer['reservation'],
-                          customer['payment method']))
+            print("{:<4}{:<10}{:<8}{:<7}{:<8}RM{:<8}{:<9}{:<13}{:<8}".format(
+                line_num, statement[0], statement[1], statement[2], statement[3], statement[7], statement[4], statement[5], statement[6]))
             line_num += 1
+            index += 1
 
         # Display pay with balance statement / Redirected to pay with balance
-        elif username == customers[index]['username'] and customers[index]['status'] == 'Pending' \
-                and customers[index]['payment method'] == 'balance':
-            print("    {:<10}{:<8}{:<7}{:<8}RM{:<9}{:<9}{:<13}{:<8}"
-                  .format(customer['username'], customer['car id'], customer['price'], customer['days'],
-                          int(customer['price']) * int(customer['days']
-                                                       ), customer['status'], customer['reservation'],
-                          customer['payment method']))
-            pay_balance()
+        elif username == statement[0] and statement[4] == 'Pending' and statement[6] == 'balance':
+            try:
+                stmnt_index.append(index)
+                print("{:<4}{:<10}{:<8}{:<7}{:<8}RM{:<8}{:<9}{:<13}{:<8}".format(
+                    line_num, statement[0], statement[1], statement[2], statement[3], statement[7], statement[4], statement[5], statement[6]))
+                line_num += 1
+                index += 1
+                return stmnt_index
+            finally:
+                pay_balance()
         else:
             index += 1
 
@@ -2180,8 +2132,16 @@ def pay_car():
 
         # Ask to continue to pay or not
         def cont_pay():
-            option = input("\nContinue payment?\n\n\t[YES] or [NO]\n\n"
-                           "Note: Select [NO] return to customer functionalities page\nOption => ").upper()
+            # Menu
+            print("""
+Continue payment?
+
+    [YES] or [NO]
+
+Note: Select [NO] return to customer functionalities page
+""")
+            # Request option
+            option = input("Option => ").upper()
 
             # Return to payment page
             if option == 'YES':
@@ -2230,29 +2190,47 @@ def pay_car():
             booking_pay()
 
     pay_index = pay_line_validation()
-    car_id = customers[pay_index]['car id']
+    car_id = statement[pay_index]['car id']
+
+    # Note information
+    print("""IMPORTANT!! 
+Note: 
+\U00002022 you will need to make full payment to confirm your booking.
+\U00002022 you will not be able to change your payment method after selection
+""")
 
     # Request customers to select their preferred payment method
-    print("\nIMPORTANT!! Note that you will need to make full payment to confirm your booking.\n")
     payment_method = input("""What would you like to use to pay the booking?
 [credit card] [balance]
 => """).lower()
 
     # Update data
-    customers[pay_index]['payment method'] = payment_method
+    statements[pay_index]['payment method'] = payment_method
 
-    # Update new data to the text file
+    # Update pay method data in text files
     count = 1
-    with open("customerBookingPayment.txt", 'w') as update_pay_method:
-        for data in customers:
-            for records in data:
-                if count < len(customers) * 7:
-                    count += 1
-                    list_of_records = f'{records}: {data[records]}'
-                    update_pay_method.write(f'{list_of_records}\n')
-                else:
-                    list_of_records = f'{records}: {data[records]}'
-                    update_pay_method.write(f'{list_of_records}')
+    statement_count = 1
+    with open('customerBookingPayment.txt', 'w') as update_pay_method:
+        for statement in statements:
+            statement.pop()
+            if statement_count < len(statements):
+                count = 1
+                for details in statement:
+                    if count < len(statement):
+                        update_pay_method.write(f"{details} | ")
+                        count += 1
+                    else:
+                        update_pay_method.write(details)
+                update_pay_method.write("\n")
+                statement_count += 1
+            else:
+                count = 1
+                for details in statement:
+                    if count < len(statement):
+                        update_pay_method.write(f"{details} | ")
+                        count += 1
+                    else:
+                        update_pay_method.write(details)
 
     # Credit card payment method
     if payment_method == 'credit card':
@@ -2267,42 +2245,63 @@ Transaction completed...
 
 {decoration()} Payment details {decoration()}
 
-Paid amount: {int(customers[pay_index]['price']) * int(customers[pay_index]['days'])}
+Paid amount: {int(statements[pay_index]['price']) * int(statements[pay_index]['days'])}
 Credit card: {credit_card_num}
-""", )
+""")
         # Update data
-        customers[pay_index]['status'] = 'Paid'
-        customers[pay_index]['reservation'] = 'In Queue'
+        statements[pay_index]['status'] = 'Paid'
+        statements[pay_index]['reservation'] = 'In Queue'
 
-        for car in car_holder:
-            if car["car_id"] == car_id:
-                car["status"] = 'Booked'
+        for car in cars:
+            if car[0] == car_id:
+                car[5] = 'Booked'
 
-        # Update new data to the text file
-        count1 = 1
-        with open("customerBookingPayment.txt", 'w') as paid_statement:
-            for information in customers:
-                for key in information:
-                    if count1 < len(customers) * 7:
-                        list_of_strings = f'{key}: {information[key]}'
-                        paid_statement.write(f'{list_of_strings}\n')
-                        count1 += 1
-                    else:
-                        list_of_strings = f'{key}: {information[key]}'
-                        paid_statement.write(f'{list_of_strings}')
+        # Update data to text files
+        count = 1
+        statement_count = 1
+        with open('customerBookingPayment.txt', 'w') as update_pay_method:
+            for statement in statements:
+                if statement_count < len(statements):
+                    count = 1
+                    for details in statement:
+                        if count < len(statement):
+                            update_pay_method.write(f"{details} | ")
+                            count += 1
+                        else:
+                            update_pay_method.write(details)
+                    update_pay_method.write("\n")
+                    statement_count += 1
+                else:
+                    count = 1
+                    for details in statement:
+                        if count < len(statement):
+                            update_pay_method.write(f"{details} | ")
+                            count += 1
+                        else:
+                            update_pay_method.write(details)
 
-        count2 = 1
-        with open("carDatabase.txt", 'w') as mark_rented:
-            # Transfer new car data into the text file
-            for information in car_holder:
-                for key in information:
-                    if count2 < len(car_holder) * 7:
-                        list_of_strings = f'{key}: {information[key]}'
-                        mark_rented.write(f'{list_of_strings}\n')
-                        count2 += 1
-                    else:
-                        list_of_strings = f'{key}: {information[key]}'
-                        mark_rented.write(f'{list_of_strings}')
+        count = 1
+        car_count = 1
+        with open('carDatabase.txt', 'w') as mark_rented:
+            for car in cars:
+                if car_count < len(cars):
+                    count = 1
+                    for details in car:
+                        if count < len(car):
+                            mark_rented.write(f"{details} | ")
+                            count += 1
+                        else:
+                            mark_rented.write(details)
+                    mark_rented.write("\n")
+                    car_count += 1
+                else:
+                    count = 1
+                    for details in car:
+                        if count < len(car):
+                            mark_rented.write(f"{details} | ")
+                            count += 1
+                        else:
+                            mark_rented.write(details)
 
         # Automatically redirect to the customer functionalities page
         print("\nRedirecting to customer functionalities page...\n")
@@ -2320,29 +2319,52 @@ Credit card: {credit_card_num}
 
 # Pay with balance
 def pay_balance():
-    # Extracts customer Details into dictionaries in list
-    try:
-        customer_details = {}
-        customers = []
-        with open("customerDetails.txt", "r") as balance_checker:
-            for line in balance_checker:
-                row = line.strip().split(": ")
-                customer_details[row[0]] = row[1]
-                for information in range(1, custdb_line_count()):
-                    if row == "":  # empty line
-                        break
-                    elif len(customer_details) == 5:
-                        copy_data = customer_details.copy()
-                        customers.append(copy_data)
-                        customer_details = {}
-                        break
-                    else:
-                        continue
+    stmnt_index = pay_car()
 
-    # No file identitifed
+    # Select the booking that customers wish to pay
+    def booking_pay():
+        try:
+            pay_statement = int(
+                input("\nWhich booking statement (line) you would like to pay? "))
+            if pay_statement <= 0 or pay_statement > len(stmnt_index):
+                print("Invalid choice, choose from available line statement.")
+                return booking_pay()
+            else:
+                return pay_statement
+
+        # Non numeric value validation
+        except ValueError:
+            print("\nInvalid input, please insert numeric value.\n")
+            return booking_pay()
+
+    pay_statement = booking_pay()
+    statement_index = index_converter(pay_statement)
+
+    def pay_line_validation():
+        try:
+            pay_index = stmnt_index[statement_index]
+            return pay_index
+
+        # Exclude non existent lines
+        except IndexError:
+            print("\nThere is no relevant line statement available for payment.")
+            booking_pay()
+
+    pay_index = pay_line_validation()
+
+    try:
+        # Extract customer booking / payment statement to a variable that store a list
+        statements = bookpay_stmnt_read()
+
+        # Extract car data to a variable that store list
+        cars = car_database_read()[0]
+
+        # Extract customer details to a variable that store list
+        customers = customer_details_read()
+
+    # No file spotted
     except:
-        print("\nDatabase is corrupted..\n"
-              "Due to unstable database, You will be redirected to the welcome page..\n")
+        print("Due to unstable database, You will be redirected to the welcome page..\n")
         welcome()
 
     # Request username
@@ -2362,130 +2384,110 @@ def pay_balance():
     # Verifying username
     index1 = 0
     for customer in customers:
-        if customer['username'] == username:
+        if customer[0] == username:
             new_index1 = index1
             balance = int(customer["balance"])
             break
         index1 += 1
 
-    # Extracts customer booking/payment details into dictionaries in list
-    try:
-        customer_pay = {}
-        statements = []
-        with open("customerBookingPayment.txt", 'r') as booking_details:
-            for line in booking_details:
-                row = line.strip().split(": ")
-                customer_pay[row[0]] = row[1]
-                for customer in range(1, bookdb_line_count()):
-                    if row == "":  # empty line
-                        break
-                    elif len(customer_pay) == 7:
-                        copy_data = customer_pay.copy()
-                        statements.append(copy_data)
-                        customer_pay = {}
-                        continue
+    # Calculating the total amount customers should pay
+    total = int(statements[pay_index][2]) * int(statements[pay_index][3])
+    car_id = statements[1]
 
-    # No file identified
-    except:
-        print("\nDatabase is corrupted..\n"
-              "Due to unstable database, You will be redirected to the welcome page..\n")
-        welcome()
-
-    # Search for relevant payment / booking statement
-    index2 = 0
-    for statement in statements:
-        if username == statement['username'] and statement['payment method'] == 'balance' \
-                and statement['status'] == 'Pending':
-            new_index2 = index2
-
-            # Calculating the total amount customers should pay
-            total = int(statement['price']) * int(statement['days'])
-            car_id = statement['car id']
-
-            # Display how much the customer should pay and car ID
-            print("You have to pay: RM", total, "\nCar ID: ", car_id)
-            break
-        index2 += 1
-
-    # Extracts car details to dictionaries in list
-    try:
-        car_details = {}
-        car_holder = []
-        with open('carDatabase.txt', 'r') as original:
-            for line in original:
-                row = line.strip().split(": ")
-                car_details[row[0]] = row[1]
-                for car in range(1, cardb_line_count()):
-                    if row == "":  # empty line
-                        break
-                    elif len(car_details) == 7:
-                        copy_data = car_details.copy()
-                        car_holder.append(copy_data)
-                        car_details = {}
-                        continue
-
-    # No file identified
-    except:
-        print("\nDatabase is corrupted..\n"
-              "Due to unstable database, You will be redirected to the welcome page..\n")
-        welcome()
+    # Display how much the customer should pay and car ID
+    print(f"""You have to pay: RM{total}
+Car ID: {car_id}
+Your current balance: RM{balance}
+""")
 
     # Deduct from balance if it is more than total
     if balance >= total:
         new_balance = balance - total
 
         # Display remaining balance
-        print("\nCurrent balance: RM", balance, "\nYou had paid the booking confirmation."
-                                                "\nTransaction completed. Your current balance is RM", new_balance)
+        print("You had paid the booking confirmation.\nTransaction completed. Your current balance is RM", new_balance)
 
         # Change data to paid situation
-        customers[new_index1]["balance"] = str(new_balance)
-        statements[new_index2]['status'] = 'Paid'
-        statements[new_index2]['reservation'] = 'In Queue'
-        statements[new_index2]['payment method'] = 'balance'
+        customers[new_index1][4] = str(new_balance)
+        statements[pay_index][4] = 'Paid'
+        statements[pay_index][5] = 'In Queue'
+        statements[pay_index][6] = 'balance'
 
         # Change specified car status to rented after payment
-        for car in car_holder:
-            if car['car_id'] == car_id:
-                car['status'] = 'Rented'
+        for car in cars:
+            if car[0] == car_id:
+                car[5] = 'Rented'
                 break
 
-        # Update new data to the text file
-        count1 = 1
-        with open('customerDetails.txt', 'w') as deduct_balance:
-            for information in customers:
-                for key in information:
-                    if count1 < len(customers)*5:
-                        list_of_strings = f'{key}: {information[key]}'
-                        deduct_balance.write(f'{list_of_strings}\n')
-                        count1 += 1
-                    else:
-                        list_of_strings = f'{key}: {information[key]}'
-                        deduct_balance.write(f'{list_of_strings}')
+        # Update data to text files
+        count = 1
+        customer_count = 1
+        with open('customerDetails.txt', 'w') as balance_reduce:
+            for customer in customers:
+                if customer_count < len(customers):
+                    count = 1
+                    for details in customer:
+                        if count < len(customer):
+                            balance_reduce.write(f"{details} | ")
+                            count += 1
+                        else:
+                            balance_reduce.write(details)
+                    balance_reduce.write("\n")
+                    customer_count += 1
+                else:
+                    count = 1
+                    for details in customer:
+                        if count < len(customer):
+                            balance_reduce.write(f"{details} | ")
+                            count += 1
+                        else:
+                            balance_reduce.write(details)
 
-        count2 = 1
+        count = 1
+        statement_count = 1
         with open('customerBookingPayment.txt', 'w') as paid:
-            for information in statements:
-                for key in information:
-                    if count2 < len(statements) * 7:
-                        list_of_strings = f'{key}: {information[key]}'
-                        paid.write(f'{list_of_strings}\n')
-                        count2 += 1
-                    else:
-                        list_of_strings = f'{key}: {information[key]}'
-                        paid.write(f'{list_of_strings}')
+            for statement in statements:
+                if statement_count < len(statements):
+                    count = 1
+                    for details in statement:
+                        if count < len(statement):
+                            paid.write(f"{details} | ")
+                            count += 1
+                        else:
+                            paid.write(details)
+                    paid.write("\n")
+                    statement_count += 1
+                else:
+                    count = 1
+                    for details in statement:
+                        if count < len(statement):
+                            paid.write(f"{details} | ")
+                            count += 1
+                        else:
+                            paid.write(details)
 
-        count3 = 1
-        with open("carDatabase.txt", 'w') as mark_rented:
-            for information in car_holder:
-                for key in information:
-                    if count3 < len(car_holder) * 7:
-                        list_of_strings = f'{key}: {information[key]}'
-                        mark_rented.write(f'{list_of_strings}\n')
-                        count3 += 1
-                    else:
-                        list_of_strings = f'{key}: {information[key]}'
-                        mark_rented.write(f'{list_of_strings}')
+        count = 1
+        car_count = 1
+        with open('carDatabase.txt', 'w') as mark_rented:
+            for car in cars:
+                if car_count < len(cars):
+                    count = 1
+                    for details in car:
+                        if count < len(car):
+                            mark_rented.write(f"{details} | ")
+                            count += 1
+                        else:
+                            mark_rented.write(details)
+                    mark_rented.write("\n")
+                    car_count += 1
+                else:
+                    count = 1
+                    for details in car:
+                        if count < len(car):
+                            mark_rented.write(f"{details} | ")
+                            count += 1
+                        else:
+                            mark_rented.write(details)
 
         # Automatically redirect to customer functionalities page
         print("\nRedirecting to customer functionalities page...\n")
@@ -2493,9 +2495,14 @@ def pay_balance():
 
     # Insufficient balance to pay will be automatically redirected to the top up screen
     elif balance < total:
-        print("\nYour balance is insufficient...\nYour current balance: RM", balance,
-              "\n\nYou will need to top up before paying your booking confirmation."
-              "\nRedirecting to top up system....\n")
+        print(f"""
+Your balance is insufficient...
+Your current balance: RM{balance}
+
+You will need to top up before paying your booking confirmation.
+
+Redirecting to top up system....
+""")
         top_up_header()
 
 
@@ -2503,27 +2510,12 @@ def pay_balance():
 def top_up():
     # Extract customer details to dictionaries in list
     try:
-        customer_details = {}
-        customers = []
-        with open("customerDetails.txt", "r") as balance_checker:
-            for line in balance_checker:
-                row = line.strip().split(": ")
-                customer_details[row[0]] = row[1]
-                for information in range(1, custdb_line_count()):
-                    if row == "":  # empty line
-                        break
-                    elif len(customer_details) == 5:
-                        copy_data = customer_details.copy()
-                        customers.append(copy_data)
-                        customer_details = {}
-                        break
-                    else:
-                        continue
+        # Extract customer details to a variable that store list
+        customers = customer_details_read()
 
     # No file spotted
     except:
-        print("\nDatabase is corrupted..\n"
-              "Due to unstable database, You will be redirected to the welcome page..\n")
+        print("Due to unstable database, You will be redirected to the welcome page..\n")
         welcome()
 
     # Request username
@@ -2532,7 +2524,7 @@ def top_up():
             "\nEnter your username to check your current balance: ")
 
         for customer in customers:
-            if username == customer["username"]:
+            if username == customer[0]:
                 return username
 
         # Username not available in the database
@@ -2545,9 +2537,9 @@ def top_up():
     # Display current balance based on username
     index = 0
     for customer in customers:
-        if customer['username'] == username:
+        if customer[0] == username:
             cus_index = index
-            balance = int(customer['balance'])
+            balance = int(customer[4])
             print("Your current balance: ", str(balance))
             break
         else:
@@ -2557,23 +2549,24 @@ def top_up():
     # Error message if username does not exist and request username again
     else:
         print("Invalid username, please try again.")
-        top_up()
+        return top_up()
 
     # Select desired payment method
     def payment_type():
         try:
-            payment_method = int(input(f"""
+            # Menu
+            print("""
 Which payment method do you prefer to top up your balance with? 
 
     1: Credit/debit card 
     2: FPX online banking
-
-Option => """))
+""")
+            payment_method = int(input("Option => "))
             return payment_method
 
         # Exclude non numeric value
         except ValueError:
-            print("\nInvalid input, please insert numeric value.\n")
+            print("\nInvalid input, please insert numeric value (1 or 2).\n")
             return payment_type()
 
     payment_method = payment_type()
@@ -2593,7 +2586,8 @@ Option => """))
         # Bank options to proceed payment in FPX
         def bank_options():
             try:
-                bank_choice = int(input(f"""
+                # Menu
+                print("""
 Select your merchant:
 
     1: Maybank
@@ -2601,8 +2595,8 @@ Select your merchant:
     3: Ambank 
     4: RHB Bank
     5: CIMB Bank
-
-Option => """))
+""")
+                bank_choice = int(input("Option => "))
                 return bank_choice
 
             # Exclude non numeric value
@@ -2640,26 +2634,44 @@ Option => """))
 
     top_up_value = top_up_amount()
     balance += top_up_value
-    customers[cus_index]['balance'] = str(balance)
+    customers[cus_index][4] = str(balance)
     print("Top up success, current balance: RM",
           customers[cus_index]['balance'])
 
-    # Transfer new data into the text file
-    with open('customerDetails.txt', 'w') as top_up_file:
-        for information in customers:
-            for key in information:
-                list_of_strings = f'{key}: {information[key]}'
-                top_up_file.write(f'{list_of_strings}\n')
-
+   # Update data to text files
+    count = 1
+    customer_count = 1
+    with open('customerDetails.txt', 'w') as top_up_balance:
+        for customer in customers:
+            if customer_count < len(customers):
+                count = 1
+                for details in customer:
+                    if count < len(customer):
+                        top_up_balance.write(f"{details} | ")
+                        count += 1
+                    else:
+                        top_up_balance.write(details)
+                top_up_balance.write("\n")
+                customer_count += 1
+            else:
+                count = 1
+                for details in customer:
+                    if count < len(customer):
+                        top_up_balance.write(f"{details} | ")
+                        count += 1
+                    else:
+                        top_up_balance.write(details)
     # Continue top up?
+
     def cont_top_up():
-        cont_or_not = input("""
+        # Menu
+        print("""
 Do you wish to top up more? 
 
     [YES] or [NO]
     
-Note: Selecting [NO] will redirect you back to the functionalities main menu.
-Option => """).upper()
+Note: Selecting [NO] will redirect you back to the functionalities main menu.""")
+        cont_or_not = input("Option => ").upper()
 
         # Execute choices made by customers
         if cont_or_not == "YES":
@@ -2680,34 +2692,23 @@ Option => """).upper()
 def car_claim():
     # Extracts customer booking/payment details into dictionaries in list
     try:
-        customers = []
-        customer_details = {}
-        with open("customerBookingPayment.txt", 'r') as booking_details:
-            for line in booking_details:
-                row = line.strip().split(": ")
-                customer_details[row[0]] = row[1]
-                for customer in range(1, bookdb_line_count()):
-                    if row == "":  # empty line
-                        break
-                    elif len(customer_details) == 7:
-                        copy_data = customer_details.copy()
-                        customers.append(copy_data)
-                        customer_details = {}
-                        continue
+        # Extract customer booking / payment statement to a variable that store a list
+        statements = bookpay_stmnt_read()
 
-    # No file identified
+        # Extract car data to a variable that store list
+        cars = car_database_read()[0]
+
+    # No file spotted
     except:
-        print("\nDatabase is corrupted..\n"
-              "Due to unstable database, You will be redirected to the welcome page..\n")
+        print("Due to unstable database, You will be redirected to the welcome page..\n")
         welcome()
-    booking_details.close()
 
     # Request username to check car that is able to claim
     def claim_car_username_validation():
         username = input("Enter your username to confirm your identity: ")
 
-        for customer in customers:
-            if username == customer["username"]:
+        for statement in statements:
+            if username == statement[0]:
                 return username
 
         # Username not available in the database
@@ -2722,14 +2723,11 @@ def car_claim():
     line_num = 1
     index_collector = []
     cus_statement_header()
-    for customer in customers:
-        if customer['username'] == username and customer['status'] == 'Paid' and customer['reservation'] == 'Ready':
+    for statement in statements:
+        if statement[0] == username and statement[4] == 'Paid' and statement[5] == 'Ready':
             index_collector.append(index1)
-            print("{:<4}{:<11}{:<8}{:<7}{:<8}RM{:<8}{:<9}{:<13}{:<8}"
-                  .format(line_num, customer['username'], customer['car id'], customer['price'], customer['days'],
-                          int(customer['price']) *
-                          int(customer['days']), customer['status'],
-                          customer['reservation'], customer['payment method']))
+            print("{:<4}{:<10}{:<8}{:<7}{:<8}RM{:<8}{:<9}{:<13}{:<8}".format(
+                line_num, statement[0], statement[1], statement[2], statement[3], statement[7], statement[4], statement[5], statement[6]))
             index1 += 1
             line_num += 1
         else:
@@ -2755,8 +2753,9 @@ def car_claim():
             return claim_line_statement()
 
     claim_car = claim_line_statement()
+    index_value = index_converter(claim_car)
+
     try:
-        index_value = index_converter(claim_car)
         new_index = index_collector[index_value]
 
     # validation for invalid line of statement
@@ -2765,81 +2764,83 @@ def car_claim():
         claim_line_statement()
 
     # Change status
-    customers[new_index]['reservation'] = 'Renting'
-    car_id = customers[new_index]['car id']
+    statements[new_index][5] = 'Renting'
+    car_id = statements[new_index][1]
 
-    # Extract car details to dictionaries in list
-    try:
-        car_details = {}
-        cars = []
-        with open("carDatabase.txt", 'r') as car_data:
-            for line in car_data:
-                row = line.strip().split(": ")
-                car_details[row[0]] = row[1]
-                for car in range(1, cardb_line_count()):
-                    if row == "":  # empty line
-                        break
-                    elif len(car_details) == 7:
-                        copy_data = car_details.copy()
-                        cars.append(copy_data)
-                        car_details = {}
-                        continue
+    # Display claimed car statement
+    print("\nClaimed car statement: ")
+    cus_statement_header()
+    print("{:<4}{:<10}{:<8}{:<7}{:<8}RM{:<8}{:<9}{:<13}{:<8}".format(
+        line_num, statement[0], statement[1], statement[2], statement[3], statement[7], statement[4], statement[5], statement[6]))
 
-    # No file spotted
-    except:
-        print("\nDatabase is corrupted..\n"
-              "Due to unstable database, You will be redirected to the welcome page..\n")
-        welcome()
-
-    # Change car status
+    # Change car status to rented
     index2 = 0
     for car in cars:
-        if car['car_id'] == car_id:
-            car['status'] = 'Rented'
+        if car[0] == car_id:
+            car[5] = 'Rented'
             index2 += 1
         else:
             index2 += 1
             continue
 
     # Update new data to text file
-    count1 = 1
-    with open('customerBookingPayment.txt', 'w') as modified:
-        for information in customers:
-            for key in information:
-                if count1 < len(customers) * 7:
-                    count1 += 1
-                    list_of_strings = f'{key}: {information[key]}'
-                    modified.write(f'{list_of_strings}\n')
-                else:
-                    list_of_strings = f'{key}: {information[key]}'
-                    modified.write(f'{list_of_strings}')
+    count = 1
+    statement_count = 1
+    with open('customerBookingPayment.txt', 'w') as paid:
+        for statement in statements:
+            statement.pop()
+            if statement_count < len(statements):
+                count = 1
+                for details in statement:
+                    if count < len(statement):
+                        paid.write(f"{details} | ")
+                        count += 1
+                    else:
+                        paid.write(details)
+                paid.write("\n")
+                statement_count += 1
+            else:
+                count = 1
+                for details in statement:
+                    if count < len(statement):
+                        paid.write(f"{details} | ")
+                        count += 1
+                    else:
+                        paid.write(details)
 
-    count2 = 1
-    with open('carDatabase.txt', 'w') as mark_open:
+    count = 1
+    car_count = 1
+    with open('carDatabase.txt', 'w') as mark_rented:
         for car in cars:
-            for key in car:
-                if count2 < len(cars) * 7:
-                    count2 += 1
-                    list_of_strings = f'{key}: {car[key]}'
-                    mark_open.write(f'{list_of_strings}\n')
-                else:
-                    list_of_strings = f'{key}: {car[key]}'
-                    mark_open.write(f'{list_of_strings}')
-
-    # Display claimed car statement
-    print("\nClaimed car statement: ")
-    cus_statement_header()
-    print("   {:<11}{:<8}{:<7}{:<8}RM {:<8}{:<9}{:<13}{:<8}"
-          .format(customers[new_index]['username'], customers[new_index]['car id'], customers[new_index]['price'],
-                  customers[new_index]['days'], int(
-                      customers[new_index]['price']) * int(customers[new_index]['days']),
-                  customers[new_index]['status'], customers[new_index]['reservation'],
-                  customers[new_index]['payment method']))
+            if car_count < len(cars):
+                count = 1
+                for details in car:
+                    if count < len(car):
+                        mark_rented.write(f"{details} | ")
+                        count += 1
+                    else:
+                        mark_rented.write(details)
+                mark_rented.write("\n")
+                car_count += 1
+            else:
+                count = 1
+                for details in car:
+                    if count < len(car):
+                        mark_rented.write(f"{details} | ")
+                        count += 1
+                    else:
+                        mark_rented.write(details)
 
     # Continue claiming cars or not?
     def cont_claim():
-        cont_or_not = input(
-            "\nDo you wish to claim other cars you own? [YES] or [NO]\n\nOption => ").upper()
+        # Menu
+        print("""
+Do you wish to claim other cars you own? 
+
+    [YES] or [NO]
+
+Note: Selecting [NO] will redirect you to the customer functionalities menu.""")
+        cont_or_not = input("Option => ").upper()
 
         # Execute options made by customers
         if cont_or_not == "YES":
