@@ -2,7 +2,7 @@ R001 | Perodua | Axia | MEH0145 | 2021 | Booked | 50
 R002 | BMW | X1 | HEHE114 | 2020 | Rented | 100
 R003 | Perodua | Kancil | DAMN520 | 1998 | Rented | 10
 R004 | Perodua | Myvi | BUM0599 | 2000 | Rented | 60
-R005 | Audi | A4 Sedan | RW214 | 2002 | Open | 100
+R005 | Audi | A4 Sedan | RW214 | 2002 | Booked | 100
 R006 | Mercedez | Benz | R092 | 2012 | Rented | 200
 R007 | Tesla | Model S | T111 | 2020 | Rented | 500
 R008 | Volkswagen | Bently | SUK123 | 2012 | Open | 25
@@ -30,17 +30,30 @@ R029 | Maserati | Ghibli | VIP1 | 2019 | Booked | 200
 R030 | Jeep | Compass | BBB8888 | 2020 | Booked | 90
 R031 | Toyota | Hype | HYI098 | 2019 | Open | 129
 R032 | Nissan | Livina | IP11 | 2019 | Open | 200
-R033 | Haval | H1 | YAY2837 | 2018 | Rented | 150
+R033 | Haval | H1 | YAY2837 | 2018 | Open | 150
 R034 | Volkswagen | Vento | III3847 | 2018 | Open | 100
 R035 | Lexus | IS | LEX3948 | 2020 | Open | 55
 R036 | Renault | Fluence | LIL1988 | 2019 | Open | 60
-R037 | Isuzu | D-MAX | MIN8475 | 2018 | Rented | 80
-RO38 | Alfa Romeo | 159 | OOO8463 | 2013 | Open | 160
-R039 | Audi | Q3 | BIN2847 | 2017 | Open | 200
+R037 | Isuzu | D-MAX | MIN8475 | 2018 | Open | 80
+RO38 | Alfa Romeo | 159 | OOO8463 | 2013 | Booked | 160
+R039 | Audi | Q3 | BIN2847 | 2017 | Booked | 250
 R040 | Perodua | Alza | PER6748 | 2015 | Open | 30
 R041 | Chevrolet | Sonic | SON9999 | 2013 | Open | 50
 R042 | Citroen | DS5 | CAT3485 | 2012 | Open | 120
 R043 | Toyota | Alphard | ALP0000 | 2009 | Rented | 200
-R044 | Toyota | Avanza | LFL9756 | 2007 | Booked | 70
+R044 | Toyota | Avanza | LFL9756 | 2007 | Rented | 70
 R045 | Honda | Jazz | KKK9876 | 2019 | Open | 90
 R046 | Honda | Odyssey | EEE9475 | 2017 | Open | 90
+R047 | Perodua | Ativa | MMM4473 | 2021 | Open | 50
+R048 | Toyota | Yaris | OPO2836 | 2020 | Booked | 100
+R049 | Proton | Iriz | IWI2938 | 2021 | Open | 20
+R050 | Daihatsu | Gran Max | GRA3745 | 2019 | Rented | 40
+R051 | Nissan | Serena | SER4857 | 2017 | Rented | 80
+R052 | Mercedes | S-Class | SAL1927 | 2018 | Rented | 150
+R053 | Mercedes | A-Class | WWW4856 | 2017 | Booked | 160
+R054 | Chery | Maxime | SED9987 | 2016 | Rented | 100
+R055 | McLaren | GTA | QUEEN1 | 2020 | Booked | 900
+R056 | Jaguar | XF | VVIP123 | 2018 | X | 300
+R057 | Volvo | S90 | VOL2382 | 2013 | Rented | 200
+R058 | Peguet | King | PK12 | 2020 | Open | 20
+R059 | Krock | Rock | KRO099 | 2019 | X | 200

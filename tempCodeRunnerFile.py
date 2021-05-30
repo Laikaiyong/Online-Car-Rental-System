@@ -1,1 +1,1 @@
-    # view_cars()
+reg_customer()

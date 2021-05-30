@@ -190,7 +190,7 @@ Note: Selecting [NO] will navigate you back to the welcome page.""")
 
     # Terminate the program
     if confirmation == "YES":
-        print("\n", decoration(), "Exit", decoration())
+        print("\n", decoration(), "Exit", decoration(), "\n")
         exit()
 
     # Direct to the welcome page
@@ -306,38 +306,38 @@ Choose the action you want to perform:
 8: Exit the system.
 """)
             option = int(input("Select your action: "))
-            return option
+
+            # Execute system based on option
+            if option == 1:
+                admin_add_car()
+            elif option == 2:
+                admin_modify()
+            elif option == 3:
+                admin_display()
+            elif option == 4:
+                admin_search()
+            elif option == 5:
+                admin_return_rent()
+            elif option == 6:
+                admin_mark_ready()
+            elif option == 7:
+                analytics_dashboard()
+            elif option == 8:
+                exit_system()
+
+            # Error for invalid input
+            else:
+                print("Invalid input, please choose options in range of 1 to 8.")
+
+                # request for input again
+                return admin_function_validation()
 
         # Exclude non numeric value
         except ValueError:
             print("\nInvalid input, please insert a numeric value..\n")
             return admin_function_validation()
 
-    option = admin_function_validation()
-    # Execute system based on option
-    if option == 1:
-        admin_add_car()
-    elif option == 2:
-        admin_modify()
-    elif option == 3:
-        admin_display()
-    elif option == 4:
-        admin_search()
-    elif option == 5:
-        admin_return_rent()
-    elif option == 6:
-        admin_mark_ready()
-    elif option == 7:
-        analytics_dashboard()
-    elif option == 8:
-        exit_system()
-
-    # Error for invalid input
-    else:
-        print("Invalid input, please choose options in range of 1 to 8.")
-
-        # request for input again
-        return admin_function_validation()
+    admin_function_validation()
 
 
 # Section E01: Administrator functionalities
@@ -347,7 +347,7 @@ def admin_add_car():
     print("""
 Insert car data:
 [YES] to continue
-[NO] to stop and display all data. Will be redirected to admin main screen.    
+[NO] to stop and display all data. Will be redirected to admin main screen.
     """)
 
     # Add car choice
@@ -453,7 +453,7 @@ def admin_modify():
 
         # Exclude non numeric value
         except ValueError:
-            print("\nInvalid input, please insert a numeric value..\n")
+            print("\nInvalid input, please insert a numeric value..")
             return data_line_validation()
 
     data_line = data_line_validation()
@@ -482,7 +482,6 @@ def admin_modify():
         if item == "car_brand":
             index = 1
             origin_word = cars[car_index][index]
-            return origin_word, index
 
         elif item == "car_name":
             index = 2
@@ -504,8 +503,13 @@ def admin_modify():
             index = 6
             origin_word = cars[car_index][index]
 
+        elif item == "car_id":
+            print("\nInvalid choice, car id is immutable.\n")
+            return data_type_validation()
+
         else:
-            print("Invalid choice, please refer the data headers and make your choice.")
+            print(
+                "\nInvalid data type, please choose according to the data headers displayed other than car id.\n")
             return data_type_validation()
 
         return origin_word, index
@@ -697,6 +701,16 @@ def dis_cus_booking():
         print("Access the database system to check database issue.\n")
         maintenance_database_access()
 
+    def day_duration():
+        try:
+            days = int(input("\nRent duration (days): "))
+            return days
+
+        except ValueError:
+            print("\nInvalid input, please key in a numeric value (day(s)).")
+            return day_duration()
+
+    days = day_duration()
     # Set reservation only specify on booking status
     reservation = ('In Queue', 'Ready')
 
@@ -706,10 +720,10 @@ def dis_cus_booking():
     emp_spotter = []
     cus_book_header()
     for statement in statements:
-        if reservation[0] == statement[5] or reservation[1] == statement[5]:
+        if reservation[0] == statement[5] or reservation[1] == statement[5] and statement[3] == days:
             emp_spotter.append(index)
             print("{:<4}{:<11}{:<8}{:<7}{:<8}RM{:<9}{:<8}{:<5}"
-                  .format(line_number, statement[0], statement[1], statement[2], statement[3], int(statement[2]) * int(statement[3]), statement[4], statement[5]))
+                  .format(line_number, statement[0], statement[1], statement[2], statement[3], statement[7], statement[4], statement[5]))
             index += 1
             line_number += 1
         else:
@@ -789,9 +803,9 @@ def registered_customer():
 
     # Display all customers' username
     line_num = 1
-    print('\n\tUsername')
+    print('\n  Username')
     for name in customers_names:
-        print(f"{line_num}\t{name}", end='\n')
+        print(f"{line_num}  {name}", end='\n')
         line_num += 1
 
     print("\nThis is all of the registered customers' username.")
@@ -933,9 +947,9 @@ def cus_book_search():
         def cont_search_book():
             # Menu
             print("""Continue searching?
-            
+
     [YES] or [NO]
-    
+
 Note: Selecting [NO] will navigate you back to administrator main screen.
 """)
             option = input("Option=> ").upper()
@@ -1427,10 +1441,8 @@ Returning to administrator system....""")
 # Section F : Customer
 # 1. Customer landing page
 def customer_interface():
-    try:
-        # Menu
-        print
-        ("""
+    # Menu
+    print("""
 As a visitor, select your action.
 
 1: View all cars with any status.
@@ -1438,6 +1450,8 @@ As a visitor, select your action.
 3: Registered customers' section.
 4: Exit the system.
 """)
+    # Input validation
+    try:
         option = int(input("Option  => "))
 
         # Execute system based on option
@@ -1521,18 +1535,16 @@ def customer_registration():
         username_holder.append(customer[0])
 
     # Usernames are in the database / usernames must be unique
-    for name in username_holder:
-        if username == name['username']:
-            print("\nThis username had been used, please use another username.\n")
-            return customer_registration()
+    if username in username_holder:
+        print("\nThis username had been used, please use another username.\n")
+        return customer_registration()
 
-        # Obtaining new customers' details
-        else:
-            print(
-                "\nPlease fill in the following details to provide more information to rent a car / cars.\n")
-            address = input("Address: ")
-            contact_number = input("Contact number: ")
-            break
+    # Obtaining new customers' details
+    else:
+        print(
+            "\nPlease fill in the following details to provide more information to rent a car / cars.\n")
+        address = input("Address: ")
+        contact_number = input("Contact number: ")
 
     # Every newly registered customer will have RM 0 as their balance
     balance = 0
@@ -1555,10 +1567,10 @@ You can recharge it from the customer functionalities page.
             new_customer.write("\n")
             for detail in new_customer_details:
                 if count < len(new_customer_details):
-                    count += 1
                     new_customer.write(f"{detail} | ")
+                    count += 1
                 else:
-                    new_customer.write(detail)
+                    new_customer.write(str(detail))
 
     # No file identified
     except:
@@ -1606,7 +1618,7 @@ def registered_login():
             def registration_inquiry():
                 # Menu
                 print("""
-Do you have an account? 
+Do you have an account?
 [YES] or [NO]
 """)
                 register_confirm = input("Option => ").upper()
@@ -1676,7 +1688,7 @@ What would you like to perform?
 5: Pay the car that you booked earlier.
 6: Top up your balance.
 7: Claim car that is Ready to be rented
-8: Exit the portal. 
+8: Exit the portal.
 """)
             option = int(input("Option => "))
             return option
@@ -1734,7 +1746,7 @@ def rent_car_details():
     for car in cars:
         if status == car[5]:
             available_rent_car.append(car)
-            index_holder.append(index_holder)
+            index_holder.append(index)
             print("{:<4}{:<7}{:<12}{:<11}{:<10}{:<6}{:<8}{:<5}"
                   .format(line_num, car[0], car[1], car[2], car[3], car[4], car[5], car[6]))
             index += 1
@@ -1884,7 +1896,7 @@ contact number: {customer[3]}
 Continue modifying?
 
     [YES] or [NO]
-    
+
 Note: Selecting [NO] will navigate you back to the customer functionalities page""")
 
         # Request option
@@ -2025,11 +2037,11 @@ def book_car():
             return booking_username_validation()
 
     username = booking_username_validation()
-    select_car = cars[new_index[0]]
+    select_car = cars[new_index][0]
 
     # Extract car price
     for car in cars:
-        if car[0] == cars[new_index][0]:
+        if car[0] == select_car:
             price = car[6]
             break
 
@@ -2076,31 +2088,20 @@ def pay_car():
         # Extract customer booking / payment statement to a variable that store a list
         statements = bookpay_stmnt_read()
 
+        # Extract customer details to a variable that store list
+        customers = customer_details_read()
+
     # No file spotted
     except:
         print("Due to unstable database, You will be redirected to the welcome page..\n")
         welcome()
 
     # Enter username to confirm booking
-    def payment_username_validation():
-        username = input(
-            "\nEnter your username to pay for your booking confirmation: ")
-
-        # username checking
-        for statement in statements:
-            if username == statement[0]:
-                return username
-
-        # Username not available in the database
-        else:
-            print("There is no such customer, please insert a valid username.\n")
-            return payment_username_validation()
-
-    username = payment_username_validation()
+    username = input(
+        "\nEnter your username to pay for your booking confirmation: ")
 
     index = 0
     new_index = []
-    stmnt_index = []
     line_num = 1
     cus_statement_header()
     for statement in statements:
@@ -2114,17 +2115,14 @@ def pay_car():
 
         # Display pay with balance statement / Redirected to pay with balance
         elif username == statement[0] and statement[4] == 'Pending' and statement[6] == 'balance':
-            try:
-                stmnt_index.append(index)
-                print("{:<4}{:<10}{:<8}{:<7}{:<8}RM{:<8}{:<9}{:<13}{:<8}".format(
-                    line_num, statement[0], statement[1], statement[2], statement[3], statement[7], statement[4], statement[5], statement[6]))
-                line_num += 1
-                index += 1
-                return stmnt_index
-            finally:
-                pay_balance()
+            new_index.append(index)
+            print("{:<4}{:<10}{:<8}{:<7}{:<8}RM{:<8}{:<9}{:<13}{:<8}\t--uncompleted payment due to insufficient balance before".format(
+                line_num, statement[0], statement[1], statement[2], statement[3], statement[7], statement[4], statement[5], statement[6]))
+            line_num += 1
+            index += 1
         else:
             index += 1
+            continue
 
     # No data spotted
     if not new_index:
@@ -2190,24 +2188,109 @@ Note: Select [NO] return to customer functionalities page
             booking_pay()
 
     pay_index = pay_line_validation()
-    car_id = statement[pay_index]['car id']
+    car_id = statements[pay_index][1]
 
     # Note information
-    print("""IMPORTANT!! 
-Note: 
+    print("""
+IMPORTANT!!
+Note:
 \U00002022 you will need to make full payment to confirm your booking.
-\U00002022 you will not be able to change your payment method after selection
+\U00002022 you can overwrite your previous payment method if you had not paid the booking
 """)
 
-    # Request customers to select their preferred payment method
-    payment_method = input("""What would you like to use to pay the booking?
-[credit card] [balance]
-=> """).lower()
+    def payment_method_request():
+        # Menu
+        print("""What would you like to use to pay the booking?
 
+[credit card] [balance]""")
+
+        # Request customers to select their preferred payment method
+        payment_method = input("Option => ").lower()
+        return payment_method
+
+    payment_method = payment_method_request()
     # Update data
-    statements[pay_index]['payment method'] = payment_method
+    statements[pay_index][6] = payment_method
 
-    # Update pay method data in text files
+    # Credit card payment method
+    if payment_method == 'credit card':
+        print("\nNote that your private information in this area will not be stored in our cookies.\n")
+        credit_card_num = input("Enter your credit card number: ")
+        cvv = input("Enter your credit card's CVV: ")
+        expiry_date = input("Enter your credit card's expiry date: ")
+
+        # Display payment details
+        print(f"""
+Transaction completed...
+
+{decoration()} Payment details {decoration()}
+
+Paid amount: {statements[pay_index][7]}
+Credit card: {credit_card_num}
+""")
+        # Update data
+        statements[pay_index][4] = 'Paid'
+        statements[pay_index][5] = 'In Queue'
+
+        for car in cars:
+            if car[0] == car_id:
+                car[5] = 'Booked'
+
+    # Redirect to balance payment page
+    elif payment_method == 'balance':
+        index1 = 0
+        for customer in customers:
+            if customer[0] == username:
+                new_index1 = index1
+                balance = int(customer[4])
+                break
+            index1 += 1
+
+        # Calculating the total amount customers should pay
+        total = statements[pay_index][7]
+
+        # Display how much the customer should pay and car ID
+        print(f"""
+Your initial balance: RM{balance}
+You have to pay: RM{total}
+Car ID: {car_id}
+""")
+
+        # Deduct from balance if it is more than total
+        if balance >= total:
+            new_balance = balance - total
+
+            # Display remaining balance
+            print("You had paid the booking confirmation.\nTransaction completed. Your current balance is RM", new_balance)
+
+            # Change data to paid situation
+            customers[new_index1][4] = str(new_balance)
+            statements[pay_index][4] = 'Paid'
+            statements[pay_index][5] = 'In Queue'
+            statements[pay_index][6] = 'balance'
+
+            for car in cars:
+                if car[0] == car_id:
+                    car[5] = 'Booked'
+
+        # Insufficient balance to pay will be automatically redirected to the top up screen
+        elif balance < total:
+            print(f"""
+    Your balance is insufficient...
+    Your current balance: RM{balance}
+
+    You will need to top up before paying your booking confirmation.
+
+    Redirecting to top up system....
+    """)
+            top_up_header()
+
+    # Invalid input, reboot car payment page
+    else:
+        print("Invalid input, Please choose from the available option")
+        return payment_method_request()
+
+     # Update data to text files
     count = 1
     statement_count = 1
     with open('customerBookingPayment.txt', 'w') as update_pay_method:
@@ -2232,278 +2315,55 @@ Note:
                     else:
                         update_pay_method.write(details)
 
-    # Credit card payment method
-    if payment_method == 'credit card':
-        print("\nNote that your private information in this area will not be stored in our cookies.\n")
-        credit_card_num = input("Enter your credit card number: ")
-        cvv = input("Enter your credit card's CVV: ")
-        expiry_date = input("Enter your credit card's expiry date: ")
-
-        # Display payment details
-        print(f"""
-Transaction completed...
-
-{decoration()} Payment details {decoration()}
-
-Paid amount: {int(statements[pay_index]['price']) * int(statements[pay_index]['days'])}
-Credit card: {credit_card_num}
-""")
-        # Update data
-        statements[pay_index]['status'] = 'Paid'
-        statements[pay_index]['reservation'] = 'In Queue'
-
+    count = 1
+    car_count = 1
+    with open('carDatabase.txt', 'w') as mark_rented:
         for car in cars:
-            if car[0] == car_id:
-                car[5] = 'Booked'
-
-        # Update data to text files
-        count = 1
-        statement_count = 1
-        with open('customerBookingPayment.txt', 'w') as update_pay_method:
-            for statement in statements:
-                if statement_count < len(statements):
-                    count = 1
-                    for details in statement:
-                        if count < len(statement):
-                            update_pay_method.write(f"{details} | ")
-                            count += 1
-                        else:
-                            update_pay_method.write(details)
-                    update_pay_method.write("\n")
-                    statement_count += 1
-                else:
-                    count = 1
-                    for details in statement:
-                        if count < len(statement):
-                            update_pay_method.write(f"{details} | ")
-                            count += 1
-                        else:
-                            update_pay_method.write(details)
-
-        count = 1
-        car_count = 1
-        with open('carDatabase.txt', 'w') as mark_rented:
-            for car in cars:
-                if car_count < len(cars):
-                    count = 1
-                    for details in car:
-                        if count < len(car):
-                            mark_rented.write(f"{details} | ")
-                            count += 1
-                        else:
-                            mark_rented.write(details)
-                    mark_rented.write("\n")
-                    car_count += 1
-                else:
-                    count = 1
-                    for details in car:
-                        if count < len(car):
-                            mark_rented.write(f"{details} | ")
-                            count += 1
-                        else:
-                            mark_rented.write(details)
-
-        # Automatically redirect to the customer functionalities page
-        print("\nRedirecting to customer functionalities page...\n")
-        reg_customer()
-
-    # Redirect to balance payment page
-    elif payment_method == 'balance':
-        pay_balance()
-
-    # Invalid input, reboot car payment page
-    else:
-        print("Invalid input, due to privacy you will be redirected to the car payment statement page again...")
-        return pay_car()
-
-
-# Pay with balance
-def pay_balance():
-    stmnt_index = pay_car()
-
-    # Select the booking that customers wish to pay
-    def booking_pay():
-        try:
-            pay_statement = int(
-                input("\nWhich booking statement (line) you would like to pay? "))
-            if pay_statement <= 0 or pay_statement > len(stmnt_index):
-                print("Invalid choice, choose from available line statement.")
-                return booking_pay()
+            if car_count < len(cars):
+                count = 1
+                for details in car:
+                    if count < len(car):
+                        mark_rented.write(f"{details} | ")
+                        count += 1
+                    else:
+                        mark_rented.write(details)
+                mark_rented.write("\n")
+                car_count += 1
             else:
-                return pay_statement
+                count = 1
+                for details in car:
+                    if count < len(car):
+                        mark_rented.write(f"{details} | ")
+                        count += 1
+                    else:
+                        mark_rented.write(details)
 
-        # Non numeric value validation
-        except ValueError:
-            print("\nInvalid input, please insert numeric value.\n")
-            return booking_pay()
-
-    pay_statement = booking_pay()
-    statement_index = index_converter(pay_statement)
-
-    def pay_line_validation():
-        try:
-            pay_index = stmnt_index[statement_index]
-            return pay_index
-
-        # Exclude non existent lines
-        except IndexError:
-            print("\nThere is no relevant line statement available for payment.")
-            booking_pay()
-
-    pay_index = pay_line_validation()
-
-    try:
-        # Extract customer booking / payment statement to a variable that store a list
-        statements = bookpay_stmnt_read()
-
-        # Extract car data to a variable that store list
-        cars = car_database_read()[0]
-
-        # Extract customer details to a variable that store list
-        customers = customer_details_read()
-
-    # No file spotted
-    except:
-        print("Due to unstable database, You will be redirected to the welcome page..\n")
-        welcome()
-
-    # Request username
-    def balance_username_validation():
-        username = input(
-            "\nYou are accessing your online balance, enter your username to make sure that is you: ")
-
+    count = 1
+    customer_count = 1
+    with open('customerDetails.txt', 'w') as balance_reduce:
         for customer in customers:
-            if username == customer["username"]:
-                return username
-        else:
-            print("There is no such customer, please insert a valid username.\n")
-            return balance_username_validation()
+            if customer_count < len(customers):
+                count = 1
+                for details in customer:
+                    if count < len(customer):
+                        balance_reduce.write(f"{details} | ")
+                        count += 1
+                    else:
+                        balance_reduce.write(details)
+                balance_reduce.write("\n")
+                customer_count += 1
+            else:
+                count = 1
+                for details in customer:
+                    if count < len(customer):
+                        balance_reduce.write(f"{details} | ")
+                        count += 1
+                    else:
+                        balance_reduce.write(details)
 
-    username = balance_username_validation()
-
-    # Verifying username
-    index1 = 0
-    for customer in customers:
-        if customer[0] == username:
-            new_index1 = index1
-            balance = int(customer["balance"])
-            break
-        index1 += 1
-
-    # Calculating the total amount customers should pay
-    total = int(statements[pay_index][2]) * int(statements[pay_index][3])
-    car_id = statements[1]
-
-    # Display how much the customer should pay and car ID
-    print(f"""You have to pay: RM{total}
-Car ID: {car_id}
-Your current balance: RM{balance}
-""")
-
-    # Deduct from balance if it is more than total
-    if balance >= total:
-        new_balance = balance - total
-
-        # Display remaining balance
-        print("You had paid the booking confirmation.\nTransaction completed. Your current balance is RM", new_balance)
-
-        # Change data to paid situation
-        customers[new_index1][4] = str(new_balance)
-        statements[pay_index][4] = 'Paid'
-        statements[pay_index][5] = 'In Queue'
-        statements[pay_index][6] = 'balance'
-
-        # Change specified car status to rented after payment
-        for car in cars:
-            if car[0] == car_id:
-                car[5] = 'Rented'
-                break
-
-        # Update data to text files
-        count = 1
-        customer_count = 1
-        with open('customerDetails.txt', 'w') as balance_reduce:
-            for customer in customers:
-                if customer_count < len(customers):
-                    count = 1
-                    for details in customer:
-                        if count < len(customer):
-                            balance_reduce.write(f"{details} | ")
-                            count += 1
-                        else:
-                            balance_reduce.write(details)
-                    balance_reduce.write("\n")
-                    customer_count += 1
-                else:
-                    count = 1
-                    for details in customer:
-                        if count < len(customer):
-                            balance_reduce.write(f"{details} | ")
-                            count += 1
-                        else:
-                            balance_reduce.write(details)
-
-        count = 1
-        statement_count = 1
-        with open('customerBookingPayment.txt', 'w') as paid:
-            for statement in statements:
-                if statement_count < len(statements):
-                    count = 1
-                    for details in statement:
-                        if count < len(statement):
-                            paid.write(f"{details} | ")
-                            count += 1
-                        else:
-                            paid.write(details)
-                    paid.write("\n")
-                    statement_count += 1
-                else:
-                    count = 1
-                    for details in statement:
-                        if count < len(statement):
-                            paid.write(f"{details} | ")
-                            count += 1
-                        else:
-                            paid.write(details)
-
-        count = 1
-        car_count = 1
-        with open('carDatabase.txt', 'w') as mark_rented:
-            for car in cars:
-                if car_count < len(cars):
-                    count = 1
-                    for details in car:
-                        if count < len(car):
-                            mark_rented.write(f"{details} | ")
-                            count += 1
-                        else:
-                            mark_rented.write(details)
-                    mark_rented.write("\n")
-                    car_count += 1
-                else:
-                    count = 1
-                    for details in car:
-                        if count < len(car):
-                            mark_rented.write(f"{details} | ")
-                            count += 1
-                        else:
-                            mark_rented.write(details)
-
-        # Automatically redirect to customer functionalities page
-        print("\nRedirecting to customer functionalities page...\n")
-        reg_customer()
-
-    # Insufficient balance to pay will be automatically redirected to the top up screen
-    elif balance < total:
-        print(f"""
-Your balance is insufficient...
-Your current balance: RM{balance}
-
-You will need to top up before paying your booking confirmation.
-
-Redirecting to top up system....
-""")
-        top_up_header()
+    # Automatically redirect to the customer functionalities page
+    print("\nRedirecting to customer functionalities page...\n")
+    reg_customer()
 
 
 # 8. Top up your balance.
@@ -2556,9 +2416,9 @@ def top_up():
         try:
             # Menu
             print("""
-Which payment method do you prefer to top up your balance with? 
+Which payment method do you prefer to top up your balance with?
 
-    1: Credit/debit card 
+    1: Credit/debit card
     2: FPX online banking
 """)
             payment_method = int(input("Option => "))
@@ -2585,17 +2445,17 @@ Which payment method do you prefer to top up your balance with?
 
         # Bank options to proceed payment in FPX
         def bank_options():
-            try:
-                # Menu
-                print("""
+            # Menu
+            print("""
 Select your merchant:
 
     1: Maybank
     2: Public Bank
-    3: Ambank 
+    3: Ambank
     4: RHB Bank
     5: CIMB Bank
 """)
+            try:
                 bank_choice = int(input("Option => "))
                 return bank_choice
 
@@ -2636,7 +2496,7 @@ Select your merchant:
     balance += top_up_value
     customers[cus_index][4] = str(balance)
     print("Top up success, current balance: RM",
-          customers[cus_index]['balance'])
+          customers[cus_index][4])
 
    # Update data to text files
     count = 1
@@ -2745,7 +2605,11 @@ def car_claim():
         try:
             claim_car = int(input(
                 "\nWhich statement you would like to claim your car (line of statement): "))
-            return claim_car
+            if claim_car <= 0 or claim_car > len(index_collector):
+                print("Invalid choice, choose from available line statement.")
+                return claim_line_statement()
+            else:
+                return claim_car
 
         # Validation for non numeric value
         except ValueError:
@@ -2755,13 +2619,18 @@ def car_claim():
     claim_car = claim_line_statement()
     index_value = index_converter(claim_car)
 
-    try:
-        new_index = index_collector[index_value]
+    # Select the booking that customers wish to pay
+    def claim_index():
+        try:
+            new_index = index_collector[index_value]
+            return new_index
 
-    # validation for invalid line of statement
-    except IndexError:
-        print("\nThere is no relevant line statement that appear to be claimed.")
-        claim_line_statement()
+        # validation for invalid line of statement
+        except IndexError:
+            print("\nThere is no relevant line statement that appear to be claimed.")
+            claim_line_statement()
+
+    new_index = claim_index()
 
     # Change status
     statements[new_index][5] = 'Renting'
@@ -2770,8 +2639,8 @@ def car_claim():
     # Display claimed car statement
     print("\nClaimed car statement: ")
     cus_statement_header()
-    print("{:<4}{:<10}{:<8}{:<7}{:<8}RM{:<8}{:<9}{:<13}{:<8}".format(
-        line_num, statement[0], statement[1], statement[2], statement[3], statement[7], statement[4], statement[5], statement[6]))
+    print("    {:<10}{:<8}{:<7}{:<8}RM{:<8}{:<9}{:<13}{:<8}".format(
+        statements[new_index][0], statements[new_index][1], statements[new_index][2], statements[new_index][3], statements[new_index][7], statements[new_index][4], statements[new_index][5], statements[new_index][6]))
 
     # Change car status to rented
     index2 = 0

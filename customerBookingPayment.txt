@@ -20,18 +20,30 @@ Lancelot | R020 | 10 | 9 | Paid | In Queue | balance
 Hairy | R021 | 50 | 8 | Pending | N/A | balance
 Vandyck | R022 | 20 | 20 | Paid | Ready | credit card
 Love | R023 | 10 | 2 | Paid | Ready | balance
-Cheryl | R003 | 10 | 10 | Paid | Ready | balance
+Cheryl | R003 | 10 | 10 | Paid | Renting | balance
 Cherry | R008 | 25 | 6 | Pending | N/A | N/A
-Cheryl | R005 | 100 | 3 | Pending | N/A | balance
-Cheryl | R033 | 150 | 5 | Paid | Renting | balance
+Cheryl | R005 | 100 | 3 | Paid | In Queue | balance
+Cheryl | R033 | 150 | 5 | Paid | Completed | balance
 Vandyck | R038 | 160 | 6 | Pending | N/A | N/A
 Linux | R034 | 100 | 2 | Paid | Completed | credit card
 Banana | R035 | 55 | 3 | Paid | Completed | credit card
-Cheryl | R039 | 200 | 5 | Pending | N/A | N/A
+Cheryl | R039 | 200 | 5 | Paid | In Queue | credit card
 James | R036 | 60 | 8 | Paid | Completed | balance
 Love | R040 | 30 | 5 | Paid | Ready | balance
-Alex | R041 | 50 | 10 | Paid | In Queue | credit card
-Karen | R037 | 80 | 5 | Paid | Renting | credit card
+Alex | R041 | 50 | 10 | Paid | Ready | credit card
+Karen | R037 | 80 | 5 | Paid | Completed | credit card
 Alex | R042 | 120 | 9 | Pending | N/A | balance
 Zhongli | R043 | 300 | 10 | Paid | Renting | credit card
-Cheryl | R044 | 70 | 1 | Paid | Ready | balance
+Cheryl | R044 | 70 | 1 | Paid | Renting | balance
+Vandyck | R035 | 55 | 9 | Pending | N/A | N/A
+Cheryl | R038 | 160 | 8 | Paid | In Queue | credit card
+Cheryl | R048 | 100 | 4 | Paid | In Queue | balance
+Vandyck | R049 | 20 | 5 | Pending | N/A | N/A
+Zhongli | R050 | 40 | 6 | Paid | Renting | balance
+Tartaglia | R051 | 80 | 4 | Paid | Renting | credit card
+Cheryl | R052 | 150 | 7 | Paid | Renting | balance
+Banana | R053 | 160 | 8 | Paid | In Queue | credit card
+Xiao | R054 | 100 | 10 | Paid | Ready | balance
+Diluc | R055 | 900 | 9 | Paid | In Queue | credit card
+Kaeya | R057 | 200 | 5 | Paid | Renting | credit card
+Cheryl | R039 | 250 | 5 | Pending | N/A | N/A

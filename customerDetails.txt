@@ -1,5 +1,5 @@
 Sweet | pink | Kuala Lumpur | 0119892384 | 900
-Cheryl | lim | Puchong | 0153646252 | 140
+Cheryl | lim | Pulau Perhentian | 0123547653 | 11740
 Vandyck | lai | Johor Bahru | 0129989852 | 10073
 Love | lylong | Butterworth | 0192342345 | 9000
 Lancelot | arthur | Kuala Pilah | 0123456789 | 123
@@ -22,3 +22,6 @@ Diluc | jean | Putrajaya | 0190374624 | 10000
 Kaeya | coolit | Cyberjaya | 0164527482 | 500
 Tartaglia | mora | OUG | 0127563536 | 11000
 Xiao | almondtofu | Genting Highlands | 0163596857 | 100
+Kazuha | leaves | Pulau Tioman | 0124657354 | 0
+Ayaka | kamisato | Pulau Ketam | 0173645243 | 0
+Kara | lolita | Johor | 0173542645 | 0
