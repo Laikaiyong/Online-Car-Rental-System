@@ -449,41 +449,40 @@ def admin_modify():
         try:
             data_line = int(
                 input("\nWhich line of data you want to perform the modification: "))
-            return data_line
+            car_index_convert = index_converter(data_line)
+            car_index = cars_index[car_index_convert]
+
+            if data_line <= 0:
+                print("Invalid input, please try again.")
+                return data_line_validation()
+
+            else:
+                return car_index
 
         # Exclude non numeric value
         except ValueError:
             print("\nInvalid input, please insert a numeric value..")
             return data_line_validation()
 
-    data_line = data_line_validation()
-
-    car_index_convert = index_converter(data_line)
-
-    def data_line_index():
-        try:
-            car_index = cars_index[car_index_convert]
-            return car_index
-
         # Exclude non existent records
         except IndexError:
             print("\nCar line is out of range.")
-            data_line_validation()
+            return data_line_validation()
 
-    car_index = data_line_index()
+    car_index = data_line_validation()
     print("\nIMPORTANT!!! Note that uniqueID can't be modified. "
           "\nIf the car had been removed from the system place X in rent status.\n")
 
     def data_type_validation():
         # Ask for desired data type
-        item = input("Modify data type (e.g. Car Name, Price): ").replace(
+        item = input("Modify data type (e.g. Car Model, Price): ").replace(
             " ", '_').lower()
 
         if item == "car_brand":
             index = 1
             origin_word = cars[car_index][index]
 
-        elif item == "car_name":
+        elif item == "car_model":
             index = 2
             origin_word = cars[car_index][index]
 
@@ -522,6 +521,12 @@ def admin_modify():
     replace_word = input("Replaced by:  ")
     cars[car_index][replace_index] = replace_word
 
+    # Display updated data
+    print("\nDisplaying updated data.\n")
+    car_header()
+    print("   {:<8}{:<11}{:<11}{:<10}{:<7}{:<9}{:<6}"
+          .format(cars[car_index][0], cars[car_index][1], cars[car_index][2], cars[car_index][3], cars[car_index][4], cars[car_index][5], cars[car_index][6]))
+
     # Transfer new data to the text file
     with open('carDatabase.txt', 'w') as modified:
         car_count = 1
@@ -558,16 +563,11 @@ Note: Selecting [NO] will redirect you back to the administrator main menu.""")
 
         # Continue modification
         if continue_or_not == 'YES':
-            print(
-                "\nDisplaying modified data...\nContinue modification based on new data.")
+            print("\nContinue modification based on new data.")
             return admin_modify()
 
         # Stop modification and return to administrator functionalities menu
         elif continue_or_not == 'NO':
-            print("\nDisplaying updated data.\n")
-            car_header()
-            print("   {:<9}{:<11}{:<11}{:<10}{:<7}{:<9}{:<6}"
-                  .format(cars[car_index][0], cars[car_index][1], cars[car_index][2], cars[car_index][3], cars[car_index][4], cars[car_index][5], cars[car_index][6]))
             print("\nYou will be redirected to the administrator main screen...")
             return administrator_system()
 
@@ -662,21 +662,27 @@ def dis_rent_car():
     status = input(
         "\nCategories available [Open] [Rented] [X] [Booked]\nStatus => ").capitalize()
 
+    available_status = ["Open", "Rented", "X", "Booked"]
+
     # Display cars with matching status
-    index = 0
-    emp_spotter = []
-    line_number = 1
-    car_header()
-    for car in cars:
-        if status == car[5]:
-            emp_spotter.append(index)
-            print("{:<4}{:<7}{:<12}{:<11}{:<10}{:<6}{:<8}{:<5}"
-                  .format(line_number, car[0], car[1], car[2], car[3], car[4], car[5], car[6]))
-            index += 1
-            line_number += 1
-        else:
-            index += 1
-            continue
+    if status in available_status:
+        index = 0
+        emp_spotter = []
+        line_number = 1
+        car_header()
+        for car in cars:
+            if status == car[5]:
+                emp_spotter.append(index)
+                print("{:<4}{:<7}{:<12}{:<11}{:<10}{:<6}{:<8}{:<5}"
+                      .format(line_number, car[0], car[1], car[2], car[3], car[4], car[5], car[6]))
+                index += 1
+                line_number += 1
+            else:
+                index += 1
+                continue
+    else:
+        print("\nInvalid type of status, please choose again.")
+        return dis_rent_car()
 
     # No data spotted
     if not emp_spotter:
@@ -701,16 +707,6 @@ def dis_cus_booking():
         print("Access the database system to check database issue.\n")
         maintenance_database_access()
 
-    def day_duration():
-        try:
-            days = int(input("\nRent duration (days): "))
-            return days
-
-        except ValueError:
-            print("\nInvalid input, please key in a numeric value (day(s)).")
-            return day_duration()
-
-    days = day_duration()
     # Set reservation only specify on booking status
     reservation = ('In Queue', 'Ready')
 
@@ -720,7 +716,7 @@ def dis_cus_booking():
     emp_spotter = []
     cus_book_header()
     for statement in statements:
-        if reservation[0] == statement[5] or reservation[1] == statement[5] and statement[3] == days:
+        if reservation[0] == statement[5] or reservation[1] == statement[5]:
             emp_spotter.append(index)
             print("{:<4}{:<11}{:<8}{:<7}{:<8}RM{:<9}{:<8}{:<5}"
                   .format(line_number, statement[0], statement[1], statement[2], statement[3], statement[7], statement[4], statement[5]))
@@ -752,6 +748,17 @@ def dis_cus_pay():
         print("Access the database system to check database issue.\n")
         maintenance_database_access()
 
+    def day_duration():
+        try:
+            days = int(input("\nRent duration (days): "))
+            return days
+
+        except ValueError:
+            print("\nInvalid input, please key in a numeric value (day(s)).")
+            return day_duration()
+
+    days = str(day_duration())
+
     # Set statement status only specify on 'Paid'
     status = 'Paid'
 
@@ -761,10 +768,10 @@ def dis_cus_pay():
     emp_spotter = []
     cus_pay_header()
     for statement in statements:
-        if status == statement[4]:
+        if status == statement[4] and statement[3] == days:
             emp_spotter.append(index)
             print("{:<4}{:<11}{:<8}{:<7}{:<8}RM{:<9}{:<8}{:<5}"
-                  .format(line_number, statement[0], statement[1], statement[2], statement[3], int(statement[2]) * int(statement[3]), statement[4], statement[6]))
+                  .format(line_number, statement[0], statement[1], statement[2], statement[3], statement[7], statement[4], statement[6]))
             index += 1
             line_number += 1
         else:
@@ -900,19 +907,15 @@ def cus_book_search():
 
     # Ask for data users want to search
     def data_type_validation():
-        print("Options: [Username] [Car ID] [Price] [Days] [Total Amount]\n")
+        print("Options: [Username] [Car ID] [Days]\n")
         data_type = input(
             "What is the data type you would like to seek for: ").lower()
         if data_type == "username":
             index = 0
         elif data_type == "car id":
             index = 1
-        elif data_type == "price":
-            index = 2
         elif data_type == "days":
             index = 3
-        elif data_type == "total amount":
-            index = 7
 
         else:
             print("Invalid input, please choose from the option.\n")
@@ -984,19 +987,15 @@ def cus_pay_search():
 
      # Ask for data users want to search
     def data_type_validation():
-        print("Options: [Username] [Car ID] [Price] [Days] [Total Amount]\n")
+        print("Options: [Username] [Car ID] [Days]\n")
         data_type = input(
             "What is the data type you would like to seek for: ").lower()
         if data_type == "username":
             index = 0
         elif data_type == "car id":
             index = 1
-        elif data_type == "price":
-            index = 2
         elif data_type == "days":
             index = 3
-        elif data_type == "total amount":
-            index = 7
 
         else:
             print("Invalid input, please choose from the option.\n")
@@ -1467,7 +1466,7 @@ As a visitor, select your action.
 
         # Error if integers 1 to 4 are not entered, customers can try entering again
         else:
-            print("Invalid input, please insert valid value (1 to 4): ")
+            print("Invalid input, please insert valid value (1 to 4). ")
             return customer_interface()
 
     # Non numeric value validation
@@ -1503,7 +1502,7 @@ Do you wish to go back to the main menu or login for more functionalities?
         elif redirect == 4:
             exit_system()
 
-        # Error if integers form 1 to 3 are not entered, customers can try entering again
+        # Error if integers from 1 to 4 are not entered, customers can try entering again
         else:
             print("\nInvalid input, please select either 1, 2, 3 or 4.")
             return cont_main_menu()
@@ -2276,13 +2275,13 @@ Car ID: {car_id}
         # Insufficient balance to pay will be automatically redirected to the top up screen
         elif balance < total:
             print(f"""
-    Your balance is insufficient...
-    Your current balance: RM{balance}
+Your balance is insufficient...
+Your current balance: RM{balance}
 
-    You will need to top up before paying your booking confirmation.
+You will need to top up before paying your booking confirmation.
 
-    Redirecting to top up system....
-    """)
+Redirecting to top up system....
+""")
             top_up_header()
 
     # Invalid input, reboot car payment page
@@ -2422,31 +2421,26 @@ Which payment method do you prefer to top up your balance with?
     2: FPX online banking
 """)
             payment_method = int(input("Option => "))
-            return payment_method
 
-        # Exclude non numeric value
-        except ValueError:
-            print("\nInvalid input, please insert numeric value (1 or 2).\n")
-            return payment_type()
+            # Credit card payment method
+            if payment_method == 1:
+                print("\n", decoration() * 3,
+                      "\nTop up with: Credit/debit card\n", decoration() * 3)
+                credit_card_num = input(
+                    "Enter your credit/debit card number: ")
+                cvv = input("Enter your credit/debit card's CVV: ")
+                expiry_date = input(
+                    "Enter your credit/debit card's expiry date: ")
 
-    payment_method = payment_type()
-    # Credit card payment method
-    if payment_method == 1:
-        print("\n", decoration() * 3,
-              "\nTop up with: Credit/debit card\n", decoration() * 3)
-        credit_card_num = input("Enter your credit/debit card number: ")
-        cvv = input("Enter your credit/debit card's CVV: ")
-        expiry_date = input("Enter your credit/debit card's expiry date: ")
+            # FPX online banking payment method
+            elif payment_method == 2:
+                print("\n", decoration() * 3,
+                      "\nTop up with: FPX online banking\n", decoration() * 3)
 
-    # FPX online banking payment method
-    elif payment_method == 2:
-        print("\n", decoration() * 3,
-              "\nTop up with: FPX online banking\n", decoration() * 3)
-
-        # Bank options to proceed payment in FPX
-        def bank_options():
-            # Menu
-            print("""
+                # Bank options to proceed payment in FPX
+                def bank_options():
+                    # Menu
+                    print("""
 Select your merchant:
 
     1: Maybank
@@ -2455,33 +2449,42 @@ Select your merchant:
     4: RHB Bank
     5: CIMB Bank
 """)
-            try:
-                bank_choice = int(input("Option => "))
-                return bank_choice
+                    try:
+                        bank_choice = int(input("Option => "))
 
-            # Exclude non numeric value
-            except ValueError:
-                print("\nInvalid input, please insert numeric value.\n")
-                return bank_options()
+                        # Execute based on options by customers
+                        if bank_choice <= 5:
+                            account_no = input(
+                                "Enter your bank account number: ")
+                            account_password = input(
+                                "Enter your bank account password: ")
+                            print("\nTop up with", account_no)
 
-        bank_choice = bank_options()
-        # Execute based on options by customers
-        if bank_choice <= 5:
-            account_no = input("Enter your bank account number: ")
-            account_password = input("Enter your bank account password: ")
-            print("\nTop up with", account_no)
+                        # Error if numbers less than 5 are not entered and request bank again
+                        else:
+                            print("Invalid input, please select in range 1 to 5.")
+                            return bank_options()
 
-        # Error if numbers less than 5 are not entered and request bank again
-        else:
-            print("Invalid input, please select in range 1 to 5.")
-            return bank_options()
+                    # Exclude non numeric value
+                    except ValueError:
+                        print("\nInvalid input, please insert numeric value.\n")
+                        return bank_options()
 
-    # Error if integer 1 or 2 are not entered
-    else:
-        print("Invalid input, please enter either 1 or 2.")
-        payment_type()
+                bank_option = bank_options()
 
+            # Error if integer 1 or 2 are not entered
+            else:
+                print("Invalid input, please enter either 1 or 2.")
+                return payment_type()
+
+        # Exclude non numeric value
+        except ValueError:
+            print("\nInvalid input, please insert numeric value (1 or 2).\n")
+            return payment_type()
+
+    payment_method = payment_type()
     # Request top up amount
+
     def top_up_amount():
         try:
             top_up_value = int(input("How much do you want to top up: "))
