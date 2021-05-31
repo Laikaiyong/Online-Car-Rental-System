@@ -381,7 +381,7 @@ Insert car data:
         def new_price_validation():
             try:
                 new_price = int(
-                    input("Enter price per hour (Only numeric data): "))
+                    input("Enter price per day (Only numeric data): "))
                 return new_price
 
             # Exclude non numeric value
