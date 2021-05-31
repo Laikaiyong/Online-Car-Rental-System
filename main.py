@@ -1114,7 +1114,7 @@ def admin_return_rent():
     for statement in statements:
         if statement[4] == 'Paid' and statement[5] == 'Renting':
             index_collector.append(index1)
-            print("{:<4}{:<11}{:<8}{:<7}{:<8}RM{:<8}{:<9}{:<13}{:<8}"
+            print("{:<4}{:<11}{:<8}{:<7}{:<8}RM{:<9}{:<9}{:<13}{:<8}"
                   .format(line_num, statement[0], statement[1], statement[2], statement[3], statement[7], statement[4], statement[5], statement[6]))
             index1 += 1
             line_num += 1
@@ -1276,7 +1276,7 @@ def admin_mark_ready():
     for statement in statements:
         if statement[4] == 'Paid' and statement[5] == 'In Queue':
             index_collector.append(index1)
-            print("{:<4}{:<11}{:<8}{:<7}{:<8}RM{:<8}{:<9}{:<13}{:<8}"
+            print("{:<4}{:<11}{:<8}{:<7}{:<8}RM{:<9}{:<9}{:<13}{:<8}"
                   .format(line_num, statement[0], statement[1], statement[2], statement[3], statement[7], statement[4], statement[5], statement[6]))
             index1 += 1
             line_num += 1
@@ -1333,7 +1333,7 @@ def admin_mark_ready():
         statements[new_index][5] = 'Ready'
 
     # Display returned rent car
-    print("\nReturned rent statement: ")
+    print("\nMarked ready statement: ")
     cus_statement_header()
     print("   {:<11}{:<8}{:<7}{:<8}RM{:<8}{:<9}{:<13}{:<8}"
           .format(statements[new_index][0], statements[new_index][1], statements[new_index][2], statements[new_index][3], statements[new_index][7], statements[new_index][4], statements[new_index][5], statements[new_index][6]))
@@ -2107,7 +2107,7 @@ def pay_car():
         # Display booking that need to be paid
         if username == statement[0] and statement[4] == 'Pending' and statement[6] == 'N/A':
             new_index.append(index)
-            print("{:<4}{:<10}{:<8}{:<7}{:<8}RM{:<8}{:<9}{:<13}{:<8}".format(
+            print("{<4}{:<10}{:<8}{:<7}{:<8}RM{:<9}{:<9}{:<13}{:<8}".format(
                 line_num, statement[0], statement[1], statement[2], statement[3], statement[7], statement[4], statement[5], statement[6]))
             line_num += 1
             index += 1
@@ -2115,7 +2115,7 @@ def pay_car():
         # Display pay with balance statement / Redirected to pay with balance
         elif username == statement[0] and statement[4] == 'Pending' and statement[6] == 'balance':
             new_index.append(index)
-            print("{:<4}{:<10}{:<8}{:<7}{:<8}RM{:<8}{:<9}{:<13}{:<8}\t--uncompleted payment due to insufficient balance before".format(
+            print("{:<4}{:<10}{:<8}{:<7}{:<8}RM{:<9}{:<9}{:<13}{:<8}\t--uncompleted payment due to insufficient balance before".format(
                 line_num, statement[0], statement[1], statement[2], statement[3], statement[7], statement[4], statement[5], statement[6]))
             line_num += 1
             index += 1
@@ -2205,91 +2205,93 @@ Note:
 
         # Request customers to select their preferred payment method
         payment_method = input("Option => ").lower()
-        return payment_method
 
-    payment_method = payment_method_request()
-    # Update data
-    statements[pay_index][6] = payment_method
+        # Update data
+        statements[pay_index][6] = payment_method
 
-    # Credit card payment method
-    if payment_method == 'credit card':
-        print("\nNote that your private information in this area will not be stored in our cookies.\n")
-        credit_card_num = input("Enter your credit card number: ")
-        cvv = input("Enter your credit card's CVV: ")
-        expiry_date = input("Enter your credit card's expiry date: ")
+        # Credit card payment method
+        if payment_method == 'credit card':
+            print(
+                "\nNote that your private information in this area will not be stored in our cookies.\n")
+            credit_card_num = input("Enter your credit card number: ")
+            cvv = input("Enter your credit card's CVV: ")
+            expiry_date = input("Enter your credit card's expiry date: ")
 
-        # Display payment details
-        print(f"""
+            # Display payment details
+            print(f"""
 Transaction completed...
 
 {decoration()} Payment details {decoration()}
 
 Paid amount: {statements[pay_index][7]}
 Credit card: {credit_card_num}
-""")
-        # Update data
-        statements[pay_index][4] = 'Paid'
-        statements[pay_index][5] = 'In Queue'
-
-        for car in cars:
-            if car[0] == car_id:
-                car[5] = 'Booked'
-
-    # Redirect to balance payment page
-    elif payment_method == 'balance':
-        index1 = 0
-        for customer in customers:
-            if customer[0] == username:
-                new_index1 = index1
-                balance = int(customer[4])
-                break
-            index1 += 1
-
-        # Calculating the total amount customers should pay
-        total = statements[pay_index][7]
-
-        # Display how much the customer should pay and car ID
-        print(f"""
-Your initial balance: RM{balance}
-You have to pay: RM{total}
-Car ID: {car_id}
-""")
-
-        # Deduct from balance if it is more than total
-        if balance >= total:
-            new_balance = balance - total
-
-            # Display remaining balance
-            print("You had paid the booking confirmation.\nTransaction completed. Your current balance is RM", new_balance)
-
-            # Change data to paid situation
-            customers[new_index1][4] = str(new_balance)
+    """)
+            # Update data
             statements[pay_index][4] = 'Paid'
             statements[pay_index][5] = 'In Queue'
-            statements[pay_index][6] = 'balance'
 
             for car in cars:
                 if car[0] == car_id:
                     car[5] = 'Booked'
 
-        # Insufficient balance to pay will be automatically redirected to the top up screen
-        elif balance < total:
+        # Redirect to balance payment page
+        elif payment_method == 'balance':
+            index1 = 0
+            for customer in customers:
+                if customer[0] == username:
+                    new_index1 = index1
+                    balance = int(customer[4])
+                    break
+                index1 += 1
+
+            # Calculating the total amount customers should pay
+            total = statements[pay_index][7]
+
+            # Display how much the customer should pay and car ID
             print(f"""
+Your initial balance: RM{balance}
+You have to pay: RM{total}
+Car ID: {car_id}
+    """)
+
+            # Deduct from balance if it is more than total
+            if balance >= total:
+                new_balance = balance - total
+
+                # Display remaining balance
+                print(
+                    "You had paid the booking confirmation.\nTransaction completed. Your current balance is RM", new_balance)
+
+                # Change data to paid situation
+                customers[new_index1][4] = str(new_balance)
+                statements[pay_index][4] = 'Paid'
+                statements[pay_index][5] = 'In Queue'
+                statements[pay_index][6] = 'balance'
+
+                for car in cars:
+                    if car[0] == car_id:
+                        car[5] = 'Booked'
+
+            # Insufficient balance to pay will be automatically redirected to the top up screen
+            elif balance < total:
+                print(f"""
 Your balance is insufficient...
 Your current balance: RM{balance}
 
 You will need to top up before paying your booking confirmation.
 
 Redirecting to top up system....
-""")
-            top_up_header()
+    """)
+                top_up_header()
 
-    # Invalid input, reboot car payment page
-    else:
-        print("Invalid input, Please choose from the available option")
-        return payment_method_request()
+        # Invalid input, reboot car payment page
+        else:
+            print("Invalid input, Please choose from the available option")
+            return payment_method_request()
 
-     # Update data to text files
+    payment_method_request()
+
+    # Update data to text files
     count = 1
     statement_count = 1
     with open('customerBookingPayment.txt', 'w') as update_pay_method:
@@ -2589,7 +2591,7 @@ def car_claim():
     for statement in statements:
         if statement[0] == username and statement[4] == 'Paid' and statement[5] == 'Ready':
             index_collector.append(index1)
-            print("{:<4}{:<10}{:<8}{:<7}{:<8}RM{:<8}{:<9}{:<13}{:<8}".format(
+            print("{:<4}{:<10}{:<8}{:<7}{:<8}RM{:<9}{:<9}{:<13}{:<8}".format(
                 line_num, statement[0], statement[1], statement[2], statement[3], statement[7], statement[4], statement[5], statement[6]))
             index1 += 1
             line_num += 1
@@ -2642,7 +2644,7 @@ def car_claim():
     # Display claimed car statement
     print("\nClaimed car statement: ")
     cus_statement_header()
-    print("    {:<10}{:<8}{:<7}{:<8}RM{:<8}{:<9}{:<13}{:<8}".format(
+    print("    {:<10}{:<8}{:<7}{:<8}RM{:<9}{:<9}{:<13}{:<8}".format(
         statements[new_index][0], statements[new_index][1], statements[new_index][2], statements[new_index][3], statements[new_index][7], statements[new_index][4], statements[new_index][5], statements[new_index][6]))
 
     # Change car status to rented

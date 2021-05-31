@@ -2,7 +2,7 @@ R001 | Perodua | Axia | MEH0145 | 2021 | Booked | 50
 R002 | BMW | X1 | HEHE114 | 2020 | Rented | 100
 R003 | Perodua | Kancil | DAMN520 | 1998 | Open | 10
 R004 | Perodua | Myvi | BUM0599 | 2000 | Rented | 60
-R005 | Audi | A4 Sedan | RW214 | 2002 | Rented | 100
+R005 | Audi | A4 Sedan | RW214 | 2002 | Open | 100
 R006 | Mercedez | Benz | R092 | 2012 | Rented | 200
 R007 | Tesla | Model S | T111 | 2020 | Rented | 500
 R008 | Volks | Bently | SUK123 | 2012 | Open | 25
@@ -12,7 +12,7 @@ R011 | Mazda | CX5 | MCX5 | 1880 | Rented | 300
 R012 | Toyota | Accord | TYT121 | 1990 | Open | 200
 R013 | Ford | Ranger XL | FRXL12 | 2000 | Open | 125
 R014 | Geely | Lotus | LL129 | 2012 | Booked | 28s
-R015 | Toyota | Mercedez | TMYC129 | 2011 | Rented | 280
+R015 | Toyota | Mercedez | TMYC129 | 2011 | Open | 280
 R016 | Ferrari | F1 | MMM1234 | 2019 | Booked | 500
 R017 | Proton | X70 | UWU3445 | 2020 | X | 50
 R018 | Toyota | Altis | BOB1223 | 2020 | Booked | 25
@@ -30,17 +30,17 @@ R029 | Maserati | Ghibli | VIP1 | 2019 | Booked | 200
 R030 | Jeep | Compass | BBB8888 | 2020 | Booked | 90
 R031 | Toyota | Hype | HYI098 | 2019 | Open | 129
 R032 | Nissan | Livina | IP11 | 2019 | Booked | 200
-R033 | Haval | H1 | YAY2837 | 2018 | Open | 100
+R033 | Haval | H1 | YAY2837 | 2018 | Booked | 100
 R034 | Volks | Vento | III3847 | 2018 | Open | 100
 R035 | Lexus | IS | LEX3948 | 2020 | Open | 55
 R036 | Renault | Fluence | LIL1988 | 2019 | Open | 60
 R037 | Isuzu | D-MAX | MIN8475 | 2018 | Open | 80
 RO38 | Alfa | 159 | OOO8463 | 2013 | Booked | 160
-R039 | Audi | Q3 | BIN2847 | 2017 | Booked | 250
+R039 | Audi | Q3 | BIN2847 | 2017 | Rented | 250
 R040 | Perodua | Alza | PER6748 | 2015 | Open | 30
 R041 | Chevrolet | Sonic | SON9999 | 2013 | Open | 50
 R042 | Citroen | DS5 | CAT3485 | 2012 | Open | 120
-R043 | Toyota | Alphard | ALP0000 | 2009 | Open | 200
+R043 | Toyota | Alphard | ALP0000 | 2009 | Booked | 200
 R044 | Toyota | Avanza | LFL9756 | 2007 | Open | 70
 R045 | Honda | Jazz | KKK9876 | 2019 | Open | 90
 R046 | Honda | Odyssey | EEE9475 | 2017 | Open | 90
@@ -68,4 +68,13 @@ R067 | MINI | 3 | LOVE1 | 2017 | Booked | 100
 R068 | MINI | 5 | NUM3742 | 2017 | Rented | 70
 R069 | Subaru | WRX | PIN3846 | 2018 | Booked | 90
 R070 | Maxus | G10 | MAX3856 | 2018 | Booked | 80
-R071 | Gino | Jinny | GG1 | 2020 | Open | 90
+R071 | Gino | Jinny | GG1 | 2020 | Booked | 90
+R072 | Jim | Jimmy | JJ33 | 1990 | Open | 100
+R073 | Kim | Kimmy | KK44 | 2000 | Open | 100
+R074 | Royce | S22 | WUR2358 | 2010 | Rented | 50
+R075 | Makigai | MaiMai | MAI2847 | 2020 | Booked | 60
+R076 | Ray | Caliburn | CAL3958 | 2021 | Open | 300
+R077 | Arch | Nazare | ARC1924 | 2013 | Open | 100
+R078 | Shion | Coyote | COY4957 | 2019 | Booked | 150
+R079 | Herera | Outlaw | OUT8573 | 2021 | Rented | 200
+R080 | Thorton | Galena | GAL8364 | 2020 | Open | 100
