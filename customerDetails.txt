@@ -1,5 +1,5 @@
 Sweet | pink | Kuala Lumpur | 0119892384 | 900
-Cheryl | lim | Puchong | 0124579867 | 155
+Cheryl | lim | Puchong | 0165439087 | 410
 Vandyck | lai | Johor Bahru | 0129989852 | 10073
 Love | lylong | Butterworth | 0192342345 | 9000
 Lancelot | arthur | Kuala Pilah | 0123456789 | 123
@@ -29,3 +29,4 @@ Watermelon | 333 | Nusajaya | 0169876543 | 100
 Potato | mash | Perlis | 0123421789 | 0
 Kelly | 1273jfsha | Selangor | 012575635 | 0
 Valerie | night | Bukit Bintang | 0193467521 | 0
+Lara | Craft | Klang | 0198790543 | 0

@@ -1,72 +1,83 @@
-Sweet | R001 | 50 | 7 | Paid | Completed | credit card
-Love | R002 | 100 | 5 | Pending | N/A | N/A
-Cheryl | R003 | 10 | 3 | Paid | Completed | credit card
-Vandyck | R004 | 60 | 10 | Paid | Completed | balance
-Vandyck | R006 | 200 | 5 | Paid | Completed | balance
-Love | R001 | 50 | 3 | Paid | Ready | balance
-Cheryl | R005 | 100 | 4 | Paid | Completed | credit card
-Vandyck | R005 | 100 | 7 | Pending | N/A | balance
-Hairy | R010 | 5 | 2 | Pending | N/A | N/A
-Kari | R011 | 300 | 8 | Paid | Ready | credit card
-Kari | R006 | 200 | 1 | Paid | Ready | balance
-Love | R007 | 500 | 6 | Paid | Completed | balance
-Vandyck | R002 | 100 | 2 | Paid | Completed | credit card
-Cheryl | R015 | 280 | 5 | Paid | Completed | balance
-Kari | R014 | 28 | 2 | Paid | Ready | credit card
-Linux | R016 | 500 | 10 | Pending | N/A | N/A
-Kali | R018 | 25 | 8 | Pending | N/A | N/A
-James | R019 | 100 | 4 | Paid | Ready | credit card
-Lancelot | R020 | 10 | 9 | Paid | Ready | balance
-Hairy | R021 | 50 | 8 | Pending | N/A | balance
-Vandyck | R022 | 20 | 20 | Paid | Ready | credit card
-Love | R023 | 10 | 2 | Paid | Ready | balance
-Cheryl | R003 | 10 | 10 | Paid | Completed | balance
-Cherry | R008 | 25 | 6 | Pending | N/A | N/A
-Cheryl | R005 | 100 | 3 | Paid | Completed | balance
-Cheryl | R033 | 150 | 5 | Paid | In Queue | credit card
-Vandyck | R038 | 160 | 6 | Pending | N/A | N/A
-Linux | R034 | 100 | 2 | Paid | Completed | credit card
-Banana | R035 | 55 | 3 | Paid | Completed | credit card
-Cheryl | R039 | 200 | 5 | Paid | Renting | credit card
-James | R036 | 60 | 8 | Paid | Completed | balance
-Love | R040 | 30 | 5 | Paid | Ready | balance
-Alex | R041 | 50 | 10 | Paid | Ready | credit card
-Karen | R037 | 80 | 5 | Paid | Completed | credit card
-Alex | R042 | 120 | 9 | Pending | N/A | balance
-Zhongli | R043 | 300 | 10 | Paid | Completed | credit card
-Cheryl | R044 | 70 | 1 | Paid | Completed | balance
-Vandyck | R035 | 55 | 9 | Pending | N/A | N/A
-Cheryl | R038 | 160 | 8 | Paid | Renting | credit card
-Cheryl | R048 | 100 | 4 | Paid | Ready | balance
-Vandyck | R049 | 20 | 5 | Pending | N/A | N/A
-Zhongli | R050 | 40 | 6 | Paid | Renting | balance
-Tartaglia | R051 | 80 | 4 | Paid | Renting | credit card
-Cheryl | R052 | 150 | 7 | Paid | Renting | balance
-Banana | R053 | 160 | 8 | Paid | Ready | credit card
-Xiao | R054 | 100 | 10 | Paid | Ready | balance
-Diluc | R055 | 900 | 9 | Paid | Ready | credit card
-Kaeya | R057 | 200 | 5 | Paid | Renting | credit card
-Cheryl | R039 | 250 | 5 | Paid | In Queue | balance
-Cheryl | R032 | 200 | 3 | Paid | Ready | credit card
-Zhongli | R060 | 10 | 3 | Paid | In Queue | credit card
-Kaeya | R061 | 20 | 3 | Paid | In Queue | balance
-Watermelon | R058 | 20 | 1 | Pending | N/A | N/A
-Xiao | R061 | 20 | 3 | Paid | In Queue | balance
-Cheryl | R062 | 100 | 5 | Paid | In Queue | credit card
-Watermelon | R063 | 20 | 4 | Paid | Renting | credit card
-Kazuha | R066 | 100 | 9 | Paid | Renting | balance
-Diluc | R065 | 90 | 10 | Paid | In Queue | credit card
-Cheryl | R067 | 100 | 5 | Paid | Ready | balance
-Tartaglia | R068 | 70 | 8 | Paid | Renting | balance
-Cheryl | R069 | 90 | 10 | Paid | Ready | credit card
-Anthony | R070 | 80 | 8 | Paid | In Queue | balance
-Cheryl | R071 | 90 | 5 | Paid | In Queue | credit card
-Cheryl | R043 | 200 | 5 | Paid | In Queue | balance
-Banana | R074 | 50 | 8 | Paid | Renting | balance
-Ayaka | R075 | 60 | 5 | Paid | In Queue | credit card
-Zhongli | R076 | 300 | 4 | Pending | N/A | N/A
-Cheryl | R077 | 100 | 5 | Pending | N/A | N/A
-Watermelon | R078 | 150 | 3 | Paid | Ready | balance
-Vandyck | R079 | 200 | 5 | Paid | Renting | credit card
-Cheryl | R080 | 100 | 8 | Pending | N/A | N/A
-Cheryl | R076 | 300 | 3 | Pending | N/A | N/A
+Sweet | R001 | 50 | 7 | Paid | Completed | credit card | 05/01/2021
+Love | R002 | 100 | 5 | Pending | N/A | N/A | N/A
+Cheryl | R003 | 10 | 3 | Paid | Completed | credit card | 11/01/2021
+Vandyck | R004 | 60 | 10 | Paid | Completed | balance | 13/01/2021
+Vandyck | R006 | 200 | 5 | Paid | Completed | balance | 15/01/2021
+Love | R001 | 50 | 3 | Paid | Ready | balance | 20/03/2021
+Cheryl | R005 | 100 | 4 | Paid | Completed | credit card | 18/01/2021
+Vandyck | R005 | 100 | 7 | Pending | N/A | balance | N/A
+Hairy | R010 | 5 | 2 | Pending | N/A | N/A | N/A
+Kari | R011 | 300 | 8 | Paid | Ready | credit card | 31/05/2021
+Kari | R006 | 200 | 1 | Paid | Ready | balance | 01/05/2021
+Love | R007 | 500 | 6 | Paid | Completed | balance | 01/03/2021
+Vandyck | R002 | 100 | 2 | Paid | Completed | credit card | 20/02/2021
+Cheryl | R015 | 280 | 5 | Paid | Completed | balance | 19/02/2021
+Kari | R014 | 28 | 2 | Paid | Ready | credit card | 03/05/2021
+Linux | R016 | 500 | 10 | Pending | N/A | N/A | N/A
+Kali | R018 | 25 | 8 | Pending | N/A | N/A | N/A
+James | R019 | 100 | 4 | Paid | Ready | credit card | 22/04/2021
+Lancelot | R020 | 10 | 9 | Paid | Ready | balance | 25/04/2021
+Hairy | R021 | 50 | 8 | Pending | N/A | balance | N/A
+Vandyck | R022 | 20 | 20 | Paid | Ready | credit card | 01/05/2021
+Love | R023 | 10 | 2 | Paid | Ready | balance | 09/05/2021
+Cheryl | R003 | 10 | 10 | Paid | Completed | balance | 19/03/2021
+Cherry | R008 | 25 | 6 | Pending | N/A | N/A | N/A
+Cheryl | R005 | 100 | 3 | Paid | Completed | balance | 01/04/2021
+Cheryl | R033 | 150 | 5 | Paid | Renting | credit card | 28/04/2021
+Vandyck | R038 | 160 | 6 | Pending | N/A | N/A | N/A
+Linux | R034 | 100 | 2 | Paid | Completed | credit card | 22/02/2021
+Banana | R035 | 55 | 3 | Paid | Completed | credit card | 25/02/2021
+Cheryl | R039 | 200 | 5 | Paid | Completed | credit card | 03/04/2021
+James | R036 | 60 | 8 | Paid | Completed | balance | 31/02/2021
+Love | R040 | 30 | 5 | Paid | Ready | balance | 10/04/2021
+Alex | R041 | 50 | 10 | Paid | Ready | credit card | 02/05/2021
+Karen | R037 | 80 | 5 | Paid | Completed | credit card | 02/03/2021
+Alex | R042 | 120 | 9 | Pending | N/A | balance | N/A
+Zhongli | R043 | 300 | 10 | Paid | Completed | credit card | 02/03/2021
+Cheryl | R044 | 70 | 1 | Paid | Completed | balance | 31/02/2021
+Vandyck | R035 | 55 | 9 | Pending | N/A | N/A | N/A
+Cheryl | R038 | 160 | 8 | Paid | Completed | credit card | 30/03/2021
+Cheryl | R048 | 100 | 4 | Paid | Ready | balance | 26/04/2021
+Vandyck | R049 | 20 | 5 | Pending | N/A | N/A | N/A
+Zhongli | R050 | 40 | 6 | Paid | Renting | balance | 29/03/2021
+Tartaglia | R051 | 80 | 4 | Paid | Renting | credit card | 29/03/2021
+Cheryl | R052 | 150 | 7 | Paid | Renting | balance | 28/03/2021
+Banana | R053 | 160 | 8 | Paid | Ready | credit card | 02/05/2021
+Xiao | R054 | 100 | 10 | Paid | Ready | balance | 04/05/2021
+Diluc | R055 | 900 | 9 | Paid | Ready | credit card | 25/04/2021
+Kaeya | R057 | 200 | 5 | Paid | Renting | credit card | 02/04/2021
+Cheryl | R039 | 250 | 5 | Paid | Ready | balance | 15/05/2021
+Cheryl | R032 | 200 | 3 | Paid | Renting | credit card | 14/04/2021
+Zhongli | R060 | 10 | 3 | Paid | Ready | credit card | 16/05/2021
+Kaeya | R061 | 20 | 3 | Paid | In Queue | balance | 17/04/2021
+Watermelon | R058 | 20 | 1 | Pending | N/A | N/A | N/A
+Xiao | R061 | 20 | 3 | Paid | In Queue | balance | 27/04/2021
+Cheryl | R062 | 100 | 5 | Paid | In Queue | credit card | 04/05/2021
+Watermelon | R063 | 20 | 4 | Paid | Completed | credit card | 01/04/2021
+Kazuha | R066 | 100 | 9 | Paid | Renting | balance | 24/03/2021
+Diluc | R065 | 90 | 10 | Paid | In Queue | credit card | 04/05/2021
+Cheryl | R067 | 100 | 5 | Paid | Ready | balance | 19/04/2021
+Tartaglia | R068 | 70 | 8 | Paid | Renting | balance | 29/03/2021
+Cheryl | R069 | 90 | 10 | Paid | Ready | credit card | 21/04/2021
+Anthony | R070 | 80 | 8 | Paid | In Queue | balance | 26/04/2021
+Cheryl | R071 | 90 | 5 | Paid | In Queue | credit card | 02/05/2021
+Cheryl | R043 | 200 | 5 | Paid | In Queue | balance | 01/05/2021
+Banana | R074 | 50 | 8 | Paid | Renting | balance | 27/03/2021
+Ayaka | R075 | 60 | 5 | Paid | In Queue | credit card | 08/05/2021
+Zhongli | R076 | 300 | 4 | Paid | In Queue | credit card | 09/05/2021
+Cheryl | R077 | 100 | 5 | Pending | N/A | N/A | N/A
+Watermelon | R078 | 150 | 3 | Paid | Ready | balance | 11/04/2021
+Vandyck | R079 | 200 | 5 | Paid | Renting | credit card | 29/03/2021
+Cheryl | R080 | 100 | 8 | Paid | In Queue | credit card | 06/04/2021
+Cheryl | R076 | 300 | 3 | Pending | N/A | N/A | N/A
+Sweet | R081 | 180 | 5 | Paid | In Queue | balance | 01/05/2021
+Vandyck | R082 | 100 | 5 | Pending | N/A | N/A | N/A
+Ayaka | R083 | 500 | 7 | Paid | Renting | credit card | 02/04/2021
+Valerie | R084 | 90 | 9 | Paid | Ready | balance | 13/04/2021
+Hairy | R085 | 60 | 6 | Paid | Renting | balance | 03/04/2021
+Xiao | R086 | 80 | 5 | Pending | N/A | N/A | N/A
+Linux | R087 | 90 | 7 | Paid | In Queue | credit card | 19/04/2021
+Banana | R089 | 150 | 8 | Paid | Renting | credit card | 05/04/2021
+Ayaka | R090 | 160 | 9 | Pending | N/A | N/A | N/A
+Cheryl | R080 | 100 | 6 | Pending | N/A | N/A | N/A
+Zhongli | R092 | 90 | 8 | Pending | N/A | N/A | N/A

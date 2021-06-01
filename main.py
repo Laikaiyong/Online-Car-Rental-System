@@ -29,7 +29,7 @@ def car_header():
 def cus_book_header():
     # Headers
     cus_book = ['Username', 'Car ID', 'Price', 'Days',
-                'Total Amount', 'Status', 'Reservation']
+                'Total Amount', 'Status', 'Reservation', 'Requested Rent Date']
 
     # Setting / Display format of displaying all headers
     format_row = "{}  " * (len(cus_book) + 1)
@@ -40,7 +40,7 @@ def cus_book_header():
 def cus_pay_header():
     # Headers
     cus_pay = ['Username', 'Car ID', 'Price', 'Days',
-               'Total Amount', 'Status', 'Payment Method']
+               'Total Amount', 'Status', 'Payment Method', 'Requested Rent Date']
 
     # Setting / Display format of displaying all headers
     format_row = "{}  " * (len(cus_pay) + 1)
@@ -51,7 +51,7 @@ def cus_pay_header():
 def cus_statement_header():
     # Headers
     cus_pay = ['Username', 'Car ID', 'Price', 'Days',
-               'Total Amount', 'Status', 'Reservation', 'Payment Method']
+               'Total Amount', 'Status', 'Reservation', 'Payment Method', 'Requested Rent Date']
 
     # Setting / Display format of displaying all headers
     format_row = "{}  " * (len(cus_pay) + 1)
@@ -203,10 +203,9 @@ Note: Selecting [NO] will navigate you back to the welcome page.""")
         print("Invalid input, please enter YES or NO.")
         return exit_system()
 
+
 # Section E: Administrator
 # Additional: When database corrupted and required to recreate one.
-
-
 def maintenance_database_access():
     # Accessing database by verifying username and password
     maintenance_username = "SCRSLL001"
@@ -718,8 +717,8 @@ def dis_cus_booking():
     for statement in statements:
         if reservation[0] == statement[5] or reservation[1] == statement[5]:
             emp_spotter.append(index)
-            print("{:<4}{:<11}{:<8}{:<7}{:<8}RM{:<9}{:<8}{:<5}"
-                  .format(line_number, statement[0], statement[1], statement[2], statement[3], statement[7], statement[4], statement[5]))
+            print("{:<4}{:<11}{:<8}{:<7}{:<8}RM{:<9}{:<8}{:<12}{:<10}"
+                  .format(line_number, statement[0], statement[1], statement[2], statement[3], statement[8], statement[4], statement[5], statement[7]))
             index += 1
             line_number += 1
         else:
@@ -748,16 +747,36 @@ def dis_cus_pay():
         print("Access the database system to check database issue.\n")
         maintenance_database_access()
 
-    def day_duration():
+    def date_request_validation():
+        # Menu instruction
+        print("\nDisplay rent car between the start date and end date.\n")
         try:
-            days = int(input("\nRent duration (days): "))
-            return days
+            # request start date
+            start_date = input(
+                "Insert the start date in DD/MM/YYYY Format: ").split("/")
+            start_day, start_month, start_year = int(
+                start_date[0]), int(start_date[1]), int(start_date[2])
+            start_date = (start_year, start_month, start_day)
 
-        except ValueError:
-            print("\nInvalid input, please key in a numeric value (day(s)).")
-            return day_duration()
+            # request end date
+            end_date = input(
+                "Insert the end date in DD/MM/YYYY Format: ").split("/")
+            end_day, end_month, end_year = int(
+                end_date[0]), int(end_date[1]), int(end_date[2])
+            end_date = (end_year, end_month, end_day)
 
-    days = str(day_duration())
+            if start_month not in range(1, 13) or end_month not in range(1, 13):
+                print("\nInvalid date input, please insert a valid date.\n")
+                return date_request_validation()
+
+            else:
+                return start_date, end_date
+
+        except:
+            print("Invalid input, please insert a date in DD/MM/YYYY Format.")
+            return date_request_validation()
+
+    start_date, end_date = date_request_validation()
 
     # Set statement status only specify on 'Paid'
     status = 'Paid'
@@ -768,10 +787,22 @@ def dis_cus_pay():
     emp_spotter = []
     cus_pay_header()
     for statement in statements:
-        if status == statement[4] and statement[3] == days:
+
+        # make a valid date
+        try:
+            date = statement[7].split("/")
+            date_year, date_month, date_day = int(date[2]), int(
+                date[1]), int(date[0])
+            date = (date_year, date_month, date_day)
+
+        # Skip N/A value
+        except:
+            pass
+
+        if status == statement[4] and start_date <= date <= end_date:
             emp_spotter.append(index)
-            print("{:<4}{:<11}{:<8}{:<7}{:<8}RM{:<9}{:<8}{:<5}"
-                  .format(line_number, statement[0], statement[1], statement[2], statement[3], statement[7], statement[4], statement[6]))
+            print("{:<4}{:<11}{:<8}{:<7}{:<8}RM{:<9}{:<8}{:<16}{:<10}"
+                  .format(line_number, statement[0], statement[1], statement[2], statement[3], statement[8], statement[4], statement[6], statement[7]))
             index += 1
             line_number += 1
         else:
@@ -810,9 +841,9 @@ def registered_customer():
 
     # Display all customers' username
     line_num = 1
-    print('\n  Username')
+    print('\n\tUsername')
     for name in customers_names:
-        print(f"{line_num}  {name}", end='\n')
+        print(f"{line_num}\t{name}", end='\n')
         line_num += 1
 
     print("\nThis is all of the registered customers' username.")
@@ -907,7 +938,7 @@ def cus_book_search():
 
     # Ask for data users want to search
     def data_type_validation():
-        print("Options: [Username] [Car ID] [Days]\n")
+        print("\nOptions: [Username] [Car ID] [Days]\n")
         data_type = input(
             "What is the data type you would like to seek for: ").lower()
         if data_type == "username":
@@ -934,8 +965,8 @@ def cus_book_search():
     for statement in statements:
         if search_phrase == statement[type_index] and statement[5] in reservation and statement[4] == "Paid":
             emp_spotter.append(index)
-            print("{:<4}{:<10}{:<8}{:<7}{:<8}RM{:<9}{:<9}{:<5}"
-                  .format(line_num, statement[0], statement[1], statement[2], statement[3], statement[7], statement[4], statement[5]))
+            print("{:<4}{:<10}{:<8}{:<7}{:<8}RM{:<9}{:<9}{:<12}{:<10}"
+                  .format(line_num, statement[0], statement[1], statement[2], statement[3], statement[8], statement[4], statement[5], statement[7]))
             index += 1
             line_num += 1
         else:
@@ -987,7 +1018,7 @@ def cus_pay_search():
 
      # Ask for data users want to search
     def data_type_validation():
-        print("Options: [Username] [Car ID] [Days]\n")
+        print("\nOptions: [Username] [Car ID] [Days]\n")
         data_type = input(
             "What is the data type you would like to seek for: ").lower()
         if data_type == "username":
@@ -1014,8 +1045,8 @@ def cus_pay_search():
     for statement in statements:
         if search_phrase == statement[type_index] and statement[4] == 'Paid':
             emp_spotter.append(index)
-            print("{:<4}{:<10}{:<9}{:<7}{:<8}RM{:<9}{:<9}{:<5}"
-                  .format(line_num, statement[0], statement[1], statement[2], statement[3], statement[7], statement[4], statement[6]))
+            print("{:<4}{:<10}{:<9}{:<7}{:<8}RM{:<9}{:<9}{:<15}{:<10}"
+                  .format(line_num, statement[0], statement[1], statement[2], statement[3], statement[8], statement[4], statement[6], statement[7]))
             index += 1
             line_num += 1
         else:
@@ -1114,8 +1145,8 @@ def admin_return_rent():
     for statement in statements:
         if statement[4] == 'Paid' and statement[5] == 'Renting':
             index_collector.append(index1)
-            print("{:<4}{:<11}{:<8}{:<7}{:<8}RM{:<9}{:<9}{:<13}{:<8}"
-                  .format(line_num, statement[0], statement[1], statement[2], statement[3], statement[7], statement[4], statement[5], statement[6]))
+            print("{:<4}{:<11}{:<8}{:<7}{:<8}RM{:<9}{:<9}{:<13}{:<15}{:<10}"
+                  .format(line_num, statement[0], statement[1], statement[2], statement[3], statement[8], statement[4], statement[5], statement[6], statement[7]))
             index1 += 1
             line_num += 1
         else:
@@ -1173,19 +1204,19 @@ def admin_return_rent():
     for car in cars:
         if car[0] == car_id:
             open_index = index2
+
+            # Set car status to 'Open'
+            car[5] = 'Open'
             index2 += 1
         else:
             index2 += 1
             continue
 
-    # Set car status to 'Open'
-    cars[open_index][5] = 'Open'
-
     # Display updated data
     print("\nReturned rent statement: ")
     cus_statement_header()
-    print("   {:<11}{:<8}{:<7}{:<8}RM{:<8}{:<9}{:<13}{:<8}"
-          .format(statements[new_index][0], statements[new_index][1], statements[new_index][2], statements[new_index][3], statements[new_index][7], statements[new_index][4], statements[new_index][5], statements[new_index][6]))
+    print("   {:<11}{:<8}{:<7}{:<8}RM{:<8}{:<9}{:<13}{:<16}{:<10}"
+          .format(statements[new_index][0], statements[new_index][1], statements[new_index][2], statements[new_index][3], statements[new_index][8], statements[new_index][4], statements[new_index][5], statements[new_index][6], statements[new_index][7]))
 
     # Update data in text files
     count1 = 1
@@ -1276,8 +1307,8 @@ def admin_mark_ready():
     for statement in statements:
         if statement[4] == 'Paid' and statement[5] == 'In Queue':
             index_collector.append(index1)
-            print("{:<4}{:<11}{:<8}{:<7}{:<8}RM{:<9}{:<9}{:<13}{:<8}"
-                  .format(line_num, statement[0], statement[1], statement[2], statement[3], statement[7], statement[4], statement[5], statement[6]))
+            print("{:<4}{:<11}{:<8}{:<7}{:<8}RM{:<9}{:<9}{:<13}{:<15}{:<10}"
+                  .format(line_num, statement[0], statement[1], statement[2], statement[3], statement[8], statement[4], statement[5], statement[6], statement[7]))
             index1 += 1
             line_num += 1
         else:
@@ -1335,8 +1366,8 @@ def admin_mark_ready():
     # Display returned rent car
     print("\nMarked ready statement: ")
     cus_statement_header()
-    print("   {:<11}{:<8}{:<7}{:<8}RM{:<8}{:<9}{:<13}{:<8}"
-          .format(statements[new_index][0], statements[new_index][1], statements[new_index][2], statements[new_index][3], statements[new_index][7], statements[new_index][4], statements[new_index][5], statements[new_index][6]))
+    print("   {:<11}{:<8}{:<7}{:<8}RM{:<8}{:<9}{:<13}{:<16}{:<10}"
+          .format(statements[new_index][0], statements[new_index][1], statements[new_index][2], statements[new_index][3], statements[new_index][8], statements[new_index][4], statements[new_index][5], statements[new_index][6], statements[new_index][7]))
 
     # Update data in text files
     count = 1
@@ -1413,7 +1444,7 @@ def analytics_dashboard():
     payment_amount = []
     for statement in statements:
         if statement[4] == 'Paid':
-            payment_amount.append(statement[7])
+            payment_amount.append(statement[8])
 
     # Obtain highest / lowest / total payment completed in the system
     max_paid = max(payment_amount)
@@ -1444,7 +1475,7 @@ def customer_interface():
     print("""
 As a visitor, select your action.
 
-1: View all cars with any status.
+1: View all available car for rent.
 2: Membership Registration  - get access to more features.
 3: Registered customers' section.
 4: Exit the system.
@@ -1455,7 +1486,7 @@ As a visitor, select your action.
 
         # Execute system based on option
         if option == 1:
-            view_cars()
+            rent_car_details()
             cont_main_menu()
         elif option == 2:
             cus_reg_header()
@@ -1956,8 +1987,8 @@ def rental_hist():
     for statement in statements:
         if username == statement[0]:
             emp_spotter.append(index)
-            print("{:<4}{:<11}{:<8}{:<7}{:<8}RM{:<9}{:<9}{:<13}{:<8}".format(
-                line_num, statement[0], statement[1], statement[2], statement[3], statement[7], statement[4], statement[5], statement[6]))
+            print("{:<4}{:<11}{:<8}{:<7}{:<8}RM{:<9}{:<9}{:<13}{:<15}{:<10}".format(
+                line_num, statement[0], statement[1], statement[2], statement[3], statement[8], statement[4], statement[5], statement[6], statement[7]))
             index += 1
             line_num += 1
             continue
@@ -2065,7 +2096,7 @@ def book_car():
             new_booking.write("\n")
             for detail in new_booking_details:
                 new_booking.write(f"{detail} | ")
-            new_booking.write("Pending | N/A | N/A")
+            new_booking.write("Pending | N/A | N/A | N/A")
 
     # No file spotted
     except:
@@ -2107,16 +2138,16 @@ def pay_car():
         # Display booking that need to be paid
         if username == statement[0] and statement[4] == 'Pending' and statement[6] == 'N/A':
             new_index.append(index)
-            print("{<4}{:<10}{:<8}{:<7}{:<8}RM{:<9}{:<9}{:<13}{:<8}".format(
-                line_num, statement[0], statement[1], statement[2], statement[3], statement[7], statement[4], statement[5], statement[6]))
+            print("{:<4}{:<10}{:<8}{:<7}{:<8}RM{:<9}{:<9}{:<13}{:<15}{:<10}".format(
+                line_num, statement[0], statement[1], statement[2], statement[3], statement[8], statement[4], statement[5], statement[6], statement[7]))
             line_num += 1
             index += 1
 
         # Display pay with balance statement / Redirected to pay with balance
         elif username == statement[0] and statement[4] == 'Pending' and statement[6] == 'balance':
             new_index.append(index)
-            print("{:<4}{:<10}{:<8}{:<7}{:<8}RM{:<9}{:<9}{:<13}{:<8}\t--uncompleted payment due to insufficient balance before".format(
-                line_num, statement[0], statement[1], statement[2], statement[3], statement[7], statement[4], statement[5], statement[6]))
+            print("{:<4}{:<10}{:<8}{:<7}{:<8}RM{:<9}{:<9}{:<13}{:<15}{:<10}\t\t--uncompleted payment due to insufficient balance before".format(
+                line_num, statement[0], statement[1], statement[2], statement[3], statement[8], statement[4], statement[5], statement[6], statement[7]))
             line_num += 1
             index += 1
         else:
@@ -2223,12 +2254,18 @@ Transaction completed...
 
 {decoration()} Payment details {decoration()}
 
-Paid amount: {statements[pay_index][7]}
+Paid amount: RM{statements[pay_index][8]}
 Credit card: {credit_card_num}
     """)
+
+            date = input("Please insert your desired rent date (DD/MM/YYYY): ")
+            print(
+                "\nDate had been recorded and please be patient and wait for the preparation process\n")
+
             # Update data
             statements[pay_index][4] = 'Paid'
             statements[pay_index][5] = 'In Queue'
+            statements[pay_index][7] = date
 
             for car in cars:
                 if car[0] == car_id:
@@ -2245,7 +2282,7 @@ Credit card: {credit_card_num}
                 index1 += 1
 
             # Calculating the total amount customers should pay
-            total = statements[pay_index][7]
+            total = statements[pay_index][8]
 
             # Display how much the customer should pay and car ID
             print(f"""
@@ -2262,11 +2299,17 @@ Car ID: {car_id}
                 print(
                     "You had paid the booking confirmation.\nTransaction completed. Your current balance is RM", new_balance)
 
+                date = input(
+                    "Please insert your desired rent date (DD/MM/YYYY): ")
+                print(
+                    "\nDate had been recorded and please be patient and wait for the preparation process\n")
+
                 # Change data to paid situation
                 customers[new_index1][4] = str(new_balance)
                 statements[pay_index][4] = 'Paid'
                 statements[pay_index][5] = 'In Queue'
                 statements[pay_index][6] = 'balance'
+                statements[pay_index][7] = date
 
                 for car in cars:
                     if car[0] == car_id:
@@ -2591,8 +2634,8 @@ def car_claim():
     for statement in statements:
         if statement[0] == username and statement[4] == 'Paid' and statement[5] == 'Ready':
             index_collector.append(index1)
-            print("{:<4}{:<10}{:<8}{:<7}{:<8}RM{:<9}{:<9}{:<13}{:<8}".format(
-                line_num, statement[0], statement[1], statement[2], statement[3], statement[7], statement[4], statement[5], statement[6]))
+            print("{:<4}{:<10}{:<8}{:<7}{:<8}RM{:<9}{:<9}{:<13}{:<15}{:<10}".format(
+                line_num, statement[0], statement[1], statement[2], statement[3], statement[8], statement[4], statement[5], statement[6], statement[7]))
             index1 += 1
             line_num += 1
         else:
@@ -2644,8 +2687,8 @@ def car_claim():
     # Display claimed car statement
     print("\nClaimed car statement: ")
     cus_statement_header()
-    print("    {:<10}{:<8}{:<7}{:<8}RM{:<9}{:<9}{:<13}{:<8}".format(
-        statements[new_index][0], statements[new_index][1], statements[new_index][2], statements[new_index][3], statements[new_index][7], statements[new_index][4], statements[new_index][5], statements[new_index][6]))
+    print("    {:<10}{:<8}{:<7}{:<8}RM{:<9}{:<9}{:<13}{:<16}{:<10}".format(
+        statements[new_index][0], statements[new_index][1], statements[new_index][2], statements[new_index][3], statements[new_index][8], statements[new_index][4], statements[new_index][5], statements[new_index][6], statements[new_index][7]))
 
     # Change car status to rented
     index2 = 0
