@@ -235,7 +235,7 @@ def maintenance_database_access():
                     create_car = open("carDatabase.txt", "w")
                     print(
                         "\nDatabase created, you will be redirected to the add car functionalities.")
-                    create_file.close()
+                    create_car.close()
                     admin_add_car()
                 elif create_file == 2:
                     create_user = open("customerDetails.txt", "w")
