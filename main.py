@@ -235,16 +235,19 @@ def maintenance_database_access():
                     create_car = open("carDatabase.txt", "w")
                     print(
                         "\nDatabase created, you will be redirected to the add car functionalities.")
+                    create_file.close()
                     admin_add_car()
                 elif create_file == 2:
                     create_user = open("customerDetails.txt", "w")
                     print(
                         "\nDatabase created, you will be redirected to the administrator main screen.")
+                    create_user.close()
                     administrator_system()
                 elif create_file == 3:
                     create_booking = open("customerBookingPayment.txt", "w")
                     print(
                         "\nDatabase created, you will be redirected to the administrator main screen.")
+                    create_booking.close()
                     administrator_system()
 
                 # Error message on inputing the shown value
