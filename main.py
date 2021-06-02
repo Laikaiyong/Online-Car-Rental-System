@@ -1500,7 +1500,7 @@ As a visitor, select your action.
 
         # Error if integers 1 to 4 are not entered, customers can try entering again
         else:
-            print("Invalid input, please insert valid value (1 to 4). ")
+            print("Invalid input, please insert valid value (1 to 4).")
             return customer_interface()
 
     # Non numeric value validation
