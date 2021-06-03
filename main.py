@@ -2051,7 +2051,7 @@ def book_car():
 
         # Exclude non existent lines
         except IndexError:
-            print("Invalid input, please try again..")
+            print("Invalid input, please try again.")
             select_car_validation()
 
     new_index = car_statement_index_validation()
