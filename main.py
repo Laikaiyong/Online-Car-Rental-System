@@ -50,12 +50,12 @@ def cus_pay_header():
 # 4. Customer statement data header
 def cus_statement_header():
     # Headers
-    cus_pay = ['Username', 'Car ID', 'Price', 'Days',
-               'Total Amount', 'Status', 'Reservation', 'Payment Method', 'Requested Rent Date']
+    cus_stmnt = ['Username', 'Car ID', 'Price', 'Days',
+                 'Total Amount', 'Status', 'Reservation', 'Payment Method', 'Requested Rent Date']
 
     # Setting / Display format of displaying all headers
-    format_row = "{}  " * (len(cus_pay) + 1)
-    print("\n", format_row.format("", *cus_pay))
+    format_row = "{}  " * (len(cus_stmnt) + 1)
+    print("\n", format_row.format("", *cus_stmnt))
 
 
 # 5. Customer registration page header
