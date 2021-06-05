@@ -139,7 +139,8 @@ def welcome():
           decoration())
 
     # Menu
-    print("""\nEnter the number that best describe you.
+    print("""
+Enter the number that best describe you.
 
     Admin : 1
     Customer : 2
