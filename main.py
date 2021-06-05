@@ -225,7 +225,7 @@ def maintenance_database_access():
                 # Menu
                 print("""What database you would like to create
 
-1: Car database Database
+1: Car Database
 2: Customer information Database
 3: Customer Booking / Payment Database
 """)
@@ -304,7 +304,7 @@ Choose the action you want to perform:
 3: Display records.
 4: Search specific record.
 5: Return a rented car.
-6: Mark a car as Ready after the car is available upon customer's payment on confirmation for booking.
+6: Mark a car as Ready upon customer's booking confirmation.
 7: OCRS Data Analytics Dashboard
 8: Exit the system.
 """)
@@ -346,25 +346,25 @@ Choose the action you want to perform:
 # Section E01: Administrator functionalities
 # 1. Add car
 def admin_add_car():
-    # Menu
-    print("""
-Insert car data:
-[YES] to continue
-[NO] to stop and display all data. Will be redirected to admin main screen.
-    """)
-
-    # Add car choice
-    add_or_not = input("Option => ").upper()
-
     # Extract car data to a database that store a list
     try:
         cars = car_database_read()[0]
 
     # No file identified
     except:
-        print("\nDatabase under maintenance.. \n"
+        print("\nDatabase under maintenance..\n"
               "Access the database system to check database progress\n")
         maintenance_database_access()
+
+    # Menu
+    print("""
+Insert car data:
+[YES] to continue
+[NO] to stop and display all data. then redirected to admin main screen.
+""")
+
+    # Add car choice
+    add_or_not = input("Option => ").upper()
 
     # Auto generate the new car id
     last_car_id = cars[-1][0].split("R")
@@ -420,7 +420,7 @@ Insert car data:
 
     # Stop adding car and display all cars
     elif add_or_not == "NO":
-        print("\n", decoration(), " Displaying all data ", decoration())
+        print("\nDisplaying all data...")
         view_cars()
         print("\n", decoration(),
               " Back to administrator main screen. ", decoration())
@@ -630,7 +630,44 @@ Display data choice:
         return admin_display()
 
 
-# 3.1 All display dataset
+# 3.1 Continue to display menu or administrator page.
+def display_redirect():
+    # Ask for admins' preference in redirection
+    def redirect_validation():
+        try:
+            print("""
+Do you wish to return to the display menu or administrator's main screen?
+
+1: Display Menu
+2: Administrator Main Screen
+""")
+            option = int(input("Option=> "))
+            return option
+
+        # Exclude non numeric value
+        except ValueError:
+            print("\nInvalid input, please insert a numeric value..")
+            return redirect_validation()
+
+    option = redirect_validation()
+
+    # Return to the display menu
+    if option == 1:
+        print("\nYou will be redirected to the display menu...")
+        admin_display()
+
+    # Return to administrator functionalities main screen
+    elif option == 2:
+        print("\nYou are returning to the administrator main screen....")
+        administrator_system()
+
+    # Invalid input, ask for redirection option again
+    else:
+        print("\nInvalid input, please key in 1 or 2.\n")
+        return display_redirect()
+
+
+# 3.2 All display dataset
 # 1. View all car data
 def view_cars():
     # Extract car data to a list
@@ -662,8 +699,12 @@ def dis_rent_car():
         print("Access the database system to check database issue.\n")
         maintenance_database_access()
 
+    # Menu
+    print("\nCategories available [Open] [Rented] [X] [Booked]\n")
+
+    # Request status
     status = input(
-        "\nCategories available [Open] [Rented] [X] [Booked]\nStatus => ").capitalize()
+        "Status => ").capitalize()
 
     available_status = ["Open", "Rented", "X", "Booked"]
 
@@ -690,7 +731,7 @@ def dis_rent_car():
     # No data spotted
     if not emp_spotter:
         print(
-            "\n\nThere is no relevant data for records of cars on that particular status.\n")
+            "\nThere is no relevant data for records of cars on that particular status.\n")
 
         # Admins' option on redirection
         display_redirect()
@@ -731,7 +772,7 @@ def dis_cus_booking():
 
     # No data spotted
     if not emp_spotter:
-        print("\n\nThere is no relevant data for records of customer booking statement.\n")
+        print("\nThere is no relevant data for records of customer booking statement.\n")
 
         # Admins' option on redirection
         display_redirect()
@@ -740,7 +781,7 @@ def dis_cus_booking():
     display_redirect()
 
 
-# 3. Display customer payment statement
+# 4. Display customer payment statement
 def dis_cus_pay():
     # Extract customer booking / payment statement to a list
     try:
@@ -777,7 +818,7 @@ def dis_cus_pay():
                 return start_date, end_date
 
         except:
-            print("Invalid input, please insert a date in DD/MM/YYYY Format.")
+            print("\nInvalid input, please insert a date in DD/MM/YYYY Format.")
             return date_request_validation()
 
     start_date, end_date = date_request_validation()
@@ -824,7 +865,7 @@ def dis_cus_pay():
     display_redirect()
 
 
-# 4. Display all registered customer username
+# 5. Display all registered customer username
 def registered_customer():
     # Extract customer details to variable that store a list
     try:
@@ -854,43 +895,6 @@ def registered_customer():
 
     # Admins' option on redirection
     display_redirect()
-
-
-# 3.2 Continue to display menu or administrator page.
-def display_redirect():
-    # Ask for admins' preference in redirection
-    def redirect_validation():
-        try:
-            print("""
-Do you wish to return to the display menu or administrator's main screen?
-
-1: Display Menu
-2: Administrator Main Screen
-""")
-            option = int(input("Option=> "))
-            return option
-
-        # Exclude non numeric value
-        except ValueError:
-            print("\nInvalid input, please insert a numeric value..")
-            return redirect_validation()
-
-    option = redirect_validation()
-
-    # Return to the display menu
-    if option == 1:
-        print("\nYou will be redirected to the display menu...")
-        admin_display()
-
-    # Return to administrator functionalities main screen
-    elif option == 2:
-        print("\nYou are returning to the administrator main screen....")
-        administrator_system()
-
-    # Invalid input, ask for redirection option again
-    else:
-        print("\nInvalid input, please key in 1 or 2.\n")
-        return display_redirect()
 
 
 # 4. Search Record
@@ -928,7 +932,45 @@ Choose database that you want to inspect / search:
         return admin_search()
 
 
-# 4.1 Search data
+# 4.1 Continue at search menu or back to administrator main screen.
+def search_redirect():
+    # Ask for admins' preference in redirection
+    def option_validation():
+        try:
+            # Menu
+            print("""
+Do you want to return to the search menu or administrator main screen?
+
+    1: Search menu
+    2: Administrator Main screen
+""")
+            option = int(input("Option => "))
+            return option
+
+        # Exclude non numeric value
+        except ValueError:
+            print("\nInvalid input, please insert a numeric value..\n")
+            return option_validation()
+
+    option = option_validation()
+
+    # Return back to the search menu
+    if option == 1:
+        print("\nYou will be redirected to the search menu shortly....\n")
+        admin_search()
+
+    # Return to the administrator main screen
+    elif option == 2:
+        print('\nYou will be redirected to the administrator main screen shortly...\n')
+        administrator_system()
+
+    # Invalid input, ask for input again
+    else:
+        print("\nInvalid input, please select 1 or 2.\n")
+        return search_redirect()
+
+
+# 4.2 Search data
 # 1. Search on customer booking data
 def cus_book_search():
     # Extract customer booking / payment statement to a variable that store a list
@@ -990,7 +1032,7 @@ def cus_book_search():
 
 Note: Selecting [NO] will navigate you back to administrator main screen.
 """)
-            option = input("Option=> ").upper()
+            option = input("Option => ").upper()
             if option == 'YES':
                 print("Returning back to the customer booking search page.")
                 cus_book_search()
@@ -1022,6 +1064,7 @@ def cus_pay_search():
 
      # Ask for data users want to search
     def data_type_validation():
+        # Menu
         print("\nOptions: [Username] [Car ID] [Days]\n")
         data_type = input(
             "What is the data type you would like to seek for: ").lower()
@@ -1087,44 +1130,6 @@ Note: Selecting [NO] will navigate you back to administrator main screen.
 
     # Admins' option on redirection
     search_redirect()
-
-
-# 4.2 Continue at search menu or back to administrator main screen.
-def search_redirect():
-    # Ask for admins' preference in redirection
-    def option_validation():
-        try:
-            # Menu
-            print("""
-Do you want to return to the search menu or administrator main screen?
-
-    1: Search menu
-    2: Administrator Main screen
-""")
-            option = int(input("Option => "))
-            return option
-
-        # Exclude non numeric value
-        except ValueError:
-            print("\nInvalid input, please insert a numeric value..\n")
-            return option_validation()
-
-    option = option_validation()
-
-    # Return back to the search menu
-    if option == 1:
-        print("\nYou will be redirected to the search menu shortly....\n")
-        admin_search()
-
-    # Return to the administrator main screen
-    elif option == 2:
-        print('\nYou will be redirected to the administrator main screen shortly...\n')
-        administrator_system()
-
-    # Invalid input, ask for input again
-    else:
-        print("\nInvalid input, please select 1 or 2.\n")
-        return search_redirect()
 
 
 # 5. Return a Rented Car.
