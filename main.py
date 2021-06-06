@@ -2603,7 +2603,7 @@ Note: Selecting [NO] will redirect you back to the functionalities main menu."""
 
         # Invalid input and request for customers' option again
         else:
-            print("Invalid input, please enter either [YES] or [NO]. ")
+            print("Invalid input, please enter either [YES] or [NO].")
             return cont_top_up()
     cont_top_up()
 
@@ -2764,7 +2764,7 @@ def car_claim():
     def cont_claim():
         # Menu
         print("""
-Do you wish to claim other cars you own? 
+Do you wish to claim other cars you rented? 
 
     [YES] or [NO]
 
