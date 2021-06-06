@@ -352,8 +352,7 @@ def admin_add_car():
 
     # No file identified
     except:
-        print("\nDatabase under maintenance..\n"
-              "Access the database system to check database progress\n")
+        print("Access the database system to check database progress\n")
         maintenance_database_access()
 
     # Menu
