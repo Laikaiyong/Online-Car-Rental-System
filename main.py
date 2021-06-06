@@ -1211,7 +1211,6 @@ def admin_return_rent():
     index2 = 0
     for car in cars:
         if car[0] == car_id:
-            open_index = index2
 
             # Set car status to 'Open'
             car[5] = 'Open'
@@ -1276,9 +1275,14 @@ def admin_return_rent():
 
     # Ask for admins' preference in continuing returning car or back to administrator's main screen
     def cont_return():
-        option = input("\nContinue returning rent car?\n\n\t[YES] or [NO]\n\n"
-                       "Note: Selecting [NO] will navigate you back to administrator main screen.\n"
-                       "Option=> ").upper()
+        # Menu
+        print("""
+Continue returning rent car?
+
+    [YES] or [NO]
+
+Note: Selecting [NO] will navigate you back to administrator main screen.""")
+        option = input("Option=> ").upper()
         # Continue return rent
         if option == 'YES':
             admin_return_rent()
@@ -1703,7 +1707,7 @@ Note: Selecting [NO] will redirect you to customer landing page.""")
 
     # The customer will be redirected back to the landing page after 3 attempts
     else:
-        print("\nYou had exceeded the limit to log in your account..Please try again after 1 minute..\n"
+        print("\nYou had exceeded the limit to log in your account..\nPlease try again after 1 minute..\n"
               "Redirecting to customer landing page....\n")
         customer_interface()
 
@@ -2200,7 +2204,7 @@ Note: Select [NO] return to customer functionalities page
     def booking_pay():
         try:
             pay_statement = int(
-                input("\nWhich booking statement (line) you would like to pay? "))
+                input("\nWhich booking statement (line) you would like to pay: "))
             if pay_statement <= 0 or pay_statement > len(new_index):
                 print("Invalid choice, choose from available line statement.")
                 return booking_pay()
@@ -2268,7 +2272,7 @@ Credit card: {credit_card_num}
 
             date = input("Please insert your desired rent date (DD/MM/YYYY): ")
             print(
-                "\nDate had been recorded and please be patient and wait for the preparation process\n")
+                "\nDate had been recorded and please be patient and wait for the preparation process.\n")
 
             # Update data
             statements[pay_index][4] = 'Paid'
@@ -2297,7 +2301,7 @@ Credit card: {credit_card_num}
 Your initial balance: RM{balance}
 You have to pay: RM{total}
 Car ID: {car_id}
-    """)
+""")
 
             # Deduct from balance if it is more than total
             if balance >= total:
@@ -2332,12 +2336,12 @@ Your current balance: RM{balance}
 You will need to top up before paying your booking confirmation.
 
 Redirecting to top up system....
-    """)
+""")
                 top_up_header()
 
         # Invalid input, reboot car payment page
         else:
-            print("Invalid input, Please choose from the available option")
+            print("Invalid input, please choose from the available option")
             return payment_method_request()
 
     payment_method_request()
