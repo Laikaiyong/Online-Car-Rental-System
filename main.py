@@ -382,7 +382,8 @@ Insert car data:
         new_year = input("Enter car manufacture year: ")
 
         def new_status_validation():
-            new_status = input("Enter status [Open / Rented / X / Booked]: ").capitalize()
+            new_status = input(
+                "Enter status [Open / Rented / X / Booked]: ").capitalize()
             status = ['Open', 'Rented', 'X', 'Booked']
             if new_status not in status:
                 print("Invalid status, Please enter a valid status.\n")
@@ -458,7 +459,7 @@ def admin_modify():
         maintenance_database_access()
 
     # Ask for modification required details
-    def data_line_validation():
+    def modify_line_validation():
         try:
             data_line = int(
                 input("\nWhich line of data you want to perform the modification: "))
@@ -467,7 +468,7 @@ def admin_modify():
 
             if data_line <= 0:
                 print("Invalid input, please try again.")
-                return data_line_validation()
+                return modify_line_validation()
 
             else:
                 return car_index
@@ -475,18 +476,18 @@ def admin_modify():
         # Exclude non numeric value
         except ValueError:
             print("\nInvalid input, please insert a numeric value..")
-            return data_line_validation()
+            return modify_line_validation()
 
         # Exclude non existent records
         except IndexError:
             print("\nCar line is out of range.")
-            return data_line_validation()
+            return modify_line_validation()
 
-    car_index = data_line_validation()
+    car_index = modify_line_validation()
     print("\nIMPORTANT!!! Note that uniqueID can't be modified. "
           "\nIf the car had been removed from the system place X in rent status.\n")
 
-    def data_type_validation():
+    def modify_type_validation():
         # Ask for desired data type
         item = input("Modify data type (e.g. Car Model, Price): ").replace(
             " ", '_').lower()
@@ -517,18 +518,18 @@ def admin_modify():
 
         elif item == "car_id":
             print("\nInvalid choice, car id is immutable.\n")
-            return data_type_validation()
+            return modify_type_validation()
 
         else:
             print(
                 "\nInvalid data type, please choose according to the data headers displayed other than car id.\n")
-            return data_type_validation()
+            return modify_type_validation()
 
         word_and_index = [origin_word, index]
         return word_and_index
 
     # Extract and display original data
-    word_and_index = data_type_validation()
+    word_and_index = modify_type_validation()
     origin_word = word_and_index[0]
     replace_index = word_and_index[1]
 
@@ -1000,7 +1001,7 @@ def cus_book_search():
         maintenance_database_access()
 
     # Ask for data users want to search
-    def data_type_validation():
+    def search_type_validation():
         print("\nOptions: [Username] [Car ID] [Days]\n")
         data_type = input(
             "What is the data type you would like to seek for: ").lower()
@@ -1013,10 +1014,10 @@ def cus_book_search():
 
         else:
             print("Invalid input, please choose from the option.\n")
-            return data_type_validation()
+            return search_type_validation()
         return index
 
-    type_index = data_type_validation()
+    type_index = search_type_validation()
     search_phrase = input("Enter keyword to search: ")
     reservation = ["In Queue", "Ready"]
 
@@ -1080,7 +1081,7 @@ def cus_pay_search():
         maintenance_database_access()
 
      # Ask for data users want to search
-    def data_type_validation():
+    def paysearch_type_validation():
         # Menu
         print("\nOptions: [Username] [Car ID] [Days]\n")
         data_type = input(
@@ -1094,10 +1095,10 @@ def cus_pay_search():
 
         else:
             print("Invalid input, please choose from the option.\n")
-            return data_type_validation()
+            return paysearch_type_validation()
         return index
 
-    type_index = data_type_validation()
+    type_index = paysearch_type_validation()
 
     search_phrase = input("Enter keyword to search: ")
 
@@ -1891,7 +1892,7 @@ contact number: {customer[3]}
 
     # Modify desired attributes and values
 
-    def data_type_validation():
+    def cusmodify_type_validation():
         # Customers' modification choice
         data_type = ['Password', 'Address', 'Contact Number']
         print("\nIMPORTANT! Note that username is immutable.\nOptions: {}\n".format(
@@ -1912,13 +1913,13 @@ contact number: {customer[3]}
         elif modify_type == "username":
             print(
                 "\nInvalid choice, username is unable to modify, please choose from available options.")
-            return data_type_validation()
+            return cusmodify_type_validation()
         else:
             print("\nInvalid input, please choose from the choices given")
-            return data_type_validation()
+            return cusmodify_type_validation()
         return index
 
-    modify_index = data_type_validation()
+    modify_index = cusmodify_type_validation()
     old_data = customers[cus_index][modify_index]
     print("Original data: ", old_data)
     new_data = input("Replace with: ")
