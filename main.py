@@ -515,10 +515,14 @@ def admin_modify():
                 "\nInvalid data type, please choose according to the data headers displayed other than car id.\n")
             return data_type_validation()
 
-        return origin_word, index
+        word_and_index = [origin_word, index]
+        return word_and_index
 
     # Extract and display original data
-    origin_word, replace_index = data_type_validation()
+    word_and_index = data_type_validation()
+    origin_word = word_and_index[0]
+    replace_index = word_and_index[1]
+
     print("Origin data: ", origin_word)
 
     # Replace data
@@ -802,27 +806,30 @@ def dis_cus_pay():
                 "Insert the start date in DD/MM/YYYY Format: ").split("/")
             start_day, start_month, start_year = int(
                 start_date[0]), int(start_date[1]), int(start_date[2])
-            start_date = (start_year, start_month, start_day)
+            start_date = [start_year, start_month, start_day]
 
             # request end date
             end_date = input(
                 "Insert the end date in DD/MM/YYYY Format: ").split("/")
             end_day, end_month, end_year = int(
                 end_date[0]), int(end_date[1]), int(end_date[2])
-            end_date = (end_year, end_month, end_day)
+            end_date = [end_year, end_month, end_day]
 
             if start_month not in range(1, 13) or end_month not in range(1, 13):
                 print("\nInvalid date input, please insert a valid date.\n")
                 return date_request_validation()
 
             else:
-                return start_date, end_date
+                dates = [start_date, end_date]
+                return dates
 
         except:
             print("\nInvalid input, please insert a date in DD/MM/YYYY Format.")
             return date_request_validation()
 
-    start_date, end_date = date_request_validation()
+    dates = date_request_validation()
+    start_date = dates[0]
+    end_date = dates[1]
 
     # Set statement status only specify on 'Paid'
     status = 'Paid'
@@ -839,7 +846,7 @@ def dis_cus_pay():
             date = statement[7].split("/")
             date_year, date_month, date_day = int(date[2]), int(
                 date[1]), int(date[0])
-            date = (date_year, date_month, date_day)
+            date = [date_year, date_month, date_day]
 
         # Skip N/A value
         except:
@@ -1798,7 +1805,8 @@ def rent_car_details():
         else:
             index += 1
             continue
-    return available_rent_car, index_holder
+    car_and_index = [available_rent_car, index_holder]
+    return car_and_index
 
 
 # View detail of cars to be rented out.
@@ -2022,7 +2030,9 @@ def rental_hist():
 # 4. Select and Book a car for a specific duration.
 def book_car():
     # Display details on available cars and transfer the statements data to this function
-    available_rent_car, available_rent_index = rent_car_details()
+    car_and_index = rent_car_details()
+    available_rent_car = car_and_index[0]
+    available_rent_index = car_and_index[1]
 
     try:
         # Extract customer details to a variable that store list
