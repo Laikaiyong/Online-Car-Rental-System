@@ -380,7 +380,16 @@ Insert car data:
         new_car_model = input("Enter car model: ")
         new_car_plate = input("Enter car plate: ")
         new_year = input("Enter car manufacture year: ")
-        new_status = input("Enter status [Open / Rented / X / Booked]: ")
+
+        def new_status_validation():
+            new_status = input("Enter status [Open / Rented / X / Booked]: ").capitalize()
+            status = ['Open', 'Rented', 'X', 'Booked']
+            if new_status not in status:
+                print("Invalid status, Please enter a valid status.\n")
+                return new_status_validation()
+            else:
+                return new_status
+        new_status = new_status_validation()
 
         def new_price_validation():
             try:
@@ -1723,8 +1732,6 @@ Note: Selecting [NO] will redirect you to customer landing page.""")
 
 # 5. Customer functionalities menu
 def reg_customer():
-    print(decoration()*2, "Functionalities Page", decoration()*2)
-
     # Request for users input
     def option_validation():
         try:

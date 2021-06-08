@@ -19,7 +19,7 @@ R018 | Toyota | Altis | BOB1223 | 2020 | Booked | 25
 R019 | Peugeot | 308B | PLP4567 | 2020 | Rented | 115
 R020 | Honda | HR-V1 | IUI5678 | 2016 | Rented | 10
 R021 | Toyota | Hilux | TRT7958 | 2017 | Booked | 50
-R022 | Perodua | Psiva | PSV155 | 1980 | Open | 80
+R022 | Perodua | Psiva | PSV155 | 1980 | Rented | 80
 R023 | Volks | VV1 | TIY985 | 2000 | X | 20
 R024 | Zebra | Animal | AGH991 | 2012 | Open | 200
 R025 | Toyota | Estima | AHH1223 | 2013 | Rented | 150
@@ -30,7 +30,7 @@ R029 | Maserati | Ghibli | VIP1 | 2019 | Booked | 200
 R030 | Jeep | Compass | BBB8888 | 2020 | Booked | 90
 R031 | Toyota | Hype | HYI098 | 2019 | Open | 129
 R032 | Nissan | Livina | IP11 | 2019 | Rented | 200
-R033 | Haval | H1 | YAY2837 | 2018 | Rented | 100
+R033 | Haval | H1 | YAY2837 | 2018 | Open | 100
 R034 | Volks | Vento | III3847 | 2018 | Open | 100
 R035 | Lexus | IS | LEX3948 | 2020 | Open | 55
 R036 | Renault | Fluence | LIL1988 | 2019 | Open | 60
@@ -45,11 +45,11 @@ R044 | Toyota | Avanza | LFL9756 | 2007 | Open | 70
 R045 | Honda | Jazz | KKK9876 | 2019 | Open | 90
 R046 | Honda | Odyssey | EEE9475 | 2017 | Open | 90
 R047 | Perodua | Ativa | MMM4473 | 2021 | Open | 50
-R048 | Toyota | Yaris | OPO2836 | 2020 | Booked | 100
-R049 | Proton | Iriz | IWI2938 | 2021 | Open | 20
+R048 | Toyota | Yaris | OPO2836 | 2020 | Rented | 100
+R049 | Proton | Iriz | IWI2938 | 2021 | Booked | 20
 R050 | Daihatsu | Gran Max | GRA3745 | 2018 | Rented | 40
 R051 | Nissan | Serena | SER4857 | 2017 | Rented | 80
-R052 | Mercedes | S-Class | SAL1927 | 2018 | Rented | 150
+R052 | Mercedes | S-Class | SAL1927 | 2018 | Open | 150
 R053 | Mercedes | A-Class | WWW4856 | 2017 | Booked | 160
 R054 | Chery | Maxime | SED9987 | 2016 | Rented | 100
 R055 | McLaren | GTA | QUEEN1 | 2020 | Booked | 900
@@ -89,4 +89,6 @@ R088 | Thrax | 388 | THR8475 | 2013 | X | 80
 R089 | Cortes | V5000 | BGY8977 | 2012 | Rented | 150
 R090 | Outlaw | GTS | GTS7364 | 2015 | Open | 160
 R091 | Marvel | Iron | MI889 | 2019 | Open | 100
-R092 | DC | Super | DCS11 | 2020 | Open | 90
+R092 | Mercedez | Super | DCS11 | 2020 | Open | 90
+R093 | Toyota | Harrier | HAY88 | 2020 | Open | 190
+R094 | Toyota | Wish | WWF445 | 2018 | Open | 90
