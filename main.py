@@ -93,7 +93,9 @@ def car_database_read():
     except:
         print("\nDatabase is corrupted..")
 
-    return cars, index_collector
+    all_car_details = [cars, index_collector]
+
+    return all_car_details
 
 
 # 2. customer details
@@ -751,7 +753,7 @@ def dis_cus_booking():
         maintenance_database_access()
 
     # Set reservation only specify on booking status
-    reservation = ('In Queue', 'Ready')
+    reservation = ['In Queue', 'Ready']
 
     # Display matching customer booking statement
     index = 0
@@ -1000,7 +1002,7 @@ def cus_book_search():
 
     type_index = data_type_validation()
     search_phrase = input("Enter keyword to search: ")
-    reservation = ("In Queue", "Ready")
+    reservation = ["In Queue", "Ready"]
 
     # Display related records based on search_phrase in customer booking statement
     index = 0
