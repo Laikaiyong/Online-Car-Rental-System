@@ -953,7 +953,7 @@ Choose database that you want to inspect / search:
 # 4.1 Continue at search menu or back to administrator main screen.
 def search_redirect():
     # Ask for admins' preference in redirection
-    def option_validation():
+    def menu_direct_validation():
         try:
             # Menu
             print("""
@@ -968,9 +968,9 @@ Do you want to return to the search menu or administrator main screen?
         # Exclude non numeric value
         except ValueError:
             print("\nInvalid input, please insert a numeric value..\n")
-            return option_validation()
+            return menu_direct_validation()
 
-    option = option_validation()
+    option = menu_direct_validation()
 
     # Return back to the search menu
     if option == 1:
