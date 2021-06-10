@@ -91,4 +91,4 @@ R090 | Outlaw | GTS | GTS7364 | 2015 | Open | 160
 R091 | Marvel | Iron | MI889 | 2019 | Open | 100
 R092 | Mercedez | Super | DCS11 | 2020 | Open | 90
 R093 | Toyota | Harrier | HAY88 | 2020 | Open | 190
-R094 | Toyota | Wish | WWF445 | 2018 | Open | 90
+R094 | Toyota | Wish | WWF445 | 2018 | X | 90
