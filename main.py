@@ -1372,27 +1372,10 @@ def admin_mark_ready():
 
     mark_ready = mark_ready_validation()
     index_value = index_converter(mark_ready)
-
-    def ready_index_validation():
-        try:
-            new_index = index_collector[index_value]
-            return new_index
-
-        # Exclude non existent lines
-        except IndexError:
-            print("\nInvalid input, line out of range.\n")
-            mark_ready_validation()
-
-    new_index = ready_index_validation()
-
-    # Do not accept line lesser than 1
-    if index_value < 0:
-        print("Invalid input, please try again.")
-        mark_ready_validation()
+    new_index = index_collector[index_value]
 
     # Set reservation as Ready
-    else:
-        statements[new_index][5] = 'Ready'
+    statements[new_index][5] = 'Ready'
 
     # Display returned rent car
     print("\nMarked ready statement: ")
