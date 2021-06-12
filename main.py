@@ -2638,6 +2638,9 @@ def car_claim():
         # Extract car data to a variable that store list
         cars = car_database_read()[0]
 
+        # Extract customer details to a variable that store list
+        customers = customer_details_read()
+
     # No file spotted
     except:
         print("Due to unstable database, You will be redirected to the welcome page..\n")
@@ -2647,8 +2650,8 @@ def car_claim():
     def claim_car_username_validation():
         username = input("Enter your username to confirm your identity: ")
 
-        for statement in statements:
-            if username == statement[0]:
+        for customer in customers:
+            if username == customer[0]:
                 return username
 
         # Username not available in the database
