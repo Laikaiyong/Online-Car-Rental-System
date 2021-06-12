@@ -635,7 +635,7 @@ Display data choice:
     elif dis_option == 4:
         dis_cus_pay()
     elif dis_option == 5:
-        registered_customer()
+        dis_cus_username()
     elif dis_option == 6:
         administrator_system()
 
@@ -884,7 +884,7 @@ def dis_cus_pay():
 
 
 # 5. Display all registered customer username
-def registered_customer():
+def dis_cus_username():
     # Extract customer details to variable that store a list
     try:
         customers = customer_details_read()
@@ -1409,7 +1409,7 @@ def admin_mark_ready():
                         mark_ready.write(details)
 
     # Ask for admins' preference in continue marking ready or return to administrator main screen.
-    def cont_modify_or_not():
+    def cont_mark_ready():
         print("""
 Do you wish to mark more cars as ready?
 
@@ -1431,10 +1431,10 @@ Note: Selecting [NO] will navigate you back to administrator main screen.""")
         # Invalid input, ask for admins' choice again
         else:
             print("\nInvalid input, please select either 'YES' or 'NO'.\n")
-            return cont_modify_or_not()
+            return cont_mark_ready()
 
     # Call function to execute
-    cont_modify_or_not()
+    cont_mark_ready()
 
 
 # 7. Analytics Dashboard
