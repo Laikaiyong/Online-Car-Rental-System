@@ -2726,14 +2726,9 @@ def car_claim():
         statements[new_index][0], statements[new_index][1], statements[new_index][2], statements[new_index][3], statements[new_index][8], statements[new_index][4], statements[new_index][5], statements[new_index][6], statements[new_index][7]))
 
     # Change car status to rented
-    index2 = 0
     for car in cars:
         if car[0] == car_id:
             car[5] = 'Rented'
-            index2 += 1
-        else:
-            index2 += 1
-            continue
 
     # Update new data to text file
     count = 1
