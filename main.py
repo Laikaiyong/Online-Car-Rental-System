@@ -1908,6 +1908,14 @@ contact number: {customer[3]}
     new_data = input("Replace with: ")
     customers[cus_index][modify_index] = new_data
 
+    print(f"""
+Modified details:
+username: {customers[cus_index][0]}
+password: {customers[cus_index][1]}
+address: {customers[cus_index][2]}
+contact number: {customers[cus_index][3]}
+""")
+
     # Update data in text files
     count = 1
     with open('customerDetails.txt', 'w') as modified:
