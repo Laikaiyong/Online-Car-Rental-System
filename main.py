@@ -1517,7 +1517,7 @@ As a visitor, select your action.
     # Non numeric value validation
     except ValueError:
         print("Invalid input, please insert a valid numeric value.")
-        return cont_main_menu()
+        return customer_interface()
 
 
 # 2. Redirect customer landing page, login or register
