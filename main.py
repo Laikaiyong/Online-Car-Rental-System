@@ -1227,16 +1227,10 @@ def admin_return_rent():
     car_id = statements[new_index][1]
 
     # Find for cars that status should be changed to 'Open'
-    index2 = 0
     for car in cars:
         if car[0] == car_id:
-
             # Set car status to 'Open'
             car[5] = 'Open'
-            index2 += 1
-        else:
-            index2 += 1
-            continue
 
     # Display updated data
     print("\nReturned rent statement: ")
@@ -2130,8 +2124,9 @@ def book_car():
         welcome()
 
     # Automatically redirect to customer functionalities page
-    print("\nYou will be redirected to the customer functionalities page.\nNote: Your booking is not confirm yet.\n"
-          "You can make your payment by choosing option 5 to confirm your booking.\n")
+    print("\nYour booking is requested...\n\nNote: Your booking is not confirm yet.\n"
+          "You can make your payment by choosing option 5 to confirm your booking.\n"
+          "\nYou will be redirected to the customer functionalities page.")
     return reg_customer()
 
 
