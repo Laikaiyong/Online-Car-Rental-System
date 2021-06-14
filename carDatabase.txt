@@ -35,7 +35,7 @@ R034 | Volks | Vento | III3847 | 2018 | Open | 100
 R035 | Lexus | IS | LEX3948 | 2020 | Open | 55
 R036 | Renault | Fluence | LIL1988 | 2019 | Open | 60
 R037 | Isuzu | D-MAX | MIN8475 | 2018 | Open | 80
-RO38 | Alfa | 159 | OOO8463 | 2013 | Booked | 160
+RO38 | Alfa | 159 | OOO8463 | 2013 | Open | 160
 R039 | Audi | Q3 | BIN2847 | 2017 | Open | 250
 R040 | Perodua | Alza | PER6748 | 2015 | Open | 30
 R041 | Chevrolet | Sonic | SON9999 | 2013 | Open | 50
