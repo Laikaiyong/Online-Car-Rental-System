@@ -1979,6 +1979,9 @@ def rental_hist():
         # Extract customer booking / payment statement to a variable that store a list
         statements = bookpay_stmnt_read()
 
+        # Extract customer details to a variable that store list
+        customers = customer_details_read()
+
     # No file spotted
     except:
         print("Due to unstable database, You will be redirected to the welcome page..\n")
@@ -1990,8 +1993,8 @@ def rental_hist():
     def username_validation():
         username = input("Enter your credential username: ")
 
-        for statement in statements:
-            if username == statement[0]:
+        for customer in customers:
+            if username == customer[0]:
                 return username
 
         # Username not found in the database
