@@ -1189,41 +1189,28 @@ def admin_return_rent():
         administrator_system()
 
     # Choose statement to return the rented car
-    def statement_validation():
+    def return_line_validation():
         try:
             return_rent = int(input(
                 "\nWhich statement you would like to return the rent car (line of statement): "))
             if return_rent <= 0 or return_rent > len(index_collector):
                 print("Invalid choice, choose from available line statement.")
-                return statement_validation()
+                return return_line_validation()
             # Ask the question again if the answer did not meet the requirement
             else:
-                return return_rent
+                index_value = index_converter(return_rent)
+                new_index = index_collector[index_value]
+                return new_index
 
         # Exclude non numeric value
-        except ValueError:
+        except ValueError or IndexError:
             print("Invalid input, please insert a numeric value..\n")
-            return statement_validation()
+            return return_line_validation()
 
-    return_rent = statement_validation()
-
-    index_value = index_converter(return_rent)
-
-    def index_validation():
-        try:
-            new_index = index_collector[index_value]
-            return new_index
-
-        # Exclude non existent lines
-        except IndexError:
-            print("Invalid input, please try again.")
-            statement_validation()
-
-    new_index = index_validation()
+    new_index = return_line_validation()
 
     # Change reservation to completed
     statements[new_index][5] = 'Completed'
-
     car_id = statements[new_index][1]
 
     # Find for cars that status should be changed to 'Open'
@@ -1357,17 +1344,16 @@ def admin_mark_ready():
                 print("Invalid choice, choose from available line statement.")
                 return mark_ready_validation()
             else:
-                return mark_ready
+                index_value = index_converter(mark_ready)
+                new_index = index_collector[index_value]
+                return new_index
 
         # Exclude non numeric value
         except ValueError:
             print("Invalid input, please insert a numeric value..\n")
             return mark_ready_validation()
 
-    mark_ready = mark_ready_validation()
-    index_value = index_converter(mark_ready)
-    new_index = index_collector[index_value]
-
+    new_index = mark_ready_validation()
     # Set reservation as Ready
     statements[new_index][5] = 'Ready'
 
@@ -2051,27 +2037,21 @@ def book_car():
                 print("Invalid choice, choose from available line statement.")
                 return select_car_validation()
             else:
-                return select_line
+                index_value = index_converter(select_line)
+                new_index = available_rent_index[index_value]
+                return new_index
 
         except ValueError:
             print(
                 "\nInvalid input, please insert a numeric value within the available car range.\n")
             return select_car_validation()
 
-    select_line = select_car_validation()
-    index_value = index_converter(select_line)
-
-    def car_statement_index_validation():
-        try:
-            new_index = available_rent_index[index_value]
-            return new_index
-
         # Exclude non existent lines
         except IndexError:
             print("Invalid input, please try again.")
             select_car_validation()
 
-    new_index = car_statement_index_validation()
+    new_index = select_car_validation()
 
     # Enter username to confirm
     def booking_username_validation():
@@ -2210,33 +2190,27 @@ Note: Select [NO] return to customer functionalities page
         cont_pay()
 
     # Select the booking that customers wish to pay
-    def booking_pay():
+    def pay_line_validation():
         try:
             pay_statement = int(
                 input("\nWhich booking statement (line) you would like to pay: "))
             if pay_statement <= 0 or pay_statement > len(new_index):
                 print("Invalid choice, choose from available line statement.")
-                return booking_pay()
+                return pay_line_validation()
             else:
-                return pay_statement
+                statement_index = index_converter(pay_statement)
+                pay_index = new_index[statement_index]
+                return pay_index
 
         # Non numeric value validation
         except ValueError:
             print("\nInvalid input, please insert numeric value.\n")
-            return booking_pay()
-
-    pay_statement = booking_pay()
-    statement_index = index_converter(pay_statement)
-
-    def pay_line_validation():
-        try:
-            pay_index = new_index[statement_index]
-            return pay_index
+            return pay_line_validation()
 
         # Exclude non existent lines
         except IndexError:
             print("\nThere is no relevant line statement available for payment.")
-            booking_pay()
+            return pay_line_validation()
 
     pay_index = pay_line_validation()
     car_id = statements[pay_index][1]
@@ -2681,28 +2655,21 @@ def car_claim():
                 print("Invalid choice, choose from available line statement.")
                 return claim_line_statement()
             else:
-                return claim_car
+                index_value = index_converter(claim_car)
+                new_index = index_collector[index_value]
+                return new_index
 
         # Validation for non numeric value
         except ValueError:
             print("Invalid input, please insert numeric value..")
             return claim_line_statement()
 
-    claim_car = claim_line_statement()
-    index_value = index_converter(claim_car)
-
-    # Select the booking that customers wish to pay
-    def claim_index():
-        try:
-            new_index = index_collector[index_value]
-            return new_index
-
-        # validation for invalid line of statement
+         # validation for invalid line of statement
         except IndexError:
             print("\nThere is no relevant line statement that appear to be claimed.")
             claim_line_statement()
 
-    new_index = claim_index()
+    new_index = claim_line_statement()
 
     # Change status
     statements[new_index][5] = 'Renting'
