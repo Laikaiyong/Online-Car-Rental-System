@@ -423,7 +423,7 @@ Insert car data:
 
         # No file identified
         except:
-            print("Access the database system to check database progress\n")
+            print("Access the database system to check database progress.\n")
             maintenance_database_access()
 
         # Ask for admins choice on inserting more cars or stop adding
@@ -1204,7 +1204,7 @@ def admin_return_rent():
 
         # Exclude non numeric value
         except ValueError or IndexError:
-            print("Invalid input, please insert a numeric value..\n")
+            print("Invalid input, please insert a numeric value or a valid number..\n")
             return return_line_validation()
 
     new_index = return_line_validation()
@@ -1226,7 +1226,6 @@ def admin_return_rent():
           .format(statements[new_index][0], statements[new_index][1], statements[new_index][2], statements[new_index][3], statements[new_index][8], statements[new_index][4], statements[new_index][5], statements[new_index][6], statements[new_index][7]))
 
     # Update data in text files
-    count1 = 1
     with open('customerBookingPayment.txt', 'w') as mark_completed:
         stmnt_count = 1
         for statement in statements:
