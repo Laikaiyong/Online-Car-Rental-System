@@ -1359,7 +1359,7 @@ def admin_mark_ready():
     # Display returned rent car
     print("\nMarked ready statement: ")
     cus_statement_header()
-    print("   {:<11}{:<8}{:<7}{:<8}RM{:<8}{:<9}{:<13}{:<16}{:<10}"
+    print("   {:<11}{:<8}{:<7}{:<8}RM{:<10}{:<7}{:<13}{:<16}{:<10}"
           .format(statements[new_index][0], statements[new_index][1], statements[new_index][2], statements[new_index][3], statements[new_index][8], statements[new_index][4], statements[new_index][5], statements[new_index][6], statements[new_index][7]))
 
     # Update data in text files
